@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Youtube, Instagram } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
+    const { t } = useLanguage();
     return (
         <footer className="bg-black border-t border-white/10 pt-16 pb-8">
             <div className="container mx-auto px-6">
@@ -11,40 +13,37 @@ const Footer = () => {
                     <div className="space-y-6">
                         <h3 className="text-2xl font-display font-bold text-white tracking-widest ">colestia</h3>
                         <p className="text-gray-400 text-sm leading-relaxed">
-                            Empowering the future of digital assets through education and transparent project showcasing.
-                            {/* “เสริมพลังอนาคตของสินทรัพย์ดิจิทัลผ่านการให้ความรู้และการนำเสนอโปรเจกต์อย่างโปร่งใส” */}
+                            {t('footer_tagline')}
                         </p>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="text-white font-bold mb-6">Platform</h4>
+                        <h4 className="text-white font-bold mb-6">{t('footer_platform')}</h4>
                         <ul className="space-y-4 text-sm text-gray-400">
-                            <li><Link to="/products" className="hover:text-colestia-gold transition-colors">Projects</Link></li>
-                            <li><Link to="/education" className="hover:text-colestia-gold transition-colors">Investor Education</Link></li>
-                            <li><Link to="/team" className="hover:text-colestia-gold transition-colors">Our Team</Link></li>
+                            <li><Link to="/products" className="hover:text-colestia-gold transition-colors">{t('nav_projects')}</Link></li>
+                            <li><Link to="/education" className="hover:text-colestia-gold transition-colors">{t('nav_education')}</Link></li>
                         </ul>
                     </div>
 
                     {/* Legal */}
                     <div>
-                        <h4 className="text-white font-bold mb-6">Legal</h4>
+                        <h4 className="text-white font-bold mb-6">{t('footer_legal')}</h4>
                         <ul className="space-y-4 text-sm text-gray-400">
-                            <li><Link to="/privacy" className="hover:text-colestia-gold transition-colors">Privacy Policy</Link></li>
-                            <li><Link to="/terms" className="hover:text-colestia-gold transition-colors">Terms of Service</Link></li>
-                            {/*<li><span className="text-xs opacity-50">Disclaimer: No financial advice.</span></li>*/}
+                            <li><Link to="/privacy" className="hover:text-colestia-gold transition-colors">{t('footer_privacy')}</Link></li>
+                            <li><Link to="/terms" className="hover:text-colestia-gold transition-colors">{t('footer_terms')}</Link></li>
                         </ul>
                     </div>
 
                     {/* Contact */}
                     <div>
-                        <h4 className="text-white font-bold mb-6">Contact</h4>
+                        <h4 className="text-white font-bold mb-6">{t('footer_contact')}</h4>
                         <p className="text-gray-400 text-sm">support@colestia.io</p>
                         <p className="text-gray-400 text-sm mt-2">Bangkok, Thailand</p>
 
                         {/* Social Media Links */}
                         <div className="mt-6">
-                            <p className="text-white text-sm font-semibold mb-3">Follow Us</p>
+                            <p className="text-white text-sm font-semibold mb-3">{t('footer_follow')}</p>
                             <div className="flex gap-3">
                                 <a
                                     href="https://facebook.com"
@@ -103,10 +102,10 @@ const Footer = () => {
                 {/* Bottom Bar */}
                 <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-xs text-gray-600">
-                        © {new Date().getFullYear()} Colestia Ecosystem. All rights reserved.
+                        {t('footer_rights').replace('{year}', new Date().getFullYear())}
                     </p>
                     <p className="text-xs text-gray-600 text-center md:text-right max-w-lg">
-                        Colestia is an educational portal and does not facilitate token sales. All investments are handled by licensed third-party portals.
+                        {t('footer_disclaimer')}
                     </p>
                 </div>
             </div>

@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from './Button';
 import { ExternalLink, AlertTriangle } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 const ExternalLinkModal = ({ isOpen, onClose, destination, url }) => {
+    const { t } = useLanguage();
+
     if (!isOpen) return null;
 
     return (
@@ -29,25 +32,28 @@ const ExternalLinkModal = ({ isOpen, onClose, destination, url }) => {
                         <AlertTriangle className="text-red-500 w-8 h-8" />
                     </div>
 
-                    <h3 className="text-2xl font-display font-bold text-white mb-2">Leaving Colestia</h3>
+                    <h3 className="text-2xl font-display font-bold text-white mb-2">{t('modal_leaving_title')}</h3>
 
-                    <p className="text-gray-400 mb-6 text-sm leading-relaxed">
-                        You are about to visit <strong>{destination}</strong>, a third-party ICO portal.
-                        <br /><br />
-                        Please note: Colestia is an educational showcase only. We do not handle token sales, KYC, or investments directly.
+                    <p
+                        className="text-gray-400 mb-6 text-sm leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: t('modal_leaving_desc').replace('{destination}', destination) }}
+                    />
+
+                    <p className="text-gray-500 mb-6 text-xs leading-relaxed border-t border-white/10 pt-4">
+                        {t('modal_leaving_note')}
                     </p>
 
                     <div className="flex flex-col gap-3">
                         <a href={url} target="_blank" rel="noopener noreferrer" className="w-full">
                             <Button variant="gold" className="w-full justify-center">
-                                Proceed to Portal <ExternalLink size={16} />
+                                {t('btn_proceed')} <ExternalLink size={16} />
                             </Button>
                         </a>
                         <button
                             onClick={onClose}
                             className="text-gray-500 text-sm hover:text-white transition-colors"
                         >
-                            Cancel, stay here
+                            {t('btn_cancel')}
                         </button>
                     </div>
                 </motion.div>

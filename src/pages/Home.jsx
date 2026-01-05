@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { createPortal } from 'react-dom';
+import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from 'framer-motion';
 import VideoBackground from '../components/VideoBackground';
 import Button from '../components/Button';
 import { ArrowRight, ArrowLeft, Globe, Shield, Zap, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { teamMembers } from '../data/teamData';
 import { directors } from '../data/creatorsData';
+import { useLanguage } from '../context/LanguageContext';
 
 // Partner logos
 import logoFlips from '../assets/partners/flips.png';
@@ -15,64 +17,13 @@ import logoDIP from '../assets/partners/dip.png';
 import logoMSU from '../assets/partners/msu.png';
 import logoSEC from '../assets/partners/sec.png';
 
-const Card3D = ({ children, className }) => {
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
+import Card3D from '../components/Card3D';
 
-    const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
-    const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
-
-    const rotateX = useTransform(mouseY, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
-    const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
-
-    const handleMouseMove = (e) => {
-        const rect = e.target.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const xPct = mouseX / width - 0.5;
-        const yPct = mouseY / height - 0.5;
-        x.set(xPct);
-        y.set(yPct);
-    };
-
-    const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
-    };
-
-    return (
-        <motion.div
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{
-                rotateY,
-                rotateX,
-                transformStyle: "preserve-3d",
-            }}
-            className={`relative transition-all duration-200 ease-out ${className}`}
-        >
-            <div style={{ transform: "translateZ(50px)" }} className="h-full">
-                {children}
-            </div>
-            {/* Gloss Effect */}
-            <motion.div
-                style={{
-                    transform: "translateZ(40px)",
-                    background: useTransform(
-                        mouseX,
-                        [-0.5, 0.5],
-                        ["linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 100%)", "linear-gradient(to left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 100%)"]
-                    )
-                }}
-                className="absolute inset-0 rounded-2xl pointer-events-none"
-            />
-        </motion.div>
-    );
-};
+import Spotlight from '../components/Spotlight';
+import InteractiveGrid from '../components/InteractiveGrid';
 
 const Home = () => {
+    const { t, language } = useLanguage();
     const directorsScrollRef = useRef(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
 
@@ -86,11 +37,16 @@ const Home = () => {
         }
     };
 
+    const { scrollY } = useScroll();
+    const y1 = useTransform(scrollY, [0, 500], [0, 100]);
+    const y2 = useTransform(scrollY, [0, 500], [0, -100]);
+
     return (
         <div className="w-full">
             {/* 1. Hero Section "Dream Crafted" */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 <VideoBackground />
+                <InteractiveGrid />
 
                 <div className="relative z-20 text-center px-6 max-w-5xl mx-auto">
                     <motion.div
@@ -104,27 +60,27 @@ const Home = () => {
                             colestia
                         </h1>
                         <h2 className="text-5xl md:text-8xl font-display font-bold text-white mb-6 leading-tight">
-                            <span className="text-gradient-main">Dream Crafted.</span>
+                            <span className="text-gradient-main">{t('hero_dream_crafted')}</span>
                         </h2>
 
                         <p
                             className="text-xl text-white mb-10 max-w-2xl mx-auto font-light leading-relaxed"
                             style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 5)' }}
                         >
-                            Crafting stories. Empowering creators.
+                            {t('hero_tagline')}
 
-                            <br /><span className="text-white/100 text-md">Crafting the Next Chapter, Together.</span>
+                            <br /><span className="text-white/100 text-md">{t('hero_subtagline')}</span>
                         </p>
 
                         <div className="flex flex-col md:flex-row gap-4 justify-center">
-                            <Link to="/about">
+                            <Link to="/products">
                                 <Button variant="primary" className="w-full md:w-auto">
-                                    Explore Ecosystem <ArrowRight size={18} />
+                                    {t('hero_explore')} <ArrowRight size={18} />
                                 </Button>
                             </Link>
                             <Link to="/education">
                                 <Button variant="outline" className="w-full md:w-auto">
-                                    Investor Education
+                                    {t('hero_education')}
                                 </Button>
                             </Link>
                         </div>
@@ -155,15 +111,15 @@ const Home = () => {
                             transition={{ duration: 0.8 }}
                         >
                             <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-8">
-                                We are <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">colestia</span>
+                                {t('about_we_are')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">colestia</span>
                             </h2>
 
                             <div className="border-l-4 border-colestia-purple pl-6 space-y-4">
                                 <h2 className="text-white text-xl font-bold leading-relaxed">
-                                    <strong>colestia</strong> คือพื้นที่ของคนรุ่นใหม่ที่เชื่อในพลังของภาพยนตร์ไทย
+                                    <strong>{t('about_title_1')}</strong>
                                 </h2>
                                 <p className="text-white/90 text-base leading-relaxed indent-8">
-                                    เราเชื่อว่าภาพยนตร์ที่ดีไม่ควรถูกสร้างขึ้นโดยคนเพียงไม่กี่คน แต่ควรเติบโตจากแรงร่วมใจของทุกคนที่รักในสิ่งเดียวกัน ที่นี่ผู้สร้างไม่ต้องแบกความฝันไว้เพียงลำพัง และผู้ชมไม่ถูกจำกัดให้เป็นแค่ผู้รับชม
+                                    {t('about_desc_1')}
                                 </p>
                             </div>
                         </motion.div>
@@ -174,6 +130,7 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
+                            style={{ y: y1 }}
                             className="relative h-[400px] rounded-2xl overflow-hidden glass-panel"
                         >
                             <img
@@ -196,6 +153,7 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
+                            style={{ y: y2 }}
                             className="relative h-[400px] rounded-2xl overflow-hidden glass-panel"
                         >
                             <img
@@ -214,14 +172,14 @@ const Home = () => {
                         >
                             <div className="border-l-4 border-colestia-purple pl-6 space-y-4">
                                 <h2 className="text-white text-xl font-bold leading-relaxed">
-                                    <strong>ทุกไอเดียควรมีที่ยืน ทุกคนที่รักภาพยนตร์ควรมีโอกาสเป็นส่วนหนึ่งของการสร้างสรรค์</strong>
+                                    <strong>{t('about_title_2')}</strong>
                                 </h2>
                                 <p className="text-white/90 text-base leading-relaxed indent-8">
-                                    <strong>colestia</strong> จึงเป็นจุดเชื่อมระหว่างผู้สร้างสรรค์และคนรักภาพยนตร์ไทย พื้นที่ที่เปิดโอกาสให้ไอเดียได้เกิดขึ้นจริง ให้คนรุ่นใหม่ได้ลอง ได้เติบโต และได้เห็นผลงานของตัวเองก้าวไปไกลกว่าที่เคย เราเปลี่ยนการรับชมให้กลายเป็นการมีส่วนร่วม และร่วมกันผลักดันภาพยนตร์ไทยให้เดินหน้าอย่างที่ควรจะเป็น
+                                    <strong>colestia</strong> {t('about_desc_2')}
                                 </p>
                                 <br />
                                 <p className="text-white/90 text-base leading-relaxed indent-8">
-                                    นี่ไม่ใช่แค่แพลตฟอร์ม แต่คือจุดเริ่มต้นของบทใหม่ของภาพยนตร์ไทย บทที่เราทุกคนกำลังเขียนไปพร้อมกัน
+                                    {t('about_desc_3')}
                                 </p>
                             </div>
                         </motion.div>
@@ -232,7 +190,7 @@ const Home = () => {
             {/* 3. Ecosystem Flow Diagram (Visualizing the Brief) */}
             <section className="py-24 bg-[#050505]">
                 <div className="container mx-auto px-6 text-center">
-                    <h2 className="text-3xl font-display font-bold text-white mb-16">The Ecosystem Flow</h2>
+                    <h2 className="text-3xl font-display font-bold text-white mb-16">{t('ecosystem_title')}</h2>
 
                     <div className="grid md:grid-cols-3 gap-8 relative">
                         {/* Connecting Line (Desktop) */}
@@ -243,8 +201,8 @@ const Home = () => {
                             <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-400">
                                 <Globe size={32} />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2">External Media</h3>
-                            <p className="text-sm text-gray-400">User discovers project through trusted media channels.</p>
+                            <h3 className="text-xl font-bold text-white mb-2">{t('eco_step_1_title')}</h3>
+                            <p className="text-sm text-gray-400">{t('eco_step_1_desc')}</p>
                         </div>
 
                         {/* Step 2 (Colestia) */}
@@ -252,8 +210,8 @@ const Home = () => {
                             <div className="w-16 h-16 bg-colestia-purple/10 rounded-full flex items-center justify-center mx-auto mb-6 text-colestia-purple">
                                 <Shield size={32} />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2">Colestia Portal</h3>
-                            <p className="text-sm text-gray-400">In-depth education, project showcase, and risk analysis.</p>
+                            <h3 className="text-xl font-bold text-white mb-2">{t('eco_step_2_title')}</h3>
+                            <p className="text-sm text-gray-400">{t('eco_step_2_desc')}</p>
                         </div>
 
                         {/* Step 3 */}
@@ -261,8 +219,8 @@ const Home = () => {
                             <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-400">
                                 <Zap size={32} />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-2">ICO Portals</h3>
-                            <p className="text-sm text-gray-400">Licensed 3rd party portals (TH / InvestaX) handling the sale.</p>
+                            <h3 className="text-xl font-bold text-white mb-2">{t('eco_step_3_title')}</h3>
+                            <p className="text-sm text-gray-400">{t('eco_step_3_desc')}</p>
                         </div>
                     </div>
                 </div>
@@ -278,10 +236,10 @@ const Home = () => {
                         className="text-center mb-16"
                     >
                         <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
-                            Our <span className="text-gradient-main">Creators</span>
+                            {t('creators_title')} <span className="text-gradient-main">{t('creators_span')}</span>
                         </h2>
                         <p className="text-gray-400 max-w-2xl mx-auto">
-                            Visionary leaders driving innovation in film and blockchain technology.
+                            {t('creators_desc')}
                         </p>
                     </motion.div>
 
@@ -298,7 +256,7 @@ const Home = () => {
 
                         {/* Scrollable Directors Container */}
                         <div
-                            ref={directorsScrollRef}
+                            ref={directorsScrollRef} // Fixed variable name case
                             className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-4 md:px-12"
                             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                         >
@@ -312,39 +270,41 @@ const Home = () => {
                                     className="group flex-shrink-0 w-[280px] md:w-[350px] perspective-1000"
                                 >
                                     <Card3D>
-                                        <div className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/10 group-hover:border-colestia-purple/50 transition-all duration-500 group-hover:shadow-[0_20px_60px_rgba(122,30,166,0.3)] h-full">
-                                            <div className="flex flex-col h-full">
-                                                {/* Photo Section - Larger */}
-                                                <div className="relative w-full h-[380px] md:h-[450px] flex-shrink-0 overflow-hidden">
-                                                    <img
-                                                        src={director.img}
-                                                        alt={director.name}
-                                                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-all duration-700"
-                                                    />
-                                                    {/* Gradient Overlay */}
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                                </div>
+                                        <Spotlight className="h-full rounded-2xl" size={400}>
+                                            <div className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/10 group-hover:border-colestia-purple/50 transition-all duration-500 group-hover:shadow-[0_20px_60px_rgba(122,30,166,0.3)] h-full">
+                                                <div className="flex flex-col h-full">
+                                                    {/* Photo Section - Larger */}
+                                                    <div className="relative w-full h-[380px] md:h-[450px] flex-shrink-0 overflow-hidden">
+                                                        <img
+                                                            src={director.img}
+                                                            alt={director.name}
+                                                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-all duration-700"
+                                                        />
+                                                        {/* Gradient Overlay */}
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                                    </div>
 
-                                                {/* Info Section */}
-                                                <div className="flex-1 p-6 flex flex-col relative z-20 bg-[#0a0a0a]">
-                                                    <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-colestia-purple transition-colors">
-                                                        {director.name}
-                                                    </h3>
-                                                    <p className="text-colestia-magenta text-sm font-medium mb-3">{director.role}</p>
+                                                    {/* Info Section */}
+                                                    <div className="flex-1 p-6 flex flex-col relative z-20 bg-[#0a0a0a]">
+                                                        <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-colestia-purple transition-colors">
+                                                            {director.name}
+                                                        </h3>
+                                                        <p className="text-colestia-magenta text-sm font-medium mb-3">{director.role}</p>
 
-                                                    {/* View More Button */}
-                                                    <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation(); // Prevent tilt interference
-                                                            setSelectedDirector(director);
-                                                        }}
-                                                        className="mt-auto px-4 py-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 text-white rounded-lg transition-all duration-300 text-sm font-medium border border-colestia-purple/30 hover:border-colestia-purple/60 relative z-30 cursor-pointer"
-                                                    >
-                                                        ดูเพิ่มเติม
-                                                    </button>
+                                                        {/* View More Button */}
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation(); // Prevent tilt interference
+                                                                setSelectedDirector(director);
+                                                            }}
+                                                            className="mt-auto px-4 py-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 text-white rounded-lg transition-all duration-300 text-sm font-medium border border-colestia-purple/30 hover:border-colestia-purple/60 relative z-30 cursor-pointer animate-shine"
+                                                        >
+                                                            {t('see_more')}
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </Spotlight>
                                     </Card3D>
                                 </motion.div>
                             ))}
@@ -362,7 +322,7 @@ const Home = () => {
 
                     {/* Scroll Hint for Mobile */}
                     <p className="text-center text-gray-500 text-sm mt-8 md:hidden">
-                        Swipe to see more
+                        {t('swipe_hint')}
                     </p>
                 </div>
             </section>
@@ -538,21 +498,21 @@ const Home = () => {
                         className="bg-gradient-to-r from-colestia-purple to-colestia-magenta rounded-3xl p-12 md:p-16 text-center shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
                     >
                         <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
-                            Get Ready!
+                            {t('newsletter_title')}
                         </h2>
                         <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
-                            Subscribe to our newsletter to get the latest news and updates from us
+                            {t('newsletter_desc')}
                         </p>
 
                         {/* Email Input Form */}
                         <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                             <input
                                 type="email"
-                                placeholder="Email address"
+                                placeholder={t('newsletter_placeholder')}
                                 className="flex-1 px-6 py-4 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/100 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
                             />
                             <button className="px-8 py-4 bg-white text-colestia-purple rounded-full font-semibold hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
-                                Subscribe
+                                {t('newsletter_btn')}
                             </button>
                         </div>
                     </motion.div>
@@ -560,79 +520,83 @@ const Home = () => {
             </section>
 
             {/* Director Detail Modal */}
-            {selectedDirector && (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-                    onClick={() => setSelectedDirector(null)}
-                >
+            {/* Director Detail Modal - Portal to escape PageTransition transform */}
+            {selectedDirector && createPortal(
+                <AnimatePresence>
                     <motion.div
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.9, opacity: 0 }}
-                        transition={{ type: "spring", duration: 0.5 }}
-                        className="bg-[#0a0a0a] border border-colestia-purple/30 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden relative shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
-                        onClick={(e) => e.stopPropagation()}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                        onClick={() => setSelectedDirector(null)}
                     >
-                        {/* Close Button */}
-                        <button
-                            onClick={() => setSelectedDirector(null)}
-                            className="absolute top-4 right-4 z-10 p-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 rounded-full transition-all duration-300 group"
-                            aria-label="Close modal"
+                        <motion.div
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.9, opacity: 0 }}
+                            transition={{ type: "spring", duration: 0.5 }}
+                            className="bg-[#0a0a0a] border border-colestia-purple/30 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden relative shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
+                            onClick={(e) => e.stopPropagation()}
                         >
-                            <X size={24} className="text-white group-hover:rotate-90 transition-transform duration-300" />
-                        </button>
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setSelectedDirector(null)}
+                                className="absolute top-4 right-4 z-10 p-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 rounded-full transition-all duration-300 group"
+                                aria-label="Close modal"
+                            >
+                                <X size={24} className="text-white group-hover:rotate-90 transition-transform duration-300" />
+                            </button>
 
-                        {/* Two Column Layout */}
-                        <div className="grid md:grid-cols-2 gap-0 h-full">
-                            {/* Left Column - Director Image */}
-                            <div className="relative h-[40vh] md:h-auto overflow-hidden">
-                                <img
-                                    src={selectedDirector.img}
-                                    alt={selectedDirector.name}
-                                    className="w-full h-full object-contain object-center bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a]"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-                            </div>
-
-                            {/* Right Column - Content */}
-                            <div className="p-8 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
-                                {/* Name and Role */}
-                                <div className="mb-6">
-                                    <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
-                                        {selectedDirector.name}
-                                    </h2>
-                                    <p className="text-colestia-magenta text-base font-medium">
-                                        {selectedDirector.role}
-                                    </p>
-                                </div>
-
-                                {/* Biography */}
-                                <div className="space-y-3 mb-6">
-                                    <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
-                                        ประวัติ
-                                    </h3>
-                                    <p
-                                        className="text-gray-300 leading-relaxed text-sm indent-8"
-                                        dangerouslySetInnerHTML={{ __html: selectedDirector.bio }}
+                            {/* Two Column Layout */}
+                            <div className="grid md:grid-cols-2 gap-0 h-full">
+                                {/* Left Column - Director Image */}
+                                <div className="relative h-[40vh] md:h-auto overflow-hidden">
+                                    <img
+                                        src={selectedDirector.img}
+                                        alt={selectedDirector.name}
+                                        className="w-full h-full object-contain object-center bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a]"
                                     />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
                                 </div>
 
-                                {/* Notable Works */}
-                                <div className="space-y-3">
-                                    <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
-                                        ผลงานเด่น
-                                    </h3>
-                                    <p className="text-gray-300 leading-relaxed text-sm">
-                                        {selectedDirector.works}
-                                    </p>
+                                {/* Right Column - Content */}
+                                <div className="p-8 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
+                                    {/* Name and Role */}
+                                    <div className="mb-6">
+                                        <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
+                                            {selectedDirector.name}
+                                        </h2>
+                                        <p className="text-colestia-magenta text-base font-medium">
+                                            {selectedDirector.role}
+                                        </p>
+                                    </div>
+
+                                    {/* Biography */}
+                                    <div className="space-y-3 mb-6">
+                                        <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
+                                            {t('director_bio')}
+                                        </h3>
+                                        <p
+                                            className="text-gray-300 leading-relaxed text-sm md:text-base max-h-48 overflow-y-auto pr-2 custom-scrollbar"
+                                            dangerouslySetInnerHTML={{ __html: language === 'th' ? selectedDirector.bio : selectedDirector.bioEn }}
+                                        />
+                                    </div>
+
+                                    {/* Recent Works */}
+                                    <div className="space-y-3">
+                                        <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
+                                            {t('director_works')}
+                                        </h3>
+                                        <p className="text-gray-300 leading-relaxed italic text-sm md:text-base">
+                                            {language === 'th' ? selectedDirector.works : selectedDirector.worksEn}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     </motion.div>
-                </motion.div>
+                </AnimatePresence>,
+                document.body
             )}
         </div>
     );

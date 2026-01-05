@@ -5,6 +5,7 @@ import { Construction, ArrowRight } from 'lucide-react';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollProgress from './components/ScrollProgress';
 
 import ScrollManager from './components/ScrollManager';
 import Home from './pages/Home';
@@ -69,6 +70,7 @@ const App = () => {
     <div className="min-h-screen bg-colestia-bg text-white selection:bg-colestia-gold selection:text-black">
       <ScrollManager>
         {!hideNavFooter && <Navbar />}
+        {!hideNavFooter && <ScrollProgress />}
 
         <main>
           <AnimatePresence mode="wait">

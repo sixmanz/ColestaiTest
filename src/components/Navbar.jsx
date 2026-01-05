@@ -3,6 +3,7 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Menu, X, Globe } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import Magnetic from './Magnetic';
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -51,20 +52,21 @@ const Navbar = () => {
                 {/* Desktop Links */}
                 <div className="hidden md:flex items-center gap-8">
                     {navLinks.map((link) => (
-                        <NavLink
-                            key={link.path}
-                            to={link.path}
-                            className={({ isActive }) =>
-                                `text-lg tracking-wide transition-all duration-300 relative group ${isActive
-                                    ? 'text-colestia-purple'
-                                    : 'text-white-300 hover:text-white hover:scale-105'
-                                }`
-                            }
-                        >
-                            {link.name}
-                            {/* Hover underline effect */}
-                            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-colestia-purple to-colestia-magenta group-hover:w-full transition-all duration-300" />
-                        </NavLink>
+                        <Magnetic key={link.path}>
+                            <NavLink
+                                to={link.path}
+                                className={({ isActive }) =>
+                                    `text-lg tracking-wide transition-all duration-300 relative group block px-2 py-1 ${isActive
+                                        ? 'text-colestia-purple'
+                                        : 'text-white-300 hover:text-white'
+                                    }`
+                                }
+                            >
+                                {link.name}
+                                {/* Hover underline effect */}
+                                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-colestia-purple to-colestia-magenta group-hover:w-full transition-all duration-300" />
+                            </NavLink>
+                        </Magnetic>
                     ))}
 
                     {/* Language Toggle*/}

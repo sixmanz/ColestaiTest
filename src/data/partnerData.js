@@ -7,28 +7,38 @@ import logoMSU from '../assets/partners/msu.png';
 
 export const partners = [
     {
-        name: "กระทรวงวัฒนธรรม",
+        name: "Ministry of Culture",
+        nameTh: "กระทรวงวัฒนธรรม",
         logo: logoCulture,
-        description: "Ministry of Culture"
+        description: "Ministry of Culture",
+        descriptionTh: "กระทรวงวัฒนธรรม"
     },
     {
-        name: "กรมทรัพย์สินทางปัญญา",
+        name: "Department of Intellectual Property",
+        nameTh: "กรมทรัพย์สินทางปัญญา",
         logo: logoDIP,
-        description: "Department of Intellectual Property"
+        description: "Department of Intellectual Property",
+        descriptionTh: "กรมทรัพย์สินทางปัญญา"
     },
     {
         name: "Flips Innovative",
+        nameTh: "Flips Innovative",
         logo: logoFlips,
-        description: "Technology innovation partner"
+        description: "Technology innovation partner",
+        descriptionTh: "พันธมิตรด้านนวัตกรรมเทคโนโลยี"
     },
     {
         name: "Fraction",
+        nameTh: "Fraction",
         logo: logoFraction,
-        description: "Digital asset platform"
+        description: "Digital asset platform",
+        descriptionTh: "แพลตฟอร์มสินทรัพย์ดิจิทัล"
     },
     {
-        name: "มหาวิทยาลัยมหาสารคาม",
+        name: "Mahasarakham University",
+        nameTh: "มหาวิทยาลัยมหาสารคาม",
         logo: logoMSU,
-        description: "Mahasarakham University"
+        description: "Mahasarakham University",
+        descriptionTh: "มหาวิทยาลัยมหาสารคาม"
     }
 ];

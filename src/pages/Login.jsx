@@ -9,6 +9,17 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+    // Generate particles only once
+    const particles = React.useMemo(() => {
+        return [...Array(8)].map((_, i) => ({
+            id: i,
+            x: Math.random() * 50 - 25,
+            duration: 5 + Math.random() * 5,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`
+        }));
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsLoading(true);
@@ -265,24 +276,24 @@ const Login = () => {
                 />
 
                 {/* Floating Particles */}
-                {[...Array(8)].map((_, i) => (
+                {particles.map((particle) => (
                     <motion.div
-                        key={i}
+                        key={particle.id}
                         animate={{
                             y: [0, -100, 0],
-                            x: [0, Math.random() * 50 - 25, 0],
+                            x: [0, particle.x, 0],
                             opacity: [0.3, 0.8, 0.3],
                         }}
                         transition={{
-                            duration: 5 + Math.random() * 5,
+                            duration: particle.duration,
                             repeat: Infinity,
-                            delay: i * 0.5,
+                            delay: particle.id * 0.5,
                             ease: "easeInOut"
                         }}
                         className="absolute w-2 h-2 bg-white/40 rounded-full"
                         style={{
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
+                            left: particle.left,
+                            top: particle.top,
                         }}
                     />
                 ))}
