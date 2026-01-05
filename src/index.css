@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Noto+Sans+Thai:wght@100..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-colestia-bg text-white font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display tracking-wide;
+  }
+}
+
+@layer utilities {
+  .text-gradient-main {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-colestia-purple via-colestia-magenta to-colestia-blue;
+  }
+
+  .bg-gradient-main {
+
+    @apply bg-gradient-to-r from-colestia-purple via-colestia-magenta to-colestia-blue;
+  }
+
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  .hover-card-glow {
+    @apply transition-all duration-500 hover:shadow-[0_0_30px_rgba(122,30,166,0.3)] hover:-translate-y-2;
+  }
+}
