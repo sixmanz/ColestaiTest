@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Facebook, Youtube, Instagram } from 'lucide-react';
+import { Facebook, Youtube, Instagram, Lock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
@@ -104,9 +104,14 @@ const Footer = () => {
                     <p className="text-xs text-gray-600">
                         {t('footer_rights').replace('{year}', new Date().getFullYear())}
                     </p>
-                    <p className="text-xs text-gray-600 text-center md:text-right max-w-lg">
-                        {t('footer_disclaimer')}
-                    </p>
+                    <div className="flex gap-4 items-center">
+                        <Link to="/admin" className="text-gray-800 hover:text-colestia-gold transition-colors" aria-label="Admin Access">
+                            <Lock size={14} />
+                        </Link>
+                        <p className="text-xs text-gray-600 text-center md:text-right max-w-lg">
+                            {t('footer_disclaimer')}
+                        </p>
+                    </div>
                 </div>
             </div>
         </footer>

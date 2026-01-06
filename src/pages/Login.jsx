@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     // Generate particles only once
     const particles = React.useMemo(() => {
@@ -20,14 +23,16 @@ const Login = () => {
         }));
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate login
-        setTimeout(() => {
+        try {
+            await login(email, password);
+            navigate('/admin'); // Redirect to admin dashboard
+        } catch (error) {
+            alert('Failed to login: ' + error.message);
             setIsLoading(false);
-            alert('Login functionality will be implemented with backend');
-        }, 1500);
+        }
     };
 
     return (

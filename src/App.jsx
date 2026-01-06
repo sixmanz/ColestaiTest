@@ -15,6 +15,11 @@ import AboutUs from './pages/AboutUs';
 import Education from './pages/Education';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProjects from './pages/admin/AdminProjects';
+import AdminDirectors from './pages/admin/AdminDirectors';
+import AdminTeam from './pages/admin/AdminTeam';
 
 // Placeholder content for simple pages
 const PlaceholderPage = ({ title }) => (
@@ -63,8 +68,8 @@ const App = () => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // Hide navbar/footer on login page
-  const hideNavFooter = pathname === '/login' || pathname === '/register';
+  // Hide navbar/footer on login, register, and admin pages
+  const hideNavFooter = pathname === '/login' || pathname === '/register' || pathname.startsWith('/admin');
 
   return (
     <div className="min-h-screen bg-colestia-bg text-white selection:bg-colestia-gold selection:text-black">
@@ -89,6 +94,14 @@ const App = () => {
               <Route path="/privacy" element={<PageTransition><PlaceholderPage title="Privacy Policy" /></PageTransition>} />
               <Route path="/terms" element={<PageTransition><PlaceholderPage title="Terms of Service" /></PageTransition>} />
               <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route path="projects" element={<AdminProjects />} />
+                <Route path="directors" element={<AdminDirectors />} />
+                <Route path="team" element={<AdminTeam />} />
+              </Route>
             </Routes>
           </AnimatePresence>
         </main>

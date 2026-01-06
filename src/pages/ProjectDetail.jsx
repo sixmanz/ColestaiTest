@@ -3,71 +3,19 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import Button from '../components/Button';
 import ExternalLinkModal from '../components/ExternalLinkModal';
-import { ArrowLeft, Play, AlertCircle, ExternalLink, X } from 'lucide-react';
+import { ArrowLeft, Play, AlertCircle, ExternalLink, X, Loader } from 'lucide-react';
 import heroVideo from '../assets/hero.mp4';
 import InteractiveGrid from '../components/InteractiveGrid';
 import Spotlight from '../components/Spotlight';
 import { useLanguage } from '../context/LanguageContext';
-
-// Mock Data Database
-const projectData = {
-    1: {
-        title: "Velcurve House",
-        titleTh: "เวลเคิร์ฟ เฮาส์",
-        tagline: "The Future of Digital Production Spaces",
-        taglineTh: "อนาคตของพื้นที่การผลิตสื่อดิจิทัล",
-        category: "Real Estate Tokenization",
-        categoryTh: "โทเคนอสังหาริมทรัพย์",
-        description: "Fractional ownership of the premier production house studio in Bangkok. Velcurve House isn't just a studio; it's a creative ecosystem powered by blockchain. Investors gain exposure to the rising demand for high-quality digital content production facilities.",
-        descriptionTh: "การเป็นเจ้าของร่วมในสตูดิโอโปรดักชั่นเฮาส์ชั้นนำในกรุงเทพฯ Velcurve House ไม่ใช่แค่สตูดิโอ แต่เป็นระบบนิเวศทางความคิดสร้างสรรค์ที่ขับเคลื่อนด้วยบล็อกเชน นักลงทุนจะได้รับโอกาสจากการเติบโตของความต้องการสิ่งอำนวยความสะดวกในการผลิตคอนเทนต์ดิจิทัลคุณภาพสูง",
-        details: [
-            { label: "Location", labelTh: "สถานที่", value: "Bangkok, Thailand", valueTh: "กรุงเทพฯ, ไทย" },
-            { label: "Asset Value", labelTh: "มูลค่าสินทรัพย์", value: "$5,000,000", valueTh: "$5,000,000" },
-            { label: "Token Type", labelTh: "ประเภทโทเคน", value: "Asset-Backed (Real Estate)", valueTh: "สินทรัพย์อ้างอิง (อสังหาฯ)" },
-            { label: "Yield", labelTh: "ผลตอบแทน", value: "8-12% APY (Est.)", valueTh: "8-12% ต่อปี (ประมาณการ)" }
-        ],
-        videoPoster: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop",
-        link: "https://th-ico-portal.com/project/velcurve"
-    },
-    2: {
-        title: "EcoEnergy Grid",
-        titleTh: "อีโคเอเนอร์จี้ กริด",
-        tagline: "Powering Tomorrow, Decentralized.",
-        taglineTh: "พลังงานแห่งอนาคต แบบกระจายศูนย์",
-        category: "Sustainable Tech",
-        categoryTh: "เทคโนโลยีที่ยั่งยืน",
-        description: "A blockchain-powered renewable energy distribution network allowing peer-to-peer energy trading. This project aims to democratize energy access in Southeast Asia.",
-        descriptionTh: "เครือข่ายกระจายพลังงานหมุนเวียนที่ขับเคลื่อนด้วยบล็อกเชน ช่วยให้สามารถซื้อขายพลังงานแบบ Peer-to-Peer โครงการนี้มุ่งหวังที่จะสร้างความเป็นประชาธิปไตยในการเข้าถึงพลังงานในเอเชียตะวันออกเฉียงใต้",
-        details: [
-            { label: "Location", labelTh: "สถานที่", value: "Regional (SEA)", valueTh: "ภูมิภาค (SEA)" },
-            { label: "Type", labelTh: "ประเภท", value: "Utility & Governance", valueTh: "ยูทิลิตี้ & การกำกับดูแล" },
-            { label: "Stage", labelTh: "ระยะ", value: "Seed Round", valueTh: "รอบ Seed" }
-        ],
-        videoPoster: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2000&auto=format&fit=crop",
-        link: "https://investax.io/project/eco"
-    },
-    3: {
-        title: "NextGen Media",
-        titleTh: "เน็กซ์เจน มีเดีย",
-        tagline: "Creators First.",
-        taglineTh: "ผู้สร้างต้องมาก่อน",
-        category: "Media & Entertainment",
-        categoryTh: "สื่อและความบันเทิง",
-        description: "Decentralized content creation platform for independent artists, cutting out the middlemen and ensuring fair revenue share via smart contracts.",
-        descriptionTh: "แพลตฟอร์มสร้างสรรค์เนื้อหาแบบกระจายศูนย์สำหรับศิลปินอิสระ ตัดตัวกลางออกและรับประกันส่วนแบ่งรายได้ที่ยุติธรรมผ่าน Smart Contract",
-        details: [
-            { label: "Platform", labelTh: "แพลตฟอร์ม", value: "Web3 App", valueTh: "เว็บ3 แอป" },
-            { label: "Token", labelTh: "โทเคน", value: "Utility", valueTh: "ยูทิลิตี้" }
-        ],
-        videoPoster: "https://images.unsplash.com/photo-1598899134739-967b867b7463?q=80&w=2000&auto=format&fit=crop",
-        link: "https://th-ico-portal.com/project/media"
-    }
-};
+import { useProjects } from '../hooks/useProjects';
 
 const ProjectDetail = () => {
     const { id } = useParams();
     const { t, language } = useLanguage();
-    const project = projectData[id];
+    const { getProjectById, isLoading } = useProjects();
+    const project = getProjectById(id);
+
     const [modalOpen, setModalOpen] = useState(false);
     const [trailerOpen, setTrailerOpen] = useState(false);
 
@@ -79,12 +27,14 @@ const ProjectDetail = () => {
     const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
+    if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader className="animate-spin text-white" /></div>;
     if (!project) return <div className="pt-32 text-center text-white">Project not found</div>;
 
-    const displayTitle = language === 'th' && project.titleTh ? project.titleTh : project.title;
-    const displayTagline = language === 'th' && project.taglineTh ? project.taglineTh : project.tagline;
-    const displayCategory = language === 'th' && project.categoryTh ? project.categoryTh : project.category;
-    const displayDescription = language === 'th' && project.descriptionTh ? project.descriptionTh : project.description;
+    const displayTitle = language === 'th' && project.titleTh ? project.titleTh : project.titleEn || project.title;
+    const displayTagline = language === 'th' ? project.description : project.descriptionEn;
+    const displayCategory = project.genre;
+    const displayDescription = language === 'th' ? project.description : project.descriptionEn;
+    const posterImage = project.poster || project.videoPoster;
 
     return (
         <div className="min-h-screen bg-black pb-20 relative overflow-hidden" ref={containerRef}>
@@ -98,7 +48,7 @@ const ProjectDetail = () => {
                     className="absolute inset-0 w-full h-full"
                 >
                     <img
-                        src={project.videoPoster}
+                        src={posterImage}
                         alt={displayTitle}
                         className="w-full h-full object-cover"
                     />
@@ -185,16 +135,34 @@ const ProjectDetail = () => {
 
                             <h3 className="text-xl font-bold text-white mb-6 border-b border-white/10 pb-4 relative z-10">{t('title_data')}</h3>
                             <div className="space-y-6 relative z-10">
-                                {project.details.map((detail, idx) => (
-                                    <div key={idx} className="group/item">
-                                        <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 group-hover/item:text-colestia-purple transition-colors">
-                                            {language === 'th' ? detail.labelTh : detail.label}
-                                        </p>
-                                        <p className="text-white font-medium text-lg">
-                                            {language === 'th' ? detail.valueTh : detail.value}
-                                        </p>
-                                    </div>
-                                ))}
+                                {/* Dynamic Details if available, otherwise just show funding info */}
+                                {project.details ? (
+                                    project.details.map((detail, idx) => (
+                                        <div key={idx} className="group/item">
+                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1 group-hover/item:text-colestia-purple transition-colors">
+                                                {language === 'th' ? detail.labelTh : detail.label}
+                                            </p>
+                                            <p className="text-white font-medium text-lg">
+                                                {language === 'th' ? detail.valueTh : detail.value}
+                                            </p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <>
+                                        <div>
+                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Goal Funding</p>
+                                            <p className="text-white font-medium text-lg">฿{(project.goalFunding / 1000000).toFixed(1)}M</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Investors</p>
+                                            <p className="text-white font-medium text-lg">{project.investors?.toLocaleString()}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Timeline</p>
+                                            <p className="text-white font-medium text-lg">{project.startDate} - {project.endDate}</p>
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             <div className="mt-8 pt-6 border-t border-white/10 relative z-10">
@@ -215,7 +183,7 @@ const ProjectDetail = () => {
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
                 destination={t('modal_destination_portal')}
-                url={project.link}
+                url={project.link || "#"}
             />
 
             {/* Video Trailer Modal */}

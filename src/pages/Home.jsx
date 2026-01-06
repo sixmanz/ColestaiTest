@@ -5,8 +5,8 @@ import VideoBackground from '../components/VideoBackground';
 import Button from '../components/Button';
 import { ArrowRight, ArrowLeft, Globe, Shield, Zap, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { teamMembers } from '../data/teamData';
-import { directors } from '../data/creatorsData';
+import { useDirectors } from '../hooks/useDirectors';
+import { useTeam } from '../hooks/useTeam';
 import { useLanguage } from '../context/LanguageContext';
 
 // Partner logos
@@ -26,6 +26,8 @@ const Home = () => {
     const { t, language } = useLanguage();
     const directorsScrollRef = useRef(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
+    const { directors } = useDirectors();
+    const { team: teamMembers } = useTeam();
 
     const scrollDirectors = (direction) => {
         if (directorsScrollRef.current) {
@@ -439,7 +441,7 @@ const Home = () => {
                 </div>
             </section>*/}
 
-            {/* 5. Our Team Section 
+            {/* 5. Our Team Section */}
             <section className="py-24 bg-gradient-to-b from-colestia-bg to-[#050505]">
                 <div className="container mx-auto px-6">
                     <motion.div
@@ -454,9 +456,9 @@ const Home = () => {
                         <p className="text-gray-400 max-w-2xl mx-auto">
                             “The leadership team propelling Colestia toward the future of the Thai film industry.”
                         </p>
-                    </motion.div>*/}
+                    </motion.div>
 
-            {/* Team Grid - Dynamic from shared data 
+                    {/* Team Grid - Dynamic from shared data */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                         {teamMembers.map((member, index) => (
                             <motion.div
@@ -486,7 +488,7 @@ const Home = () => {
 
 
                 </div>
-            </section>*/}
+            </section>
 
             {/* Newsletter Subscription Section */}
             <section className="py-20 bg-gradient-to-b from-[#050505] to-colestia-bg">
@@ -517,87 +519,88 @@ const Home = () => {
                         </div>
                     </motion.div>
                 </div>
-            </section>
+            </section >
 
             {/* Director Detail Modal */}
             {/* Director Detail Modal - Portal to escape PageTransition transform */}
-            {selectedDirector && createPortal(
-                <AnimatePresence>
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-                        onClick={() => setSelectedDirector(null)}
-                    >
+            {
+                selectedDirector && createPortal(
+                    <AnimatePresence>
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            transition={{ type: "spring", duration: 0.5 }}
-                            className="bg-[#0a0a0a] border border-colestia-purple/30 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden relative shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
-                            onClick={(e) => e.stopPropagation()}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+                            onClick={() => setSelectedDirector(null)}
                         >
-                            {/* Close Button */}
-                            <button
-                                onClick={() => setSelectedDirector(null)}
-                                className="absolute top-4 right-4 z-10 p-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 rounded-full transition-all duration-300 group"
-                                aria-label="Close modal"
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                transition={{ type: "spring", duration: 0.5 }}
+                                className="bg-[#0a0a0a] border border-colestia-purple/30 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden relative shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
+                                onClick={(e) => e.stopPropagation()}
                             >
-                                <X size={24} className="text-white group-hover:rotate-90 transition-transform duration-300" />
-                            </button>
+                                {/* Close Button */}
+                                <button
+                                    onClick={() => setSelectedDirector(null)}
+                                    className="absolute top-4 right-4 z-10 p-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 rounded-full transition-all duration-300 group"
+                                    aria-label="Close modal"
+                                >
+                                    <X size={24} className="text-white group-hover:rotate-90 transition-transform duration-300" />
+                                </button>
 
-                            {/* Two Column Layout */}
-                            <div className="grid md:grid-cols-2 gap-0 h-full">
-                                {/* Left Column - Director Image */}
-                                <div className="relative h-[40vh] md:h-auto overflow-hidden">
-                                    <img
-                                        src={selectedDirector.img}
-                                        alt={selectedDirector.name}
-                                        className="w-full h-full object-contain object-center bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a]"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
-                                </div>
-
-                                {/* Right Column - Content */}
-                                <div className="p-8 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
-                                    {/* Name and Role */}
-                                    <div className="mb-6">
-                                        <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
-                                            {selectedDirector.name}
-                                        </h2>
-                                        <p className="text-colestia-magenta text-base font-medium">
-                                            {selectedDirector.role}
-                                        </p>
-                                    </div>
-
-                                    {/* Biography */}
-                                    <div className="space-y-3 mb-6">
-                                        <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
-                                            {t('director_bio')}
-                                        </h3>
-                                        <p
-                                            className="text-gray-300 leading-relaxed text-sm md:text-base max-h-48 overflow-y-auto pr-2 custom-scrollbar"
-                                            dangerouslySetInnerHTML={{ __html: language === 'th' ? selectedDirector.bio : selectedDirector.bioEn }}
+                                {/* Two Column Layout */}
+                                <div className="grid md:grid-cols-2 gap-0 h-full">
+                                    {/* Left Column - Director Image */}
+                                    <div className="relative h-[40vh] md:h-auto overflow-hidden">
+                                        <img
+                                            src={selectedDirector.img}
+                                            alt={selectedDirector.name}
+                                            className="w-full h-full object-contain object-center bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a]"
                                         />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
                                     </div>
 
-                                    {/* Recent Works */}
-                                    <div className="space-y-3">
-                                        <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
-                                            {t('director_works')}
-                                        </h3>
-                                        <p className="text-gray-300 leading-relaxed italic text-sm md:text-base">
-                                            {language === 'th' ? selectedDirector.works : selectedDirector.worksEn}
-                                        </p>
+                                    {/* Right Column - Content */}
+                                    <div className="p-8 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
+                                        {/* Name and Role */}
+                                        <div className="mb-6">
+                                            <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
+                                                {selectedDirector.name}
+                                            </h2>
+                                            <p className="text-colestia-magenta text-base font-medium">
+                                                {selectedDirector.role}
+                                            </p>
+                                        </div>
+
+                                        {/* Biography */}
+                                        <div className="space-y-3 mb-6">
+                                            <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
+                                                {t('director_bio')}
+                                            </h3>
+                                            <p
+                                                className="text-gray-300 leading-relaxed text-sm md:text-base max-h-48 overflow-y-auto pr-2 custom-scrollbar"
+                                                dangerouslySetInnerHTML={{ __html: language === 'th' ? selectedDirector.bio : selectedDirector.bioEn }}
+                                            />
+                                        </div>
+
+                                        {/* Recent Works */}
+                                        <div className="space-y-3">
+                                            <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
+                                                {t('director_works')}
+                                            </h3>
+                                            <p className="text-gray-300 leading-relaxed italic text-sm md:text-base">
+                                                {language === 'th' ? selectedDirector.works : selectedDirector.worksEn}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         </motion.div>
-                    </motion.div>
-                </AnimatePresence>,
-                document.body
-            )}
+                    </AnimatePresence>,
+                    document.body
+                )}
         </div>
     );
 };

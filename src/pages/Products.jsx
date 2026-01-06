@@ -5,8 +5,8 @@ import { Search, Filter, RefreshCcw, Bell, Calendar, X } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Card3D from '../components/Card3D'; // Import Card3D
-import { projects, comingSoonMovies } from '../data/projectsData';
 import { useLanguage } from '../context/LanguageContext';
+import { useProjects } from '../hooks/useProjects';
 
 import Spotlight from '../components/Spotlight';
 import InteractiveGrid from '../components/InteractiveGrid';
@@ -154,7 +154,7 @@ const MovieCard = ({ movie }) => {
                             </div>
 
                             {/* CTA Button */}
-                            <Link to={`/project/${movie.id}`}>
+                            <Link to={`/project/${movie.id || movie.firestoreId}`}>
                                 <motion.button
                                     whileTap={{ scale: 0.98 }}
                                     className="relative w-full bg-gradient-to-r from-colestia-purple to-colestia-magenta text-white font-bold py-3.5 rounded-full hover:shadow-lg hover:shadow-colestia-purple/50 transition-all overflow-hidden group animate-shine"
@@ -288,15 +288,10 @@ const ComingSoonCard = ({ movie }) => {
 const Products = () => {
     const { t, language } = useLanguage();
     const [selectedGenre, setSelectedGenre] = useState('all');
-    const [isLoading, setIsLoading] = useState(true);
+    const { projects: allProjects, isLoading } = useProjects();
 
-    // Simulate loading
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1500); // 1.5s loading simulation
-        return () => clearTimeout(timer);
-    }, []);
+    const projects = useMemo(() => allProjects.filter(p => p.status === 'active' || !p.status), [allProjects]);
+    const comingSoonMovies = useMemo(() => allProjects.filter(p => p.status === 'coming_soon'), [allProjects]);
 
     // Filter movies by genre
     const filteredMovies = useMemo(() => {
