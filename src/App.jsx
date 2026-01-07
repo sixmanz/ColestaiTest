@@ -18,6 +18,8 @@ import Register from './pages/Register';
 import AdminLayout from './layouts/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminProjects from './pages/admin/AdminProjects';
+import AdminArticles from './pages/admin/AdminArticles';
+import AdminUsers from './pages/admin/AdminUsers';
 import AdminDirectors from './pages/admin/AdminDirectors';
 import AdminTeam from './pages/admin/AdminTeam';
 
@@ -99,6 +101,8 @@ const App = () => {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="projects" element={<AdminProjects />} />
+                <Route path="articles" element={<AdminArticles />} />
+                <Route path="users" element={<AdminUsers />} />
                 <Route path="directors" element={<AdminDirectors />} />
                 <Route path="team" element={<AdminTeam />} />
               </Route>

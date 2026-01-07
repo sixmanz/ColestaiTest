@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-import { collection, getDocs, doc, writeBatch } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
-import { teamMembers as initialTeam } from '../data/teamData';
 
 export const useTeam = () => {
     const [team, setTeam] = useState([]);
@@ -9,38 +8,30 @@ export const useTeam = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchTeam = async () => {
-            try {
-                const collectionRef = collection(db, 'team');
-                const snapshot = await getDocs(collectionRef);
-
-                if (snapshot.empty) {
-                    console.log('Seeding initial Team data to Firestore...');
-                    const batch = writeBatch(db);
-
-                    initialTeam.forEach(item => {
-                        const newDocRef = doc(collectionRef);
-                        batch.set(newDocRef, item);
-                    });
-
-                    await batch.commit();
-
-                    const newSnapshot = await getDocs(collectionRef);
-                    setTeam(newSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-                } else {
-                    setTeam(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-                }
-            } catch (err) {
-                console.error("Error fetching team:", err);
-                setError(err);
-                setTeam(initialTeam);
-            } finally {
+        const safetyTimeout = setTimeout(() => {
+            if (isLoading) {
+                console.warn("Firestore snapshot timed out, forcing loading false");
                 setIsLoading(false);
             }
-        };
+        }, 5000);
 
-        fetchTeam();
+        const collectionRef = collection(db, 'team');
+        const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
+            const data = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            setTeam(data);
+            setIsLoading(false);
+        }, (err) => {
+            console.error("Error fetching team:", err);
+            setError(err);
+            setIsLoading(false);
+        });
+
+        return () => {
+            unsubscribe();
+            clearTimeout(safetyTimeout);
+        };
     }, []);
 
     return { team, isLoading, error };
 };
+

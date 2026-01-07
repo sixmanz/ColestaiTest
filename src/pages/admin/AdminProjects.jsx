@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Save, Search, Loader } from 'lucide-react';
@@ -18,19 +18,22 @@ const AdminProjects = () => {
     const projectsCollectionRef = collection(db, "projects");
 
     useEffect(() => {
-        const getProjects = async () => {
-            setIsLoading(true);
-            try {
-                const data = await getDocs(projectsCollectionRef);
-                setProjects(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-            } catch (error) {
-                console.error("Error fetching projects:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        const safetyTimeout = setTimeout(() => {
+            if (isLoading) setIsLoading(false);
+        }, 5000);
 
-        getProjects();
+        const unsubscribe = onSnapshot(projectsCollectionRef, (snapshot) => {
+            setProjects(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+            setIsLoading(false);
+        }, (error) => {
+            console.error("Error fetching projects:", error);
+            setIsLoading(false);
+        });
+
+        return () => {
+            unsubscribe();
+            clearTimeout(safetyTimeout);
+        };
     }, []);
 
     const handleInputChange = (e) => {
