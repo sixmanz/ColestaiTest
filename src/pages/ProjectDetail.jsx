@@ -149,16 +149,46 @@ const ProjectDetail = () => {
                                     ))
                                 ) : (
                                     <>
-                                        <div>
-                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Goal Funding</p>
-                                            <p className="text-white font-medium text-lg">฿{(project.goalFunding / 1000000).toFixed(1)}M</p>
+                                        {/* Funding Progress Section */}
+                                        <div className="bg-gradient-to-br from-colestia-purple/10 to-colestia-blue/10 p-4 rounded-xl border border-white/10">
+                                            <div className="flex justify-between items-center mb-2">
+                                                <p className="text-gray-400 text-xs uppercase tracking-wider">
+                                                    {language === 'th' ? 'ความคืบหน้าการระดมทุน' : 'Funding Progress'}
+                                                </p>
+                                                <span className="text-colestia-purple font-bold text-lg">
+                                                    {project.percentage || Math.round((project.currentFunding / project.goalFunding) * 100) || 0}%
+                                                </span>
+                                            </div>
+                                            {/* Progress Bar */}
+                                            <div className="w-full h-3 bg-gray-800 rounded-full overflow-hidden mb-3">
+                                                <motion.div
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${Math.min(project.percentage || Math.round((project.currentFunding / project.goalFunding) * 100) || 0, 100)}%` }}
+                                                    transition={{ duration: 1.5, ease: "easeOut" }}
+                                                    className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full"
+                                                />
+                                            </div>
+                                            <div className="flex justify-between text-sm">
+                                                <div>
+                                                    <p className="text-gray-500 text-xs">{language === 'th' ? 'ระดมได้แล้ว' : 'Raised'}</p>
+                                                    <p className="text-white font-semibold">฿{((project.currentFunding || 0) / 1000000).toFixed(1)}M</p>
+                                                </div>
+                                                <div className="text-right">
+                                                    <p className="text-gray-500 text-xs">{language === 'th' ? 'เป้าหมาย' : 'Goal'}</p>
+                                                    <p className="text-white font-semibold">฿{((project.goalFunding || 0) / 1000000).toFixed(1)}M</p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div>
-                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Investors</p>
-                                            <p className="text-white font-medium text-lg">{project.investors?.toLocaleString()}</p>
+                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                                                {language === 'th' ? 'นักลงทุน' : 'Investors'}
+                                            </p>
+                                            <p className="text-white font-medium text-lg">{project.investors?.toLocaleString() || '0'}</p>
                                         </div>
                                         <div>
-                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">Timeline</p>
+                                            <p className="text-gray-500 text-xs uppercase tracking-wider mb-1">
+                                                {language === 'th' ? 'ระยะเวลา' : 'Timeline'}
+                                            </p>
                                             <p className="text-white font-medium text-lg">{project.startDate} - {project.endDate}</p>
                                         </div>
                                     </>

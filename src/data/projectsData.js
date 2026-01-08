@@ -107,7 +107,7 @@ export const projects = [
         investors: 890,
         onSale: false,
         isNew: true,
-        status: 'active'
+        status: 'finished'
     },
 ];
 

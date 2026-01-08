@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Save, Search, Loader } from 'lucide-react';
 import { projects as initialProjects, comingSoonMovies } from '../../data/projectsData';
+import { useLanguage } from '../../context/LanguageContext';
+
+// Import Firestore functions if they were used (keeping imports clean although we use mock data)
+// import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
+// import { db } from '../../config/firebase';
 
 const AdminProjects = () => {
+    const { t } = useLanguage();
     const [projects, setProjects] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const [formData, setFormData] = useState({
         titleTh: '', titleEn: '', genre: '', description: '', descriptionEn: '',
         poster: '', goalFunding: '', currentFunding: 0, percentage: 0,
@@ -23,6 +30,32 @@ const AdminProjects = () => {
         setProjects(allProjects);
         setIsLoading(false);
     }, []);
+
+    // Filter projects based on search query
+    const filteredBySearch = projects.filter(project => {
+        const query = searchQuery.toLowerCase();
+        return (
+            project.titleEn?.toLowerCase().includes(query) ||
+            project.titleTh?.toLowerCase().includes(query) ||
+            project.genre?.toLowerCase().includes(query) ||
+            project.director?.toLowerCase().includes(query)
+        );
+    });
+
+    // New state for status filter
+    const [statusFilter, setStatusFilter] = useState('active');
+
+    // Displayed projects based on status filter
+    const filteredProjects = filteredBySearch.filter(project => {
+        if (statusFilter === 'all') return true;
+
+        // Map dropdown values to project status logic
+        if (statusFilter === 'active') return !['finished', 'coming_soon'].includes(project.status);
+        if (statusFilter === 'coming_soon') return project.status === 'coming_soon';
+        if (statusFilter === 'finished') return project.status === 'finished';
+
+        return true;
+    });
 
     const handleInputChange = (e) => {
         const { name, value, type } = e.target;
@@ -51,14 +84,12 @@ const AdminProjects = () => {
         e.preventDefault();
         try {
             if (editingProject) {
-                const projectDoc = doc(db, "projects", editingProject.id);
-                await updateDoc(projectDoc, formData);
+                // Mock Update
                 setProjects(projects.map(p => p.id === editingProject.id ? { ...formData, id: editingProject.id } : p));
             } else {
-                await addDoc(projectsCollectionRef, formData);
-                // Refresh to get ID or just append (fetching is safer for ID)
-                const data = await getDocs(projectsCollectionRef);
-                setProjects(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+                // Mock Create
+                const newProject = { ...formData, id: `new-${Date.now()}` };
+                setProjects([...projects, newProject]);
             }
             setIsModalOpen(false);
         } catch (error) {
@@ -68,10 +99,9 @@ const AdminProjects = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this project?")) {
+        if (window.confirm(t('admin_confirm_delete'))) {
             try {
-                const projectDoc = doc(db, "projects", id);
-                await deleteDoc(projectDoc);
+                // Mock Delete
                 setProjects(projects.filter(p => p.id !== id));
             } catch (error) {
                 console.error("Error deleting project:", error);
@@ -83,71 +113,182 @@ const AdminProjects = () => {
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Project Management</h2>
-                <button
-                    onClick={() => openModal()}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl hover:opacity-90 transition-all font-medium"
-                >
-                    <Plus size={20} />
-                    Add Project
-                </button>
+            {/* Filter & Search Bar */}
+            <div className="flex flex-col md:flex-row justify-between items-center bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm gap-4">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('admin_manage_projects')}</h2>
+
+                <div className="flex flex-wrap items-center gap-4 w-full md:w-auto">
+                    {/* Status Filter Dropdown */}
+                    <div className="relative">
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="appearance-none pl-4 pr-10 py-2 border border-purple-200 dark:border-purple-900/50 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-bold focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
+                        >
+                            <option value="active">🟢 กำลังระดมทุน (Active)</option>
+                            <option value="coming_soon">🟡 กำลังจะเปิด (Coming Soon)</option>
+                            <option value="finished">🔴 ปิดระดมทุนแล้ว (Finished)</option>
+                        </select>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-purple-600">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+
+                    {/* Search Box */}
+                    <div className="relative flex-1 md:flex-none">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                            type="text"
+                            placeholder={t('admin_search')}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-full md:w-64"
+                        />
+                    </div>
+
+                    <button
+                        onClick={() => openModal()}
+                        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl hover:opacity-90 transition-all font-medium whitespace-nowrap"
+                    >
+                        <Plus size={20} />
+                        {t('admin_add_project')}
+                    </button>
+                </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left">
-                        <thead className="bg-gray-50 dark:bg-gray-700/50">
-                            <tr>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Poster</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Title</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Genre</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
-                                <th className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
-                            {projects.map((project) => (
-                                <tr key={project.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <img src={project.poster} alt={project.titleEn} className="w-12 h-16 object-cover rounded-md shadow-sm" />
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="font-medium text-gray-900 dark:text-white">{project.titleEn}</div>
-                                        <div className="text-sm text-gray-500">{project.titleTh}</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">{project.genre}</td>
-                                    <td className="px-6 py-4">
-                                        <span className={`px-3 py-1 text-xs font-medium rounded-full ${project.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-700'
-                                            }`}>
-                                            {project.status}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-right space-x-2">
+            {/* Unified Projects List */}
+            <div className="space-y-4">
+                <div className="flex items-center justify-between text-sm text-gray-500 px-1">
+                    <span>Showing <span className="font-bold text-gray-900 dark:text-white">{filteredProjects.length}</span> projects in <span className="font-bold text-gray-700 dark:text-gray-300">
+                        {statusFilter === 'active' ? 'Active Fundraising' :
+                            statusFilter === 'coming_soon' ? 'Coming Soon' :
+                                statusFilter === 'finished' ? 'Closed Fundraising' : 'All Projects'}
+                    </span></span>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                    <AnimatePresence mode='popLayout'>
+                        {filteredProjects.map((project) => (
+                            <motion.div
+                                key={project.id}
+                                layout
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                className={`p-4 rounded-xl shadow-sm border transition-all flex flex-col md:flex-row gap-6 relative overflow-hidden group
+                                    ${project.status === 'finished' ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 opacity-90' :
+                                        project.status === 'coming_soon' ? 'bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-800/30' :
+                                            'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 hover:shadow-md'}`}
+                            >
+                                <div className={`absolute top-0 left-0 w-1 h-full 
+                                    ${project.status === 'finished' ? 'bg-gray-400' :
+                                        project.status === 'coming_soon' ? 'bg-amber-400' : 'bg-gradient-to-b from-green-500 to-emerald-600'}`}>
+                                </div>
+
+                                {/* Image */}
+                                <div className="w-full md:w-48 h-32 md:h-full shrink-0">
+                                    <img
+                                        src={project.poster}
+                                        alt={project.titleEn}
+                                        className={`w-full h-full object-cover rounded-lg shadow-sm ${project.status === 'finished' ? 'grayscale group-hover:grayscale-0 transition-all' : ''}`}
+                                    />
+                                </div>
+
+                                {/* Content */}
+                                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
+                                    {/* Title & Dates */}
+                                    <div className="col-span-1 lg:col-span-1">
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h4 className="font-bold text-gray-900 dark:text-white text-lg">{project.titleEn}</h4>
+                                            {project.status !== 'active' && (
+                                                <span className={`text-[10px] px-2 py-0.5 rounded border 
+                                                    ${project.status === 'coming_soon' ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-gray-200 text-gray-600 border-gray-300'}`}>
+                                                    {project.status === 'coming_soon' ? 'Coming Soon' : 'Finished'}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <p className="text-gray-500 text-sm mb-2">{project.titleTh}</p>
+                                        <div className="flex flex-col gap-1 text-xs text-gray-500">
+                                            <span className="flex items-center gap-1.5">
+                                                <span className={`w-2 h-2 rounded-full ${project.status === 'coming_soon' ? 'bg-amber-400' : 'bg-green-500'}`}></span>
+                                                Start: {new Date(project.startDate).toLocaleDateString()}
+                                            </span>
+                                            <span className="flex items-center gap-1.5">
+                                                <span className={`w-2 h-2 rounded-full ${project.status === 'active' ? 'bg-red-400' : 'bg-gray-400'}`}></span>
+                                                End: {new Date(project.endDate).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Financial Stats */}
+                                    <div className="col-span-1 lg:col-span-2 space-y-3">
+                                        <div className="flex justify-between items-end text-sm">
+                                            <div>
+                                                <p className="text-gray-500 text-xs mb-0.5">Raised Amount</p>
+                                                <p className="font-bold text-gray-900 dark:text-white text-lg">฿{project.currentFunding?.toLocaleString() || 0}</p>
+                                            </div>
+                                            <div className="text-right">
+                                                <p className="text-gray-500 text-xs mb-0.5">Goal</p>
+                                                <p className="font-medium text-gray-600 dark:text-gray-300">฿{project.goalFunding?.toLocaleString()}</p>
+                                            </div>
+                                        </div>
+
+                                        {/* Progress Bar */}
+                                        <div className="relative pt-1">
+                                            <div className="flex mb-2 item-center justify-between">
+                                                <div className="text-right">
+                                                    <span className={`text-xs font-semibold inline-block 
+                                                        ${project.status === 'finished' ? 'text-gray-600' :
+                                                            project.status === 'coming_soon' ? 'text-amber-600' : 'text-purple-600 dark:text-purple-400'}`}>
+                                                        {project.percentage}% Funded
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200 dark:bg-gray-700">
+                                                <div style={{ width: `${project.percentage}%` }} className={`shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center transition-all duration-500
+                                                    ${project.status === 'finished' ? 'bg-gray-500' :
+                                                        project.status === 'coming_soon' ? 'bg-amber-500' : 'bg-gradient-to-r from-purple-500 to-pink-500'}`}>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                                            <div className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-md">
+                                                👥 {project.investors?.toLocaleString() || 0} Investors
+                                            </div>
+                                            <div className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-md mb-2 md:mb-0">
+                                                🎬 {project.genre}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Actions */}
+                                    <div className="flex md:flex-col gap-2 justify-end">
                                         <button
                                             onClick={() => openModal(project)}
-                                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                            className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-lg transition-colors text-sm font-medium"
                                         >
-                                            <Edit2 size={18} />
+                                            <Edit2 size={16} /> Edit Details
                                         </button>
                                         <button
                                             onClick={() => handleDelete(project.id)}
-                                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                            className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors text-sm font-medium"
                                         >
-                                            <Trash2 size={18} />
+                                            <Trash2 size={16} /> Delete Project
                                         </button>
-                                    </td>
-                                </tr>
-                            ))}
-                            {projects.length === 0 && (
-                                <tr>
-                                    <td colSpan="5" className="px-6 py-12 text-center text-gray-500">
-                                        No projects found. Create one to get started.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+
+                    {filteredProjects.length === 0 && (
+                        <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center text-gray-500">
+                            <Search size={48} className="mb-4 text-gray-300" />
+                            <p className="text-lg font-medium">No projects found</p>
+                            <p className="text-sm">Try changing the filter or search query</p>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -174,65 +315,76 @@ const AdminProjects = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (EN)</label>
-                                        <input required name="titleEn" value={formData.titleEn} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" />
+                                        <input required name="titleEn" value={formData.titleEn} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="e.g. Space Wars Eternal" />
+                                        <p className="text-xs text-gray-400 mt-1">ชื่อภาษาอังกฤษ (ไม่เกิน 100 ตัวอักษร)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (TH)</label>
-                                        <input required name="titleTh" value={formData.titleTh} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" />
+                                        <input required name="titleTh" value={formData.titleTh} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="เช่น สงครามอวกาศนิรันดร์" />
+                                        <p className="text-xs text-gray-400 mt-1">ชื่อภาษาไทย (ไม่เกิน 100 ตัวอักษร)</p>
                                     </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description (EN)</label>
-                                    <textarea required name="descriptionEn" value={formData.descriptionEn} onChange={handleInputChange} rows="3" className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" />
+                                    <textarea required name="descriptionEn" value={formData.descriptionEn} onChange={handleInputChange} rows="3" className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="Project description in English..." />
+                                    <p className="text-xs text-gray-400 mt-1">คำอธิบายโปรเจกต์ภาษาอังกฤษ (แนะนำ 150-500 ตัวอักษร)</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description (TH)</label>
-                                    <textarea required name="description" value={formData.description} onChange={handleInputChange} rows="3" className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" />
+                                    <textarea required name="description" value={formData.description} onChange={handleInputChange} rows="3" className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="คำอธิบายโปรเจกต์ภาษาไทย..." />
+                                    <p className="text-xs text-gray-400 mt-1">คำอธิบายโปรเจกต์ภาษาไทย (แนะนำ 150-500 ตัวอักษร)</p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Genre</label>
-                                        <input name="genre" value={formData.genre} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" />
+                                        <input name="genre" value={formData.genre} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="e.g. Sci-Fi, Drama, Action" />
+                                        <p className="text-xs text-gray-400 mt-1">ประเภทหนัง (คั่นด้วย comma ถ้ามีหลายประเภท)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
                                         <select name="status" value={formData.status} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
-                                            <option value="active">Active</option>
-                                            <option value="finished">Finished</option>
-                                            <option value="coming_soon">Coming Soon</option>
+                                            <option value="active">Active (กำลังระดมทุน)</option>
+                                            <option value="finished">Finished (สำเร็จแล้ว)</option>
+                                            <option value="coming_soon">Coming Soon (เร็วๆ นี้)</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Poster URL</label>
-                                    <input required name="poster" value={formData.poster} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="https://..." />
+                                    <input required name="poster" value={formData.poster} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="https://example.com/poster.jpg" />
+                                    <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 800 x 1200 px (อัตราส่วน 2:3) | รูปแบบ: JPG, PNG, WebP | ขนาดไฟล์: ไม่เกิน 2MB</p>
                                 </div>
 
                                 <div className="grid grid-cols-3 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Goal Funding</label>
-                                        <input type="number" name="goalFunding" value={formData.goalFunding} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
+                                        <input type="number" name="goalFunding" value={formData.goalFunding} onChange={handleInputChange} className="w-full p-2 border rounded-lg" placeholder="10000000" />
+                                        <p className="text-xs text-gray-400 mt-1">เป้าหมาย (บาท)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Current</label>
-                                        <input type="number" name="currentFunding" value={formData.currentFunding} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
+                                        <input type="number" name="currentFunding" value={formData.currentFunding} onChange={handleInputChange} className="w-full p-2 border rounded-lg" placeholder="5000000" />
+                                        <p className="text-xs text-gray-400 mt-1">ปัจจุบัน (บาท)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Percent</label>
-                                        <input type="number" name="percentage" value={formData.percentage} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
+                                        <input type="number" name="percentage" value={formData.percentage} onChange={handleInputChange} className="w-full p-2 border rounded-lg" placeholder="50" />
+                                        <p className="text-xs text-gray-400 mt-1">ความคืบหน้า (%)</p>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
                                         <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
+                                        <p className="text-xs text-gray-400 mt-1">วันเริ่มต้นระดมทุน</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
                                         <input type="date" name="endDate" value={formData.endDate} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
+                                        <p className="text-xs text-gray-400 mt-1">วันสิ้นสุดระดมทุน</p>
                                     </div>
                                 </div>
 

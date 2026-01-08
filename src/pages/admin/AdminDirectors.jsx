@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, X, Save, Upload, User } from 'lucide-react';
 import { useDirectors } from '../../hooks/useDirectors';
+import { useLanguage } from '../../context/LanguageContext';
 
 const AdminDirectors = () => {
     const { directors, isLoading } = useDirectors();
+    const { t } = useLanguage();
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingDirector, setEditingDirector] = useState(null);
@@ -47,7 +49,7 @@ const AdminDirectors = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this director?')) {
+        if (window.confirm(t('admin_confirm_delete'))) {
             try {
                 await deleteDoc(doc(db, 'directors', id));
                 window.location.reload();
@@ -58,23 +60,36 @@ const AdminDirectors = () => {
     };
 
     const filteredDirectors = directors.filter(director =>
-        director.name.toLowerCase().includes(searchTerm.toLowerCase())
+        director.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        director.role?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Directors Management</h2>
-                    <p className="text-gray-500 mt-1">Manage film directors and creators profiles</p>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('admin_manage_directors')}</h2>
                 </div>
-                <button
-                    onClick={() => openModal()}
-                    className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl transition-all shadow-lg shadow-purple-200 dark:shadow-purple-900/20"
-                >
-                    <Plus size={20} />
-                    <span>Add Director</span>
-                </button>
+                <div className="flex items-center gap-4">
+                    {/* Search Box */}
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                            type="text"
+                            placeholder={t('admin_search')}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
+                        />
+                    </div>
+                    <button
+                        onClick={() => openModal()}
+                        className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl transition-all shadow-lg shadow-purple-200 dark:shadow-purple-900/20"
+                    >
+                        <Plus size={20} />
+                        <span>{t('admin_add_director')}</span>
+                    </button>
+                </div>
             </div>
 
             {/* Content Table */}
@@ -83,9 +98,9 @@ const AdminDirectors = () => {
                     <table className="w-full">
                         <thead className="bg-gray-50 dark:bg-gray-700/50">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Director</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_name')}</th>
+                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_role')}</th>
+                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -154,6 +169,7 @@ const AdminDirectors = () => {
                                             placeholder="e.g. Christopher Nolan"
                                             required
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ชื่อ-นามสกุล (ไม่เกิน 50 ตัวอักษร)</p>
                                     </div>
                                     <div className="col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role</label>
@@ -166,6 +182,7 @@ const AdminDirectors = () => {
                                             placeholder="e.g. Director / Producer"
                                             required
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ตำแหน่ง (เช่น Director, Producer, Screenwriter)</p>
                                     </div>
                                     <div className="col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Image URL</label>
@@ -175,9 +192,10 @@ const AdminDirectors = () => {
                                             value={formData.img}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="https://..."
+                                            placeholder="https://example.com/profile.jpg"
                                             required
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 400 x 400 px (สี่เหลี่ยม) | รูปแบบ: JPG, PNG | ขนาดไฟล์: ไม่เกิน 1MB</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Works (Thai)</label>
@@ -186,8 +204,9 @@ const AdminDirectors = () => {
                                             value={formData.works}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-24"
-                                            placeholder="List of works in Thai..."
+                                            placeholder="เช่น องค์บาก, ต้มยำกุ้ง, ช็อคโกแลต"
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ผลงานที่ผ่านมา (คั่นด้วย comma)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Works (English)</label>
@@ -196,8 +215,9 @@ const AdminDirectors = () => {
                                             value={formData.worksEn}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-24"
-                                            placeholder="List of works in English..."
+                                            placeholder="e.g. Ong-Bak, Tom Yum Goong, Chocolate"
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">Previous works (comma separated)</p>
                                     </div>
                                     <div className="col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Biography (Thai)</label>
@@ -206,8 +226,9 @@ const AdminDirectors = () => {
                                             value={formData.bio}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-32"
-                                            placeholder="Enter biography in Thai..."
+                                            placeholder="ประวัติและผลงานเด่น..."
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ประวัติย่อภาษาไทย (แนะนำ 100-300 ตัวอักษร)</p>
                                     </div>
                                     <div className="col-span-2">
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Biography (English)</label>
@@ -216,8 +237,9 @@ const AdminDirectors = () => {
                                             value={formData.bioEn}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-32"
-                                            placeholder="Enter biography in English..."
+                                            placeholder="Biography and notable achievements..."
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">Short biography in English (recommended 100-300 characters)</p>
                                     </div>
                                 </div>
 

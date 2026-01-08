@@ -30,6 +30,7 @@ const Navbar = () => {
         { name: t('nav_about'), path: '/about-us' },
         { name: t('nav_news'), path: '/news' },
         { name: t('nav_education'), path: '/education' },
+        { name: t('nav_contact'), path: '/contact' },
     ];
 
     return (

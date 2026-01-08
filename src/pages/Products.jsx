@@ -45,7 +45,8 @@ const formatDate = (dateString, language) => {
 };
 
 // Movie Card Component - Updated Design
-const MovieCard = ({ movie }) => {
+// MovieCard รับ props isHovered และ isAnyHovered สำหรับ effect จางลง
+const MovieCard = ({ movie, isHovered, isAnyHovered }) => {
     const { t, language } = useLanguage();
     const genre = GENRES.find(g => g.id === movie.genre);
 
@@ -54,138 +55,120 @@ const MovieCard = ({ movie }) => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="group perspective-1000"
+            animate={{
+                y: isHovered ? -12 : 0,
+                scale: isHovered ? 1.02 : 1,
+                opacity: isAnyHovered && !isHovered ? 0.5 : 1,
+            }}
+            transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20
+            }}
+            className="cursor-pointer"
         >
-            <Card3D className="h-full">
-                <Spotlight className="h-full rounded-2xl" size={400}>
-                    <div className="bg-[#1a1a1a] rounded-2xl overflow-hidden h-full border border-white/5 group-hover:border-colestia-purple/50 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(122,30,166,0.3)]">
-                        {/* Poster */}
-                        <div className="relative aspect-[16/9] overflow-hidden">
-                            <img
-                                src={movie.poster}
-                                alt={movie.titleTh}
-                                className="w-full h-full object-cover"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            <Spotlight className="h-full rounded-2xl" size={400}>
+                <div className={`bg-[#1a1a1a] rounded-2xl overflow-hidden h-full border transition-all duration-300 ${isHovered
+                    ? 'border-colestia-purple shadow-[0_20px_60px_rgba(122,30,166,0.4)]'
+                    : 'border-white/5'
+                    }`}>
+                    {/* Poster - สัดส่วน 16:9 สวยงาม */}
+                    <div className="relative aspect-video overflow-hidden">
+                        <img
+                            src={movie.poster}
+                            alt={movie.titleTh}
+                            className={`w-full h-full object-cover transition-transform duration-500 ${isHovered ? 'scale-110' : 'scale-100'}`}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
-                            {/* Genre Badge - Top Left */}
-                            <div className="absolute top-3 left-3">
-                                <span className="bg-colestia-purple text-white text-xs font-bold px-3 py-1.5 rounded-full">
-                                    {language === 'th' ? genre?.name : genre?.nameEn}
-                                </span>
-                            </div>
+                        {/* Genre Badge */}
+                        <div className="absolute top-3 left-3">
+                            <span className="bg-colestia-purple/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full">
+                                {language === 'th' ? genre?.name : genre?.nameEn}
+                            </span>
                         </div>
 
-                        {/* Content */}
-                        <div className="p-5">
-                            {/* Title */}
-                            <h3 className="text-white font-bold text-xl mb-1">
+                        {/* Percentage Badge - มุมขวาบน */}
+                        <div className="absolute top-3 right-3">
+                            <span className={`backdrop-blur-sm text-xs font-bold px-3 py-1.5 rounded-full ${movie.percentage >= 67 ? 'bg-green-500/90 text-white' :
+                                movie.percentage >= 34 ? 'bg-amber-500/90 text-white' :
+                                    'bg-red-500/90 text-white'
+                                }`}>
+                                {movie.percentage}%
+                            </span>
+                        </div>
+
+                        {/* Title Overlay - อยู่บนรูป */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                            <h3 className="text-white font-bold text-lg mb-0.5 drop-shadow-lg">
                                 {movie.titleTh}
                             </h3>
-                            <p className="text-gray-400 text-sm mb-4">
+                            <p className="text-gray-300 text-xs">
                                 {movie.titleEn}
                             </p>
-
-                            {/* Description */}
-                            <p className="text-gray-400 text-sm mb-4 line-clamp-2 leading-relaxed">
-                                {movie.description}
-                            </p>
-
-                            {/* Progress Bar - 3 Color Levels */}
-                            <div className="mb-4">
-                                <div className="flex justify-end items-center mb-2">
-                                    <span className={`text-sm font-bold ${movie.percentage >= 67 ? 'text-green-400' :
-                                        movie.percentage >= 34 ? 'text-amber-400' :
-                                            'text-red-400'
-                                        }`}>
-                                        {movie.percentage}%
-                                    </span>
-                                </div>
-
-                                {/* แ Bar - 3 Color Levels */}
-                                <div className="h-2.5 bg-[#2a2a2a] rounded-full overflow-hidden">
-                                    <div
-                                        className={`h-full rounded-full transition-all duration-500 ${movie.percentage >= 67 ? 'bg-gradient-to-r from-green-500 to-emerald-400' :
-                                            movie.percentage >= 34 ? 'bg-gradient-to-r from-amber-500 to-yellow-400' :
-                                                'bg-gradient-to-r from-red-500 to-orange-400'
-                                            }`}
-                                        style={{ width: `${movie.percentage}%` }}
-                                    />
-                                </div>
-
-                                {/* Progress Bar - 3 Color Levels */}
-                                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                    <span>0%</span>
-                                    <span>{t('label_goal')} 100%</span>
-                                </div>
-                            </div>
-
-                            {/* Funding Amount */}
-                            <div className="flex justify-between items-center mb-4">
-                                <div>
-                                    <p className="text-gray-500 text-xs mb-1">{t('label_raised')}</p>
-                                    <p className="text-white font-bold text-lg">
-                                        {formatCurrency(movie.currentFunding)}
-                                    </p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-gray-500 text-xs mb-1">{t('label_goal')}</p>
-                                    <p className="text-white font-bold text-lg">
-                                        {formatCurrency(movie.goalFunding)}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Date & Investors */}
-                            <div className="flex items-center justify-between text-xs text-gray-400 mb-5">
-                                <div className="flex items-center gap-1">
-                                    <Calendar size={14} />
-                                    <span>{t('label_start')}: {formatDate(movie.startDate, language)} - {t('label_end')}: {formatDate(movie.endDate, language)}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" >
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="9" cy="7" r="4"></circle>
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                    </svg>
-                                    <span>{movie.investors.toLocaleString()} {t('label_investors')}</span>
-                                </div>
-                            </div>
-
-                            {/* CTA Button */}
-                            <Link to={`/project/${movie.id || movie.firestoreId}`}>
-                                <motion.button
-                                    whileTap={{ scale: 0.98 }}
-                                    className="relative w-full bg-gradient-to-r from-colestia-purple to-colestia-magenta text-white font-bold py-3.5 rounded-full hover:shadow-lg hover:shadow-colestia-purple/50 transition-all overflow-hidden group animate-shine"
-                                >
-                                    {/* Shimmer effect */}
-                                    <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
-                                    {/* Button content */}
-                                    <span className="relative flex items-center justify-center gap-2">
-                                        {t('btn_invest')}
-                                        <svg
-                                            className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                        </svg>
-                                    </span>
-
-                                    {/* Pulse effect */}
-                                    <div className="absolute inset-0 rounded-full animate-pulse bg-white/10 opacity-0 group-hover:opacity-100" />
-                                </motion.button>
-                            </Link>
                         </div>
                     </div>
-                </Spotlight>
-            </Card3D>
+
+                    {/* Content - กะทัดรัด */}
+                    <div className="p-4">
+                        {/* Progress Bar */}
+                        <div className="mb-3">
+                            <div className="h-2 bg-[#2a2a2a] rounded-full overflow-hidden">
+                                <div
+                                    className={`h-full rounded-full transition-all duration-500 ${movie.percentage >= 67 ? 'bg-gradient-to-r from-green-500 to-emerald-400' :
+                                        movie.percentage >= 34 ? 'bg-gradient-to-r from-amber-500 to-yellow-400' :
+                                            'bg-gradient-to-r from-red-500 to-orange-400'
+                                        }`}
+                                    style={{ width: `${movie.percentage}%` }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Funding - 2 columns */}
+                        <div className="flex justify-between items-center mb-3">
+                            <div>
+                                <p className="text-gray-500 text-xs">{t('label_raised')}</p>
+                                <p className="text-white font-bold">{formatCurrency(movie.currentFunding)}</p>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-gray-500 text-xs">{t('label_goal')}</p>
+                                <p className="text-white font-bold">{formatCurrency(movie.goalFunding)}</p>
+                            </div>
+                        </div>
+
+                        {/* Investors */}
+                        <div className="flex items-center gap-1 text-xs text-gray-400 mb-4">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>{movie.investors.toLocaleString()} {t('label_investors')}</span>
+                        </div>
+
+                        {/* CTA Button */}
+                        <Link to={`/project/${movie.id || movie.firestoreId}`}>
+                            <motion.button
+                                whileTap={{ scale: 0.98 }}
+                                className="relative w-full bg-gradient-to-r from-colestia-purple to-colestia-magenta text-white font-bold py-3 rounded-full hover:shadow-lg hover:shadow-colestia-purple/50 transition-all overflow-hidden group"
+                            >
+                                <span className="relative flex items-center justify-center gap-2 text-sm">
+                                    {t('btn_invest')}
+                                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                    </svg>
+                                </span>
+                            </motion.button>
+                        </Link>
+                    </div>
+                </div>
+            </Spotlight>
         </motion.div>
     );
 };
+
+
 
 // Coming Soon Movie Card Component
 const ComingSoonCard = ({ movie }) => {
@@ -212,7 +195,8 @@ const ComingSoonCard = ({ movie }) => {
                 <Spotlight className="h-full rounded-2xl" size={400}>
                     <div className="bg-[#1a1a1a] rounded-2xl overflow-hidden h-full border border-white/5 group-hover:border-amber-500/50 transition-all duration-500">
                         {/* Poster */}
-                        <div className="relative aspect-[16/9] overflow-hidden">
+                        {/* Poster - สัดส่วน 3:1 เล็กลงอีก */}
+                        <div className="relative aspect-[3/1] overflow-hidden">
                             <img
                                 src={movie.poster}
                                 alt={movie.titleTh}
@@ -288,6 +272,8 @@ const ComingSoonCard = ({ movie }) => {
 const Products = () => {
     const { t, language } = useLanguage();
     const [selectedGenre, setSelectedGenre] = useState('all');
+    // เพิ่ม state สำหรับจัดการ hover effect
+    const [hoveredId, setHoveredId] = useState(null);
     const { projects: allProjects, isLoading } = useProjects();
 
     const projects = useMemo(() => allProjects.filter(p => p.status === 'active' || !p.status), [allProjects]);
@@ -393,8 +379,17 @@ const Products = () => {
                                     </div>
                                 ))
                                 : onSaleMovies.map((movie) => (
-                                    <div key={movie.id} className="min-w-[85vw] md:min-w-0 snap-center h-full">
-                                        <MovieCard movie={movie} />
+                                    <div
+                                        key={movie.id}
+                                        className="min-w-[85vw] md:min-w-0 snap-center h-full"
+                                        onMouseEnter={() => setHoveredId(movie.id)}
+                                        onMouseLeave={() => setHoveredId(null)}
+                                    >
+                                        <MovieCard
+                                            movie={movie}
+                                            isHovered={hoveredId === movie.id}
+                                            isAnyHovered={hoveredId !== null}
+                                        />
                                     </div>
                                 ))
                             }
@@ -427,8 +422,17 @@ const Products = () => {
                                     </div>
                                 ))
                                 : newMovies.map((movie) => (
-                                    <div key={movie.id} className="min-w-[85vw] md:min-w-0 snap-center h-full">
-                                        <MovieCard movie={movie} />
+                                    <div
+                                        key={movie.id}
+                                        className="min-w-[85vw] md:min-w-0 snap-center h-full"
+                                        onMouseEnter={() => setHoveredId(movie.id)}
+                                        onMouseLeave={() => setHoveredId(null)}
+                                    >
+                                        <MovieCard
+                                            movie={movie}
+                                            isHovered={hoveredId === movie.id}
+                                            isAnyHovered={hoveredId !== null}
+                                        />
                                     </div>
                                 ))
                             }

@@ -1,136 +1,390 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { TrendingUp, Users, Film, Database, Loader } from 'lucide-react';
+import {
+    TrendingUp, Users, Film, Database, Eye, DollarSign, UserCheck,
+    ArrowUpRight, ArrowDownRight, Clock, Star, Zap, Bell, Settings,
+    Calendar, Target, Award, Activity, PieChart, BarChart3
+} from 'lucide-react';
 import { useDashboardStats } from '../../hooks/useDashboardStats';
-import { collection, getDocs, addDoc, writeBatch, doc } from 'firebase/firestore';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { projects as initialProjects, comingSoonMovies } from '../../data/projectsData';
 import { directors as initialDirectors } from '../../data/creatorsData';
 import { teamMembers as initialTeam } from '../../data/teamData';
+import { useLanguage } from '../../context/LanguageContext';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line, Area, AreaChart } from 'recharts';
 
-const StatCard = ({ title, value, icon: Icon, color }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700"
-    >
-        <div className="flex items-center justify-between mb-4">
-            <div className={`w-12 h-12 rounded-xl bg-${color}-100 dark:bg-${color}-900/30 flex items-center justify-center`}>
-                <Icon className={`text-${color}-600 dark:text-${color}-400`} size={24} />
-            </div>
-            <span className={`text-sm font-medium text-${color}-600 bg-${color}-50 px-2 py-1 rounded-full`}>
-                +12%
-            </span>
-        </div>
-        <h3 className="text-gray-500 dark:text-gray-400 text-sm font-medium">{title}</h3>
-        <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{value}</p>
-    </motion.div>
-);
+// Mock data for charts
+const visitorsData = [
+    { month: 'Jul', visitors: 1250 },
+    { month: 'Aug', visitors: 1890 },
+    { month: 'Sep', visitors: 2340 },
+    { month: 'Oct', visitors: 2780 },
+    { month: 'Nov', visitors: 3120 },
+    { month: 'Dec', visitors: 3890 },
+    { month: 'Jan', visitors: 4520 },
+];
+
+const investorsData = [
+    { month: 'Jul', investors: 45 },
+    { month: 'Aug', investors: 78 },
+    { month: 'Sep', investors: 112 },
+    { month: 'Oct', investors: 156 },
+    { month: 'Nov', investors: 198 },
+    { month: 'Dec', investors: 245 },
+    { month: 'Jan', investors: 312 },
+];
+
+const revenueData = [
+    { month: 'Jul', revenue: 150000, expenses: 80000 },
+    { month: 'Aug', revenue: 280000, expenses: 120000 },
+    { month: 'Sep', revenue: 350000, expenses: 150000 },
+    { month: 'Oct', revenue: 420000, expenses: 180000 },
+    { month: 'Nov', revenue: 550000, expenses: 200000 },
+    { month: 'Dec', revenue: 720000, expenses: 250000 },
+    { month: 'Jan', revenue: 890000, expenses: 280000 },
+];
+
+const topProjects = [
+    { name: 'Space Wars Eternal', investors: 156, funding: '฿12.5M', progress: 85, status: 'active' },
+    { name: 'Bangkok Ghost Stories', investors: 89, funding: '฿8.2M', progress: 62, status: 'active' },
+    { name: 'The Last Kingdom', investors: 67, funding: '฿5.8M', progress: 45, status: 'active' },
+    { name: 'Cyber Samurai', investors: 45, funding: '฿3.2M', progress: 28, status: 'coming' },
+];
+
+const recentActivities = [
+    { type: 'investment', user: 'John D.', action: 'invested ฿50,000 in Space Wars Eternal', time: '5 min ago', icon: DollarSign, color: 'green' },
+    { type: 'user', user: 'Sarah M.', action: 'registered as new investor', time: '15 min ago', icon: UserCheck, color: 'blue' },
+    { type: 'project', user: 'Admin', action: 'updated Bangkok Ghost Stories details', time: '1 hour ago', icon: Film, color: 'purple' },
+    { type: 'milestone', user: 'System', action: 'Space Wars reached 85% funding goal', time: '2 hours ago', icon: Target, color: 'amber' },
+];
 
 const AdminDashboard = () => {
     const { stats, isLoading } = useDashboardStats();
-    const [seeding, setSeeding] = useState(false);
+    const { t, language } = useLanguage();
 
-    const seedDatabase = async () => {
-        setSeeding(true);
-        try {
-            // Seed Projects
-            const projectsRef = collection(db, 'projects');
-            const projectsSnap = await getDocs(projectsRef);
-            if (projectsSnap.empty) {
-                const allProjects = [...initialProjects, ...comingSoonMovies];
-                for (const project of allProjects) {
-                    await addDoc(projectsRef, { ...project, type: project.status || 'active' });
-                }
-                console.log('Seeded projects');
-            }
+    const labels = {
+        dashboard: language === 'th' ? 'ภาพรวมแดชบอร์ด' : 'Dashboard Overview',
+        welcome: language === 'th' ? 'ยินดีต้อนรับกลับมา!' : 'Welcome back!',
+        summary: language === 'th' ? 'นี่คือสรุปข้อมูลล่าสุดของคุณ' : "Here's your latest summary",
+        totalProjects: language === 'th' ? 'โปรเจกต์ทั้งหมด' : 'Total Projects',
+        totalInvestors: language === 'th' ? 'นักลงทุนทั้งหมด' : 'Total Investors',
+        totalRevenue: language === 'th' ? 'รายได้รวม' : 'Total Revenue',
+        growthRate: language === 'th' ? 'อัตราการเติบโต' : 'Growth Rate',
+        visitors: language === 'th' ? 'ผู้เข้าชมเว็บไซต์' : 'Website Visitors',
+        investors: language === 'th' ? 'นักลงทุนรายใหม่' : 'New Investors',
+        revenue: language === 'th' ? 'รายได้และค่าใช้จ่าย' : 'Revenue & Expenses',
+        topProjects: language === 'th' ? 'โปรเจกต์ยอดนิยม' : 'Top Projects',
+        recentActivity: language === 'th' ? 'กิจกรรมล่าสุด' : 'Recent Activity',
+        quickStats: language === 'th' ? 'สถิติด่วน' : 'Quick Stats',
+        viewAll: language === 'th' ? 'ดูทั้งหมด' : 'View All',
+        funding: language === 'th' ? 'เงินทุน' : 'Funding',
+        progress: language === 'th' ? 'ความคืบหน้า' : 'Progress',
+        thisMonth: language === 'th' ? 'เดือนนี้' : 'This Month',
+        vsLastMonth: language === 'th' ? 'เทียบกับเดือนก่อน' : 'vs last month',
+        people: language === 'th' ? 'คน' : 'people',
+        baht: language === 'th' ? 'บาท' : 'THB',
+    };
 
-            // Seed Directors (with URL fallback for images)
-            const directorsRef = collection(db, 'directors');
-            const directorsSnap = await getDocs(directorsRef);
-            if (directorsSnap.empty) {
-                for (const director of initialDirectors) {
-                    // Convert imported image to string or use placeholder
-                    const directorData = {
-                        ...director,
-                        img: typeof director.img === 'string' ? director.img : 'https://via.placeholder.com/300x400?text=' + encodeURIComponent(director.name)
-                    };
-                    await addDoc(directorsRef, directorData);
-                }
-                console.log('Seeded directors');
-            }
-
-            // Seed Team (with URL fallback for images)
-            const teamRef = collection(db, 'team');
-            const teamSnap = await getDocs(teamRef);
-            if (teamSnap.empty) {
-                for (const member of initialTeam) {
-                    const memberData = {
-                        ...member,
-                        image: typeof member.image === 'string' ? member.image : 'https://via.placeholder.com/300x400?text=' + encodeURIComponent(member.name)
-                    };
-                    await addDoc(teamRef, memberData);
-                }
-                console.log('Seeded team');
-            }
-
-            alert('Database seeded successfully! Refresh the page to see data.');
-        } catch (error) {
-            console.error('Error seeding database:', error);
-            alert('Error seeding database: ' + error.message);
-        } finally {
-            setSeeding(false);
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    <p className="font-semibold text-gray-900 dark:text-white mb-1">{label}</p>
+                    {payload.map((entry, index) => (
+                        <p key={index} style={{ color: entry.color }} className="text-sm">
+                            {entry.name}: {entry.value.toLocaleString()}
+                        </p>
+                    ))}
+                </div>
+            );
         }
+        return null;
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Dashboard Overview</h2>
-                <button
-                    onClick={seedDatabase}
-                    disabled={seeding}
-                    className="flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors disabled:opacity-50"
-                >
-                    {seeding ? <Loader className="animate-spin" size={20} /> : <Database size={20} />}
-                    {seeding ? 'Seeding...' : 'Seed Database'}
-                </button>
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{labels.dashboard}</h1>
+                    <p className="text-gray-500 mt-1">{labels.welcome} {labels.summary}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                        <Calendar size={18} className="text-gray-400" />
+                        <span className="text-sm text-gray-600 dark:text-gray-300">Jan 2026</span>
+                    </div>
+                </div>
             </div>
 
+            {/* Main Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatCard title="Total Projects" value={isLoading ? '...' : stats.projects} icon={Film} color="purple" />
-                <StatCard title="Directors" value={isLoading ? '...' : stats.directors} icon={Users} color="blue" />
-                <StatCard title="Team Members" value={isLoading ? '...' : stats.team} icon={Users} color="green" />
-                <StatCard title="Growth Rate" value={stats.growth} icon={TrendingUp} color="pink" />
+                {/* Total Projects */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+                    className="bg-gradient-to-br from-purple-500 to-purple-700 p-6 rounded-2xl shadow-lg shadow-purple-200 dark:shadow-purple-900/30">
+                    <div className="flex items-center justify-between">
+                        <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                            <Film className="text-white" size={24} />
+                        </div>
+                        <span className="flex items-center gap-1 text-sm text-white/80 bg-white/20 px-2 py-1 rounded-full">
+                            <ArrowUpRight size={14} /> +12%
+                        </span>
+                    </div>
+                    <h3 className="text-white/80 text-sm mt-4">{labels.totalProjects}</h3>
+                    <p className="text-3xl font-bold text-white">{isLoading ? '...' : stats.projects}</p>
+                </motion.div>
+
+                {/* Total Investors */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                    className="bg-gradient-to-br from-blue-500 to-blue-700 p-6 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30">
+                    <div className="flex items-center justify-between">
+                        <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                            <Users className="text-white" size={24} />
+                        </div>
+                        <span className="flex items-center gap-1 text-sm text-white/80 bg-white/20 px-2 py-1 rounded-full">
+                            <ArrowUpRight size={14} /> +27%
+                        </span>
+                    </div>
+                    <h3 className="text-white/80 text-sm mt-4">{labels.totalInvestors}</h3>
+                    <p className="text-3xl font-bold text-white">1,146</p>
+                </motion.div>
+
+                {/* Total Revenue */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+                    className="bg-gradient-to-br from-emerald-500 to-emerald-700 p-6 rounded-2xl shadow-lg shadow-emerald-200 dark:shadow-emerald-900/30">
+                    <div className="flex items-center justify-between">
+                        <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                            <DollarSign className="text-white" size={24} />
+                        </div>
+                        <span className="flex items-center gap-1 text-sm text-white/80 bg-white/20 px-2 py-1 rounded-full">
+                            <ArrowUpRight size={14} /> +35%
+                        </span>
+                    </div>
+                    <h3 className="text-white/80 text-sm mt-4">{labels.totalRevenue}</h3>
+                    <p className="text-3xl font-bold text-white">฿29.7M</p>
+                </motion.div>
+
+                {/* Growth Rate */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+                    className="bg-gradient-to-br from-amber-500 to-orange-600 p-6 rounded-2xl shadow-lg shadow-amber-200 dark:shadow-amber-900/30">
+                    <div className="flex items-center justify-between">
+                        <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                            <TrendingUp className="text-white" size={24} />
+                        </div>
+                        <span className="flex items-center gap-1 text-sm text-white/80 bg-white/20 px-2 py-1 rounded-full">
+                            <ArrowUpRight size={14} /> +8%
+                        </span>
+                    </div>
+                    <h3 className="text-white/80 text-sm mt-4">{labels.growthRate}</h3>
+                    <p className="text-3xl font-bold text-white">24.5%</p>
+                </motion.div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Recent Activity</h3>
-                <div className="space-y-4">
-                    {stats.projects === 0 ? (
-                        <div className="text-center py-8 text-gray-500">
-                            <Database size={48} className="mx-auto mb-4 opacity-50" />
-                            <p>No data yet. Click "Seed Database" to add initial data.</p>
+            {/* Charts Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Website Visitors Chart */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+                    className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                <Eye className="text-blue-600 dark:text-blue-400" size={20} />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{labels.visitors}</h3>
+                                <p className="text-xs text-gray-500">{labels.thisMonth}</p>
+                            </div>
                         </div>
-                    ) : (
-                        [1, 2, 3].map((i) => (
-                            <div key={i} className="flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-xl transition-colors">
-                                <div className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                                    <Film size={20} className="text-gray-500" />
+                        <span className="text-green-600 text-sm font-medium flex items-center gap-1">
+                            <ArrowUpRight size={14} /> 16.2%
+                        </span>
+                    </div>
+                    <div className="h-48">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <AreaChart data={visitorsData}>
+                                <defs>
+                                    <linearGradient id="colorVisitors" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                                <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Area type="monotone" dataKey="visitors" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorVisitors)" name={labels.visitors} />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="mt-4 text-center">
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white">19,790</span>
+                        <span className="text-gray-500 text-sm ml-2">{labels.people}</span>
+                    </div>
+                </motion.div>
+
+                {/* Investors Chart */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+                    className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center">
+                                <UserCheck className="text-emerald-600 dark:text-emerald-400" size={20} />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{labels.investors}</h3>
+                                <p className="text-xs text-gray-500">{labels.thisMonth}</p>
+                            </div>
+                        </div>
+                        <span className="text-green-600 text-sm font-medium flex items-center gap-1">
+                            <ArrowUpRight size={14} /> 27.3%
+                        </span>
+                    </div>
+                    <div className="h-48">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={investorsData}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                                <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Bar dataKey="investors" name={labels.investors} radius={[4, 4, 0, 0]}>
+                                    {investorsData.map((entry, index) => (
+                                        <Cell key={index} fill={`hsl(160, 70%, ${50 - index * 4}%)`} />
+                                    ))}
+                                </Bar>
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="mt-4 text-center">
+                        <span className="text-2xl font-bold text-gray-900 dark:text-white">312</span>
+                        <span className="text-gray-500 text-sm ml-2">{labels.people}</span>
+                    </div>
+                </motion.div>
+
+                {/* Revenue Chart */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
+                    className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-xl flex items-center justify-center">
+                                <BarChart3 className="text-amber-600 dark:text-amber-400" size={20} />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{labels.revenue}</h3>
+                                <p className="text-xs text-gray-500">{labels.thisMonth}</p>
+                            </div>
+                        </div>
+                        <span className="text-green-600 text-sm font-medium flex items-center gap-1">
+                            <ArrowUpRight size={14} /> 35%
+                        </span>
+                    </div>
+                    <div className="h-48">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={revenueData}>
+                                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                                <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
+                                <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v / 1000}k`} />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Bar dataKey="revenue" name={language === 'th' ? 'รายได้' : 'Revenue'} fill="#22c55e" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="expenses" name={language === 'th' ? 'ค่าใช้จ่าย' : 'Expenses'} fill="#f97316" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                    <div className="mt-4 flex justify-center gap-6">
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 rounded-full bg-green-500"></span>
+                            <span className="text-sm text-gray-500">{language === 'th' ? 'รายได้' : 'Revenue'}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <span className="w-3 h-3 rounded-full bg-orange-500"></span>
+                            <span className="text-sm text-gray-500">{language === 'th' ? 'ค่าใช้จ่าย' : 'Expenses'}</span>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Bottom Row - Projects & Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                {/* Top Projects */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
+                    className="lg:col-span-3 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
+                                <Star className="text-purple-600 dark:text-purple-400" size={20} />
+                            </div>
+                            <h3 className="font-bold text-gray-900 dark:text-white">{labels.topProjects}</h3>
+                        </div>
+                        <button className="text-purple-600 text-sm font-medium hover:underline">{labels.viewAll}</button>
+                    </div>
+                    <div className="space-y-4">
+                        {topProjects.map((project, index) => (
+                            <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold">
+                                    {index + 1}
                                 </div>
                                 <div className="flex-1">
-                                    <h4 className="font-medium text-gray-900 dark:text-white">New Project Created</h4>
-                                    <p className="text-sm text-gray-500">Space Wars Eternal was added by Admin</p>
+                                    <h4 className="font-semibold text-gray-900 dark:text-white">{project.name}</h4>
+                                    <p className="text-sm text-gray-500">{project.investors} {labels.investors.toLowerCase()} • {project.funding}</p>
                                 </div>
-                                <span className="text-sm text-gray-400">2 hours ago</span>
+                                <div className="w-32">
+                                    <div className="flex items-center justify-between text-sm mb-1">
+                                        <span className="text-gray-500">{labels.progress}</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">{project.progress}%</span>
+                                    </div>
+                                    <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all"
+                                            style={{ width: `${project.progress}%` }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                        ))
-                    )}
-                </div>
+                        ))}
+                    </div>
+                </motion.div>
+
+                {/* Recent Activity */}
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}
+                    className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                                <Activity className="text-blue-600 dark:text-blue-400" size={20} />
+                            </div>
+                            <h3 className="font-bold text-gray-900 dark:text-white">{labels.recentActivity}</h3>
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        {recentActivities.map((activity, index) => {
+                            const Icon = activity.icon;
+                            const colorClasses = {
+                                green: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+                                blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+                                purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+                                amber: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
+                            };
+                            return (
+                                <div key={index} className="flex items-start gap-3">
+                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${colorClasses[activity.color]}`}>
+                                        <Icon size={16} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <p className="text-sm text-gray-900 dark:text-white">
+                                            <span className="font-medium">{activity.user}</span> {activity.action}
+                                        </p>
+                                        <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
+                                            <Clock size={12} /> {activity.time}
+                                        </p>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </motion.div>
             </div>
         </div>
     );
 };
 
 export default AdminDashboard;
-

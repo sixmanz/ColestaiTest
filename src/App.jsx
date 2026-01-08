@@ -13,6 +13,7 @@ import Products from './pages/Products';
 import ProjectDetail from './pages/ProjectDetail';
 import AboutUs from './pages/AboutUs';
 import Education from './pages/Education';
+import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminLayout from './layouts/AdminLayout';
@@ -94,10 +95,11 @@ const App = () => {
               {/* Placeholders for secondary links */}
               <Route path="/service" element={<PageTransition><PlaceholderPage title="Services" /></PageTransition>} />
               <Route path="/news" element={<PageTransition><PlaceholderPage title="News & Updates" /></PageTransition>} />
-              <Route path="/contact" element={<PageTransition><PlaceholderPage title="Contact Us" /></PageTransition>} />
+              <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
               <Route path="/privacy" element={<PageTransition><PlaceholderPage title="Privacy Policy" /></PageTransition>} />
               <Route path="/terms" element={<PageTransition><PlaceholderPage title="Terms of Service" /></PageTransition>} />
               <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
+              <Route path="/forgot-password" element={<PageTransition><PlaceholderPage title="Forgot Password" /></PageTransition>} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>

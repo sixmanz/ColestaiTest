@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, X, Save } from 'lucide-react';
 import { useTeam } from '../../hooks/useTeam';
+import { useLanguage } from '../../context/LanguageContext';
 
 const AdminTeam = () => {
     const { team, isLoading } = useTeam();
+    const { t } = useLanguage();
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingMember, setEditingMember] = useState(null);
@@ -47,7 +49,7 @@ const AdminTeam = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this team member?')) {
+        if (window.confirm(t('admin_confirm_delete'))) {
             try {
                 await deleteDoc(doc(db, 'team', id));
                 window.location.reload();
@@ -58,23 +60,37 @@ const AdminTeam = () => {
     };
 
     const filteredTeam = team.filter(member =>
-        member.name.toLowerCase().includes(searchTerm.toLowerCase())
+        member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.nameTh?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        member.role?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <div className="space-y-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Team Management</h2>
-                    <p className="text-gray-500 mt-1">Manage executive team and staff profiles</p>
+                    <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('admin_manage_team')}</h2>
                 </div>
-                <button
-                    onClick={() => openModal()}
-                    className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl transition-all shadow-lg shadow-purple-200 dark:shadow-purple-900/20"
-                >
-                    <Plus size={20} />
-                    <span>Add Member</span>
-                </button>
+                <div className="flex items-center gap-4">
+                    {/* Search Box */}
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                            type="text"
+                            placeholder={t('admin_search')}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
+                        />
+                    </div>
+                    <button
+                        onClick={() => openModal()}
+                        className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl transition-all shadow-lg shadow-purple-200 dark:shadow-purple-900/20"
+                    >
+                        <Plus size={20} />
+                        <span>{t('admin_add_team')}</span>
+                    </button>
+                </div>
             </div>
 
             {/* Content Table */}
@@ -83,9 +99,9 @@ const AdminTeam = () => {
                     <table className="w-full">
                         <thead className="bg-gray-50 dark:bg-gray-700/50">
                             <tr>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_name')}</th>
+                                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_role')}</th>
+                                <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
@@ -152,8 +168,10 @@ const AdminTeam = () => {
                                             value={formData.name}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
+                                            placeholder="e.g. John Smith"
                                             required
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ชื่อ-นามสกุลภาษาอังกฤษ (ไม่เกิน 50 ตัวอักษร)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name (Thai)</label>
@@ -163,7 +181,9 @@ const AdminTeam = () => {
                                             value={formData.nameTh}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
+                                            placeholder="เช่น จอห์น สมิธ"
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ชื่อ-นามสกุลภาษาไทย (ไม่เกิน 50 ตัวอักษร)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role (English)</label>
@@ -173,8 +193,10 @@ const AdminTeam = () => {
                                             value={formData.role}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
+                                            placeholder="e.g. CEO, Marketing Manager, Developer"
                                             required
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ตำแหน่งภาษาอังกฤษ</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role (Thai)</label>
@@ -184,7 +206,9 @@ const AdminTeam = () => {
                                             value={formData.roleTh}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
+                                            placeholder="เช่น ประธาน, ผู้จัดการฝ่ายการตลาด"
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">ตำแหน่งภาษาไทย</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Image URL</label>
@@ -194,9 +218,10 @@ const AdminTeam = () => {
                                             value={formData.image}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="https://..."
+                                            placeholder="https://example.com/team-photo.jpg"
                                             required
                                         />
+                                        <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 400 x 400 px (สี่เหลี่ยม) | รูปแบบ: JPG, PNG | ขนาดไฟล์: ไม่เกิน 1MB</p>
                                     </div>
                                 </div>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Save, Search, Loader, Newspaper, Eye, EyeOff } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Static mockup data for News
 const initialNews = [
@@ -37,6 +38,7 @@ const initialNews = [
 ];
 
 const AdminNews = () => {
+    const { t } = useLanguage();
     const [news, setNews] = useState(initialNews);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -76,7 +78,7 @@ const AdminNews = () => {
     };
 
     const handleDelete = (id) => {
-        if (window.confirm('Are you sure you want to delete this news?')) {
+        if (window.confirm(t('admin_confirm_delete'))) {
             setNews(news.filter(n => n.id !== id));
         }
     };
@@ -87,32 +89,34 @@ const AdminNews = () => {
     };
 
     const filteredNews = news.filter(item =>
-        item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+        item.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.titleEn?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">News Management</h2>
-                <button
-                    onClick={() => openModal()}
-                    className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
-                >
-                    <Plus size={20} />
-                    Add News
-                </button>
-            </div>
-
-            {/* Search */}
-            <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                <input
-                    type="text"
-                    placeholder="Search news..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                />
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('admin_manage_news')}</h2>
+                <div className="flex items-center gap-4">
+                    {/* Search */}
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                            type="text"
+                            placeholder={t('admin_search')}
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="pl-10 pr-4 py-2 border border-gray-200 dark:border-gray-600 rounded-xl bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500 w-64"
+                        />
+                    </div>
+                    <button
+                        onClick={() => openModal()}
+                        className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
+                    >
+                        <Plus size={20} />
+                        {t('admin_add_news')}
+                    </button>
+                </div>
             </div>
 
             {/* News Grid */}
@@ -212,8 +216,10 @@ const AdminNews = () => {
                                         value={formData.title}
                                         onChange={handleInputChange}
                                         required
+                                        placeholder="เช่น Colestia เปิดตัวโปรเจคใหม่"
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
+                                    <p className="text-xs text-gray-400 mt-1">หัวข้อข่าวภาษาไทย (ไม่เกิน 150 ตัวอักษร)</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (English)</label>
@@ -222,8 +228,10 @@ const AdminNews = () => {
                                         name="titleEn"
                                         value={formData.titleEn}
                                         onChange={handleInputChange}
+                                        placeholder="e.g. Colestia Launches New Project"
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
+                                    <p className="text-xs text-gray-400 mt-1">News title in English (max 150 characters)</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
@@ -232,8 +240,10 @@ const AdminNews = () => {
                                         name="image"
                                         value={formData.image}
                                         onChange={handleInputChange}
+                                        placeholder="https://example.com/news-image.jpg"
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
+                                    <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 1200 x 630 px (อัตราส่วน 1.91:1) | รูปแบบ: JPG, PNG | ขนาดไฟล์: ไม่เกิน 2MB</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Summary</label>
@@ -242,8 +252,10 @@ const AdminNews = () => {
                                         name="summary"
                                         value={formData.summary}
                                         onChange={handleInputChange}
+                                        placeholder="สรุปย่อเนื้อหาข่าว..."
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
+                                    <p className="text-xs text-gray-400 mt-1">สรุปย่อสำหรับแสดงในหน้ารวมข่าว (แนะนำ 80-150 ตัวอักษร)</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
@@ -253,8 +265,10 @@ const AdminNews = () => {
                                         onChange={handleInputChange}
                                         rows={6}
                                         required
+                                        placeholder="เนื้อหาข่าวฉบับเต็ม..."
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
+                                    <p className="text-xs text-gray-400 mt-1">เนื้อหาข่าวเต็ม (แนะนำ 500-2000 ตัวอักษร) | สามารถใช้ HTML tags ได้</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
@@ -264,9 +278,10 @@ const AdminNews = () => {
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     >
-                                        <option value="draft">Draft</option>
-                                        <option value="published">Published</option>
+                                        <option value="draft">Draft (ฉบับร่าง)</option>
+                                        <option value="published">Published (เผยแพร่แล้ว)</option>
                                     </select>
+                                    <p className="text-xs text-gray-400 mt-1">Draft = ยังไม่แสดง | Published = แสดงบนเว็บไซต์</p>
                                 </div>
                                 <button
                                     type="submit"
