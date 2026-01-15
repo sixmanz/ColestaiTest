@@ -20,6 +20,8 @@ import logoSEC from '../assets/partners/sec.png';
 
 import Spotlight from '../components/Spotlight';
 import InteractiveGrid from '../components/InteractiveGrid';
+import aboutRetro from '../assets/about_retro.png';
+import aboutClapper from '../assets/about_clapper.png';
 
 const Home = () => {
     const { t, language } = useLanguage();
@@ -99,89 +101,68 @@ const Home = () => {
                 </motion.div>
             </section>
 
-            {/* 2. "We Are Colestia" / About Section - Section 1 */}
-            <section className="py-2 bg-colestia-bg relative">
+            {/* 2. "We are colestia" Section (Moved from About Us) */}
+            <section className="py-24 bg-colestia-bg relative">
                 <div className="container mx-auto px-6">
-                    <div className="grid md:grid-cols-2 gap-16 items-center">
-                        {/* Text Left */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                        {/* Left Column */}
                         <motion.div
-                            initial={{ opacity: 0, x: -50 }}
+                            initial={{ opacity: 0, x: -30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
+                            className="space-y-12"
                         >
-                            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-8">
-                                {t('about_we_are')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-colestia-purple to-colestia-blue">colestia</span>
-                            </h2>
+                            <h1 className="text-5xl md:text-7xl font-display font-medium text-white">
+                                we are <span className="text-colestia-purple">colestia</span>
+                            </h1>
 
-                            <div className="border-l-4 border-colestia-purple pl-6 space-y-4">
-                                <h2 className="text-white text-xl font-bold leading-relaxed">
-                                    <strong>{t('about_title_1')}</strong>
-                                </h2>
-                                <p className="text-white/90 text-base leading-relaxed indent-8">
-                                    {t('about_desc_1')}
+                            <div className="border-l-4 border-colestia-purple pl-6 py-1">
+                                <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
+                                    '<span className="text-colestia-purple">colestia</span> คือพื้นที่ของคนรุ่นใหม่ที่เชื่อในพลังของภาพยนตร์ไทย'
+                                </h3>
+                                <p className="text-gray-300 font-light leading-relaxed indent-8">
+                                    เราเชื่อว่าภาพยนตร์ที่ดีไม่ควรถูกสร้างขึ้นโดยคนเพียงไม่กี่คน แต่ควรเติบโตจากการร่วมแรงร่วมใจของทุกคนที่รักในสิ่งเดียวกัน ที่นี่ผู้สร้างไม่ต้องแบกความฝันไว้เพียงลำพัง และผู้ชมไม่ถูกจำกัดให้เป็นแค่ผู้รับชม ทุกไอเดียควรมีที่ยืน ทุกคนที่รักภาพยนตร์ควรมีโอกาสเป็นส่วนหนึ่งของการสร้างสรรค์
                                 </p>
+                            </div>
+
+                            <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                                <img src={aboutClapper} alt="Filmmaking" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
                             </div>
                         </motion.div>
 
-                        {/* Image Right */}
+                        {/* Right Column */}
                         <motion.div
-                            initial={{ opacity: 0, x: 50 }}
+                            initial={{ opacity: 0, x: 30 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            style={{ y: y1 }}
-                            className="relative h-[400px] rounded-2xl overflow-hidden glass-panel"
+                            className="space-y-12 pt-0 lg:pt-12"
                         >
-                            <img
-                                src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop"
-                                alt="Colestia Vision"
-                                className="w-full h-full object-cover opacity-80 hover:scale-105 transition-transform duration-700"
-                            />
-                        </motion.div>
-                    </div>
-                </div>
-            </section>
+                            <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+                                <img src={aboutRetro} alt="Retro Workspace" className="w-full h-auto object-cover hover:scale-105 transition-transform duration-700" />
+                            </div>
 
-            {/* 3. "We Are Colestia" / About Section - Section 2 */}
-            <section className="py-2 bg-colestia-bg relative">
-                <div className="container mx-auto px-6">
-                    <div className="grid md:grid-cols-2 gap-16 items-center">
-                        {/* Image Left */}
-                        <motion.div
-                            initial={{ opacity: 0, x: -50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            style={{ y: y2 }}
-                            className="relative h-[400px] rounded-2xl overflow-hidden glass-panel"
-                        >
-                            <img
-                                src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2070&auto=format&fit=crop"
-                                alt="Creative Collaboration"
-                                className="w-full h-full object-cover opacity-80 hover:scale-105 transition-transform duration-700"
-                            />
-                        </motion.div>
-
-                        {/* Text Right */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                        >
-                            <div className="border-l-4 border-colestia-purple pl-6 space-y-4">
-                                <h2 className="text-white text-xl font-bold leading-relaxed">
-                                    <strong>{t('about_title_2')}</strong>
-                                </h2>
-                                <p className="text-white/90 text-base leading-relaxed indent-8">
-                                    <strong>colestia</strong> {t('about_desc_2')}
-                                </p>
-                                <br />
-                                <p className="text-white/90 text-base leading-relaxed indent-8">
-                                    {t('about_desc_3')}
+                            <div className="border-l-4 border-colestia-purple pl-6 py-1">
+                                <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
+                                    '<span className="text-colestia-purple">colestia</span> ให้คุณค่ากับทุกที่มาของทุกความคิด'
+                                </h3>
+                                <p className="text-gray-300 font-light leading-relaxed indent-8">
+                                    เราให้ความสำคัญกับสิทธิและความเป็นเจ้าของของผู้สร้างอย่างชัดเจน ทุกความคิด ทุกผลงาน ยังคงเป็นของผู้ที่สร้างมันขึ้นมาอย่างแท้จริง colestia ทำหน้าที่เป็นพื้นที่สนับสนุนและเชื่อมโยง โดยเคารพคุณค่าและลิขสิทธิ์ของทุกไอเดีย
                                 </p>
                             </div>
+
+                            <div className="border-l-4 border-colestia-purple pl-6 py-1">
+                                <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
+                                    '<span className="text-colestia-purple">colestia</span> จึงเป็นจุดเชื่อมระหว่างผู้สร้างสรรค์และคนรักภาพยนตร์ไทย'
+                                </h3>
+                                <p className="text-gray-300 font-light leading-relaxed indent-8">
+                                    พื้นที่ที่เปิดโอกาสให้ไอเดียได้เกิดขึ้นจริง ให้คนรุ่นใหม่ได้ลอง ได้เติบโต และได้เห็นผลงานของตัวเองก้าวไปไกลกว่าที่เคย เราเปลี่ยนการรับชม ให้กลายเป็นการมีส่วนร่วมและเปิดเส้นทางใหม่ของภาพยนตร์ไทยก้าวไปพร้อมกับทุกคน
+                                    <br className="hidden md:block" /> เดินหน้าไปในทิศทางที่เราเชื่อร่วมกัน
+                                </p>
+                            </div>
+
+                            <p className="text-lg md:text-xl text-white font-semibold italic border-l-4 border-gray-700 pl-6 py-2">
+                                นี่ไม่ใช่แค่แพลตฟอร์ม แต่คือจุดเริ่มต้นของบทใหม่ของภาพยนตร์ไทย บทที่เราทุกคนกำลังเขียนไปพร้อมกัน
+                            </p>
                         </motion.div>
                     </div>
                 </div>
