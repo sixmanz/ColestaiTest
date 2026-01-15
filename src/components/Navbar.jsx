@@ -40,10 +40,10 @@ const Navbar = () => {
             className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled || isMobileMenuOpen ? 'bg-colestia-bg/90 backdrop-blur-md border-b border-white/5' : 'bg-transparent'
                 }`}
         >
-            <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                {/* Logo */}
-                <Link to="/" className="flex items-center gap-2">
-                    <img src={logo} alt="Colestia" className="h-[400px] w-auto" />
+            <div className="container mx-auto px-6 py-4 flex justify-end items-center relative">
+                {/* Logo - Absolute Top Left */}
+                <Link to="/" className="absolute top-[-100px] -left-10 z-50">
+                    <img src={logo} alt="Colestia" className="h-[400px] w-auto max-w-none" />
                 </Link>
 
                 {/* Desktop Links */}
