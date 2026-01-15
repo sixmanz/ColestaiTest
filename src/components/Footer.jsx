@@ -12,8 +12,8 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                     {/* Brand */}
                     <div className="space-y-6">
-                        <Link to="/" className="block">
-                            <img src={logo} alt="Colestia" className="h-[400px] w-auto" />
+                        <Link to="/" className="block relative h-24 w-64 overflow-hidden">
+                            <img src={logo} alt="Colestia" className="absolute -top-[160px] -left-10 h-[400px] w-auto max-w-none" />
                         </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">
                             {t('footer_tagline')}
