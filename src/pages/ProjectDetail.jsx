@@ -145,8 +145,8 @@ const ProjectDetail = () => {
                                         viewport={{ once: true }}
                                         transition={{ delay: index * 0.1 }}
                                         className={`relative group overflow-hidden rounded-2xl border ${reward.tier === 'special'
-                                                ? 'border-yellow-500/50 bg-gradient-to-br from-gray-900 to-yellow-900/20'
-                                                : 'border-white/10 bg-white/5 hover:border-colestia-purple/50'
+                                            ? 'border-yellow-500/50 bg-gradient-to-br from-gray-900 to-yellow-900/20'
+                                            : 'border-white/10 bg-white/5 hover:border-colestia-purple/50'
                                             } p-6 transition-all hover:shadow-lg`}
                                     >
                                         {reward.tier === 'special' && (
@@ -159,13 +159,13 @@ const ProjectDetail = () => {
                                             <div className="flex-1">
                                                 <h3 className={`text-xl font-bold mb-2 ${reward.tier === 'special' ? 'text-yellow-400' : 'text-white'
                                                     }`}>
-                                                    {reward.name}
+                                                    {language === 'th' ? (reward.nameTh || reward.name) : (reward.nameEn || reward.name)}
                                                 </h3>
                                                 <p className="text-gray-300 font-light text-sm mb-4">
-                                                    {reward.description}
+                                                    {language === 'th' ? (reward.description || reward.description) : (reward.descriptionEn || reward.description)}
                                                 </p>
                                                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                                    {reward.items.map((item, i) => (
+                                                    {(language === 'th' ? reward.items : (reward.itemsEn || reward.items)).map((item, i) => (
                                                         <li key={i} className="flex items-center text-xs text-gray-400">
                                                             <span className={`w-1.5 h-1.5 rounded-full mr-2 ${reward.tier === 'special' ? 'bg-yellow-500' : 'bg-colestia-purple'
                                                                 }`} />
@@ -184,8 +184,8 @@ const ProjectDetail = () => {
                                                     </span>
                                                 </div>
                                                 <button className={`w-full py-2 px-4 rounded-xl font-bold text-sm transition-all ${reward.tier === 'special'
-                                                        ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:scale-105'
-                                                        : 'bg-white/10 text-white hover:bg-colestia-purple hover:text-white'
+                                                    ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:scale-105'
+                                                    : 'bg-white/10 text-white hover:bg-colestia-purple hover:text-white'
                                                     }`}>
                                                     {t('btn_select_reward') || 'Select Reward'}
                                                 </button>
