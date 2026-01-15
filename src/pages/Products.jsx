@@ -115,9 +115,8 @@ const MovieCard = ({ movie, isHovered, isAnyHovered }) => {
                         <div className="mb-3">
                             <div className="h-2 bg-[#2a2a2a] rounded-full overflow-hidden">
                                 <div
-                                    className={`h-full rounded-full transition-all duration-500 ${movie.percentage >= 67 ? 'bg-gradient-to-r from-[#C6A355] to-[#F9D976]' :
-                                        movie.percentage >= 34 ? 'bg-gradient-to-r from-amber-500 to-yellow-400' :
-                                            'bg-gradient-to-r from-red-500 to-orange-400'
+                                    className={`h-full rounded-full transition-all duration-500 ${movie.percentage >= 34 ? 'bg-gradient-to-r from-[#FFD700] to-[#E5C100]' :
+                                        'bg-gradient-to-r from-red-500 to-orange-400'
                                         }`}
                                     style={{ width: `${movie.percentage}%` }}
                                 />
@@ -405,7 +404,7 @@ const Products = () => {
                         transition={{ delay: 0.1 }}
                     >
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-2 h-8 bg-gradient-to-b from-[#C6A355] to-[#F9D976] rounded-full"></div>
+                            <div className="w-2 h-8 bg-gradient-to-b from-[#FFD700] to-[#E5C100] rounded-full"></div>
                             <h2 className="text-2xl md:text-3xl font-display font-bold text-white">
                                 {t('section_new')}
                             </h2>
