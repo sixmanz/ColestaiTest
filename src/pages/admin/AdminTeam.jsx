@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, X, Save } from 'lucide-react';
 import { useTeam } from '../../hooks/useTeam';
 import { useLanguage } from '../../context/LanguageContext';
+import { db } from '../../firebase';
+import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 const AdminTeam = () => {
     const { team, isLoading } = useTeam();

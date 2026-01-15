@@ -36,7 +36,7 @@ const initialUsers = [
 
 const AdminUsers = () => {
     const [users, setUsers] = useState(initialUsers);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingUser, setEditingUser] = useState(null);

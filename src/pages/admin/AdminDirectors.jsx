@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Search, Edit2, Trash2, X, Save, Upload, User } from 'lucide-react';
 import { useDirectors } from '../../hooks/useDirectors';
 import { useLanguage } from '../../context/LanguageContext';
+import { db } from '../../firebase';
+import { collection, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 const AdminDirectors = () => {
     const { directors, isLoading } = useDirectors();
