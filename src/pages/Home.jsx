@@ -257,7 +257,7 @@ const Home = () => {
             </section>
 
             {/* 4. Feature Highlights Section */}
-            <section className="py-24 bg-[#050505] text-white">
+            <section className="py-24 bg-colestia-bg text-white">
                 <div className="container mx-auto px-6">
                     <div className="grid md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/20">
                         {/* Feature 1 */}
