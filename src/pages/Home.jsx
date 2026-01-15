@@ -113,37 +113,36 @@ const Home = () => {
                             className="space-y-8"
                         >
                             <h2 className="text-5xl md:text-7xl font-display font-medium text-white">
-                                we are <span className="text-colestia-purple">colestia</span>
+                                {t('home_we_are_title')} <span className="text-colestia-purple">colestia</span>
                             </h2>
 
                             <div className="space-y-6">
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
-                                        '<span className="text-colestia-purple">colestia</span> คือพื้นที่ของคนรุ่นใหม่ที่เชื่อในพลังของภาพยนตร์ไทย'
+                                        '<span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_1')}'
                                     </h3>
                                     <p className="text-gray-300 font-light leading-relaxed indent-8">
-                                        เราเชื่อว่าภาพยนตร์ที่ดีไม่ควรถูกสร้างขึ้นโดยคนเพียงไม่กี่คน แต่ควรเติบโตจากการร่วมแรงร่วมใจของทุกคนที่รักในสิ่งเดียวกัน ที่นี่ผู้สร้างไม่ต้องแบกความฝันไว้เพียงลำพัง และผู้ชมไม่ถูกจำกัดให้เป็นแค่ผู้รับชม ทุกไอเดียควรมีที่ยืน ทุกคนที่รักภาพยนตร์ควรมีโอกาสเป็นส่วนหนึ่งของการสร้างสรรค์
+                                        {t('home_we_are_desc_1')}
                                     </p>
                                 </div>
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
-                                        '<span className="text-colestia-purple">colestia</span> ให้คุณค่ากับทุกที่มาของทุกความคิด'
+                                        '<span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_2')}'
                                     </h3>
                                     <p className="text-gray-300 font-light leading-relaxed indent-8">
-                                        เราให้ความสำคัญกับสิทธิและความเป็นเจ้าของของผู้สร้างอย่างชัดเจน ทุกความคิด ทุกผลงาน ยังคงเป็นของผู้ที่สร้างมันขึ้นมาอย่างแท้จริง colestia ทำหน้าที่เป็นพื้นที่สนับสนุนและเชื่อมโยง โดยเคารพคุณค่าและลิขสิทธิ์ของทุกไอเดีย
+                                        {t('home_we_are_desc_2')}
                                     </p>
                                 </div>
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
-                                        '<span className="text-colestia-purple">colestia</span> จึงเป็นจุดเชื่อมระหว่างผู้สร้างสรรค์และคนรักภาพยนตร์ไทย'
+                                        '<span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_3')}'
                                     </h3>
                                     <p className="text-gray-300 font-light leading-relaxed indent-8">
-                                        พื้นที่ที่เปิดโอกาสให้ไอเดียได้เกิดขึ้นจริง ให้คนรุ่นใหม่ได้ลอง ได้เติบโต และได้เห็นผลงานของตัวเองก้าวไปไกลกว่าที่เคย เราเปลี่ยนการรับชม ให้กลายเป็นการมีส่วนร่วมและเปิดเส้นทางใหม่ของภาพยนตร์ไทยก้าวไปพร้อมกับทุกคน
-                                        <br className="hidden md:block" /> เดินหน้าไปในทิศทางที่เราเชื่อร่วมกัน
+                                        {t('home_we_are_desc_3')}
                                     </p>
                                 </div>
                                 <p className="text-lg md:text-xl text-white font-semibold italic border-l-4 border-gray-700 pl-6 py-2 mt-8">
-                                    นี่ไม่ใช่แค่แพลตฟอร์ม แต่คือจุดเริ่มต้นของบทใหม่ของภาพยนตร์ไทย บทที่เราทุกคนกำลังเขียนไปพร้อมกัน
+                                    {t('home_we_are_quote')}
                                 </p>
                             </div>
                         </motion.div>
@@ -196,21 +195,21 @@ const Home = () => {
                             className="space-y-6"
                         >
                             <h2 className="text-4xl md:text-6xl font-display font-bold leading-tight">
-                                <span className="text-colestia-purple">colestia</span> <span className="text-white">creative idea</span> <br />
-                                <span className="text-colestia-purple">growing</span> <span className="text-white">together</span>
+                                <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_1')}</span> <br />
+                                <span className="text-colestia-purple">{t('home_creative_title_2')}</span> <span className="text-white">{t('home_creative_title_3')}</span>
                             </h2>
 
                             <div className="space-y-6 text-gray-300 font-light leading-relaxed">
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-bold mb-2">
-                                        <span className="text-colestia-purple">colestia</span> คือพื้นที่ของเรื่องราวที่กำลังเริ่มต้น
+                                        <span className="text-colestia-purple">colestia</span> {t('home_creative_subtitle_1')}
                                     </h3>
                                 </div>
                                 <p className="indent-8">
-                                    <span className="text-colestia-purple font-medium">colestia</span> ไม่ได้เกิดขึ้นมาเพื่อเป็นเพียงแพลตฟอร์มหนึ่งในอุตสาหกรรมภาพยนตร์ แต่คือพื้นที่ที่เปิดโอกาสให้ <span className="text-colestia-gold">“ความคิด”</span> ได้มีที่ยืน ตั้งแต่ยังเป็นเพียงประกายเล็ก ๆ
+                                    <span className="text-colestia-purple font-medium">colestia</span> {t('home_creative_desc_1')}
                                 </p>
                                 <p className="indent-8">
-                                    เรารวบรวมผู้สร้างสรรค์จากหลากหลายบทบาทตั้งแต่ผู้กำกับ นักเขียน ทีมโปรดักชัน ไปจนถึงผู้ชมที่อยากมีส่วนร่วมกับเรื่องราวมากกว่าการรอชมผลลัพธ์ปลายทาง
+                                    {t('home_creative_desc_2')}
                                 </p>
                             </div>
                         </motion.div>
