@@ -197,7 +197,7 @@ const Home = () => {
                             <div className="mb-8">
                                 <h2 className="text-4xl md:text-6xl font-display font-bold leading-tight mb-6">
                                     <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_creative')}</span> <span className="text-[#FFD700]">{t('home_creative_title_idea')}</span> <br />
-                                    <span className="text-white">{t('home_creative_title_2')}</span> <span className="text-white">{t('home_creative_title_3')}</span>
+                                    <span className="text-colestia-purple">{t('home_creative_title_2')}</span> <span className="text-white">{t('home_creative_title_3')}</span>
                                 </h2>
                                 <div className="h-1.5 w-24 bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full"></div>
                             </div>
