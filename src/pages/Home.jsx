@@ -119,7 +119,7 @@ const Home = () => {
                             <div className="space-y-6">
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
-                                        '<span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_1')}'
+                                        <span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_1')}
                                     </h3>
                                     <p className="text-gray-300 font-light leading-relaxed indent-8">
                                         {t('home_we_are_desc_1')}
@@ -127,7 +127,7 @@ const Home = () => {
                                 </div>
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
-                                        '<span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_2')}'
+                                        <span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_2')}
                                     </h3>
                                     <p className="text-gray-300 font-light leading-relaxed indent-8">
                                         {t('home_we_are_desc_2')}
@@ -135,7 +135,7 @@ const Home = () => {
                                 </div>
                                 <div>
                                     <h3 className="text-xl md:text-2xl text-white font-semibold mb-3">
-                                        '<span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_3')}'
+                                        <span className="text-colestia-purple">colestia</span> {t('home_we_are_subtitle_3')}
                                     </h3>
                                     <p className="text-gray-300 font-light leading-relaxed indent-8">
                                         {t('home_we_are_desc_3')}
