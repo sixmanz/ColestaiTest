@@ -192,16 +192,16 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
-                            className="space-y-8"
+                            className="space-y-6"
                         >
-                            <h2 className="text-5xl md:text-7xl font-display font-bold leading-tight">
+                            <h2 className="text-4xl md:text-6xl font-display font-bold leading-tight">
                                 <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_1')}</span> <br />
                                 <span className="text-colestia-purple">{t('home_creative_title_2')}</span> <span className="text-white">{t('home_creative_title_3')}</span>
                             </h2>
 
-                            <div className="space-y-6 text-gray-300 font-light leading-relaxed text-lg">
+                            <div className="space-y-6 text-gray-300 font-light leading-relaxed">
                                 <div>
-                                    <h3 className="text-2xl md:text-3xl text-white font-bold mb-4">
+                                    <h3 className="text-xl md:text-2xl text-white font-bold mb-2">
                                         <span className="text-colestia-purple">colestia</span> {t('home_creative_subtitle_1')}
                                     </h3>
                                 </div>
