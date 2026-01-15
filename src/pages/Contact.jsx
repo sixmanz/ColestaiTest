@@ -256,7 +256,7 @@ const Contact = () => {
                                         disabled={isSubmitting}
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
-                                        className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg shadow-purple-500/30"
+                                        className="w-full py-4 bg-gradient-to-r from-colestia-purple to-colestia-blue text-white rounded-xl font-semibold hover:opacity-90 transition-all flex items-center justify-center gap-3 disabled:opacity-50 shadow-lg shadow-colestia-purple/30"
                                     >
                                         {isSubmitting ? (
                                             <>

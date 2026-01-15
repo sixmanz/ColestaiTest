@@ -398,7 +398,7 @@ const AdminProjects = () => {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl hover:opacity-90 transition-all font-medium flex items-center gap-2 shadow-lg shadow-purple-500/30"
+                                        className="px-6 py-2 bg-gradient-to-r from-colestia-purple to-colestia-blue text-white rounded-xl hover:opacity-90 transition-all font-medium flex items-center gap-2 shadow-lg shadow-colestia-purple/30"
                                     >
                                         <Save size={18} />
                                         Save Project

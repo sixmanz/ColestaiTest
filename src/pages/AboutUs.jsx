@@ -30,7 +30,7 @@ const AboutUs = () => {
                         {t('about_us_title')}
                     </span>
                     <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6">
-                        We are <span className="text-transparent bg-clip-text bg-gradient-to-r from-colestia-purple via-colestia-magenta to-colestia-blue">Colestia</span>
+                        We are <span className="text-transparent bg-clip-text bg-gradient-to-r from-colestia-purple to-colestia-blue">Colestia</span>
                     </h1>
                     <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed">
                         "Bridging the gap between cinematic storytelling and blockchain innovation."

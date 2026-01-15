@@ -86,11 +86,11 @@ const Register = () => {
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
-                className="hidden lg:flex w-1/2 bg-gradient-to-br from-[#1a1025] via-[#0f0818] to-[#0a0510] items-center justify-center p-12 relative overflow-hidden"
+                className="hidden lg:flex w-1/2 bg-colestia-bg items-center justify-center p-12 relative overflow-hidden"
             >
                 {/* Decorative Elements */}
-                <div className="absolute top-20 left-20 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl" />
-                <div className="absolute bottom-20 right-20 w-96 h-96 bg-pink-600/10 rounded-full blur-3xl" />
+                <div className="absolute top-20 left-20 w-72 h-72 bg-colestia-purple/20 rounded-full blur-3xl opacity-50" />
+                <div className="absolute bottom-20 right-20 w-96 h-96 bg-colestia-blue/10 rounded-full blur-3xl opacity-50" />
 
                 <div className="relative z-10 text-center max-w-lg">
                     {/* Logo */}
@@ -101,7 +101,7 @@ const Register = () => {
                         className="mb-8"
                     >
                         <Link to="/" className="flex items-center justify-center gap-3">
-                            <div className="w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full flex items-center justify-center">
+                            <div className="w-14 h-14 bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full flex items-center justify-center">
                                 <span className="text-white font-bold text-2xl">C</span>
                             </div>
                             <span className="text-3xl font-display font-bold text-white">Colestia</span>
@@ -334,7 +334,7 @@ const Register = () => {
                             disabled={isLoading || !agreedToTerms}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                            className="w-full py-4 bg-gradient-to-r from-colestia-purple to-colestia-gold text-white font-semibold rounded-xl shadow-lg shadow-colestia-purple/30 hover:shadow-colestia-gold/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                         >
                             {isLoading ? (
                                 <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

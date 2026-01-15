@@ -22,12 +22,11 @@
 
 @layer utilities {
   .text-gradient-main {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-colestia-purple via-colestia-magenta to-colestia-blue;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-colestia-purple to-colestia-blue;
   }
 
   .bg-gradient-main {
-
-    @apply bg-gradient-to-r from-colestia-purple via-colestia-magenta to-colestia-blue;
+    @apply bg-gradient-to-r from-colestia-purple to-colestia-blue;
   }
 
   .glass-panel {
@@ -35,7 +34,7 @@
   }
 
   .hover-card-glow {
-    @apply transition-all duration-500 hover:shadow-[0_0_30px_rgba(122, 30, 166, 0.3)] hover:-translate-y-2;
+    @apply transition-all duration-500 hover:shadow-[0_0_30px_rgba(149, 1, 255, 0.4)] hover:-translate-y-2;
   }
 
   /* Shine Animation */

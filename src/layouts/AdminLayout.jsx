@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { LayoutDashboard, Film, LogOut, Home, User, Users, Newspaper, BookOpen, UserCircle, FileText, Globe } from 'lucide-react';
 import { motion } from 'framer-motion';
+import logo from '../assets/logo.png';
 
 const AdminLayout = () => {
     const { currentUser, logout } = useAuth();
@@ -31,10 +32,8 @@ const AdminLayout = () => {
         <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
             {/* Sidebar */}
             <div className="w-64 bg-white dark:bg-gray-800 shadow-xl flex flex-col">
-                <div className="p-6">
-                    <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
-                        Colestia Admin
-                    </h1>
+                <div className="p-6 flex justify-center">
+                    <img src={logo} alt="Colestia Admin" className="h-8 w-auto" />
                 </div>
 
                 <nav className="flex-1 px-4 space-y-2">
@@ -46,7 +45,7 @@ const AdminLayout = () => {
                                 key={item.path}
                                 to={item.path}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive
-                                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'
+                                    ? 'bg-colestia-purple/10 text-colestia-purple dark:bg-colestia-purple/20 dark:text-colestia-purple'
                                     : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50'
                                     }`}
                             >
@@ -89,7 +88,7 @@ const AdminLayout = () => {
                     >
                         <Globe size={18} />
                         <span className="font-medium text-sm">{language === 'th' ? 'ไทย' : 'English'}</span>
-                        <span className="text-xs bg-purple-500 text-white px-2 py-0.5 rounded-full font-bold">
+                        <span className="text-xs bg-colestia-purple text-white px-2 py-0.5 rounded-full font-bold">
                             {language.toUpperCase()}
                         </span>
                     </button>

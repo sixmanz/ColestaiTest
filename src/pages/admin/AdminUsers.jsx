@@ -80,14 +80,14 @@ const AdminUsers = () => {
                     placeholder="Search users..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-colestia-purple focus:border-transparent"
                 />
             </div>
 
             {/* Users Table */}
             {isLoading ? (
                 <div className="flex justify-center py-12">
-                    <Loader className="w-8 h-8 animate-spin text-purple-500" />
+                    <Loader className="w-8 h-8 animate-spin text-colestia-purple" />
                 </div>
             ) : (
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">

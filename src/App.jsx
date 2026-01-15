@@ -46,9 +46,9 @@ const PlaceholderPage = ({ title }) => (
         We are crafting something amazing here. <br />
         This page is currently under development.
       </p>
-      <div className="inline-flex items-center gap-2 text-colestia-magenta font-semibold bg-colestia-magenta/10 px-4 py-2 rounded-full border border-colestia-magenta/20">
+      <div className="inline-flex items-center gap-2 text-colestia-purple font-semibold bg-colestia-purple/10 px-4 py-2 rounded-full border border-colestia-purple/20">
         <span>Coming Soon</span>
-        <div className="w-2 h-2 bg-colestia-magenta rounded-full animate-pulse" />
+        <div className="w-2 h-2 bg-colestia-purple rounded-full animate-pulse" />
       </div>
     </motion.div>
   </div>

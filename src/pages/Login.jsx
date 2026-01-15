@@ -69,7 +69,7 @@ const Login = () => {
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
-                    className="absolute bottom-10 left-10 w-72 h-72 bg-pink-200/15 rounded-full blur-3xl"
+                    className="absolute bottom-10 left-10 w-72 h-72 bg-colestia-blue/10 rounded-full blur-3xl"
                 />
                 <motion.div
                     animate={{
@@ -80,7 +80,7 @@ const Login = () => {
                         repeat: Infinity,
                         ease: "linear"
                     }}
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-100/10 to-pink-100/10 rounded-full blur-3xl"
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-purple-100/10 to-blue-100/10 rounded-full blur-3xl"
                 />
                 <div className="w-full max-w-md relative z-10">
                     {/* Logo */}
@@ -91,7 +91,7 @@ const Login = () => {
                         className="mb-8"
                     >
                         <Link to="/" className="flex items-center gap-2">
-                            <div className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full flex items-center justify-center">
                                 <span className="text-white font-bold">C</span>
                             </div>
                             <span className="text-2xl font-display font-bold text-gray-900">Colestia</span>
@@ -166,7 +166,7 @@ const Login = () => {
                             disabled={isLoading}
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70"
+                            className="w-full py-4 bg-gradient-to-r from-colestia-purple to-colestia-blue text-white font-semibold rounded-xl shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70"
                         >
                             {isLoading ? (
                                 <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import Magnetic from './Magnetic';
 
+import logo from '../assets/logo.png';
+
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -40,13 +42,8 @@ const Navbar = () => {
         >
             <div className="container mx-auto px-6 py-4 flex justify-between items-center">
                 {/* Logo */}
-                <Link to="/" className="text-2xl font-display font-bold text-white tracking-widest flex items-center gap-2">
-                    <div className="w-8 h-8 bg-colestia-purple/20 rounded-full flex items-center justify-center border border-colestia-purple">
-                        <span className="text-colestia-purple text-xs">C</span>
-                    </div>
-                    <span className="text-white">
-                        colestia
-                    </span>
+                <Link to="/" className="flex items-center gap-2">
+                    <img src={logo} alt="Colestia" className="h-10 w-auto" />
                 </Link>
 
                 {/* Desktop Links */}
@@ -129,7 +126,7 @@ const Navbar = () => {
                         {/* Join Now Button - Mobile */}
                         <Link
                             to="/login"
-                            className="bg-gradient-to-r from-colestia-purple to-colestia-magenta text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-[0_0_20px_rgba(122,30,166,0.5)] transition-all duration-300 mt-4"
+                            className="bg-gradient-to-r from-colestia-purple to-colestia-blue text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-[0_0_20px_rgba(149,1,255,0.4)] transition-all duration-300 mt-4"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
                             {t('nav_join')}

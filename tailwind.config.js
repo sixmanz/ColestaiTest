@@ -8,19 +8,20 @@ export default {
         extend: {
             colors: {
                 colestia: {
-                    bg: '#000000ff',       // Deepest Black (from palette)
-                    card: '#000000ff',
+                    bg: '#201c1d',       // Deepest Black (from palette)
+                    card: '#201c1d',
 
-                    // The 5-Color Palette
-                    purple: '#7A1EA6',   // Vibrant Purple
-                    magenta: '#C92B8D',  // Deep Pink/Magenta
-                    blue: '#005AC6',     // Strong Blue
+                    // The New Palette - Minimalist Refactor
+                    purple: '#9501ff',   // Vibrant Purple (Primary)
+                    magenta: '#c084fc',  // Lighter Purple (Highlights)
+                    gold: '#c084fc',     // Replaced Gold with Light Purple
+                    blue: '#273488',     // Deep Blue (Secondary)
                     white: '#FFFFFF',
 
-                    // Gradients (Derived)
-                    'gradient-start': '#7A1EA6',
-                    'gradient-mid': '#C92B8D',
-                    'gradient-end': '#005AC6',
+                    // Gradients
+                    'gradient-start': '#9501ff',
+                    'gradient-mid': '#7e22ce', // Darker purple mid
+                    'gradient-end': '#273488',
                 }
             },
             fontFamily: {
@@ -28,7 +29,7 @@ export default {
                 display: ['Comfortaa', 'Noto Sans Thai', 'sans-serif'],
             },
             backgroundImage: {
-                'colestia-gradient': 'linear-gradient(to right, #7A1EA6, #C92B8D, #005AC6)',
+                'colestia-gradient': 'linear-gradient(to right, #9501ff, #273488)',
             }
         },
     },

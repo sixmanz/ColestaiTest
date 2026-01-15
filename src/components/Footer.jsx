@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Youtube, Instagram, Lock } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
+import logo from '../assets/logo.png';
 
 const Footer = () => {
     const { t } = useLanguage();
@@ -11,7 +12,9 @@ const Footer = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
                     {/* Brand */}
                     <div className="space-y-6">
-                        <h3 className="text-2xl font-display font-bold text-white tracking-widest ">colestia</h3>
+                        <Link to="/" className="block">
+                            <img src={logo} alt="Colestia" className="h-10 w-auto" />
+                        </Link>
                         <p className="text-gray-400 text-sm leading-relaxed">
                             {t('footer_tagline')}
                         </p>

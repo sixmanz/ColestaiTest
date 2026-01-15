@@ -122,7 +122,7 @@ const AdminDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Total Projects */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-                    className="bg-gradient-to-br from-purple-500 to-purple-700 p-6 rounded-2xl shadow-lg shadow-purple-200 dark:shadow-purple-900/30">
+                    className="bg-gradient-to-br from-colestia-purple to-colestia-blue p-6 rounded-2xl shadow-lg shadow-colestia-purple/30 dark:shadow-colestia-purple/20">
                     <div className="flex items-center justify-between">
                         <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
                             <Film className="text-white" size={24} />
@@ -137,7 +137,7 @@ const AdminDashboard = () => {
 
                 {/* Total Investors */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-                    className="bg-gradient-to-br from-blue-500 to-blue-700 p-6 rounded-2xl shadow-lg shadow-blue-200 dark:shadow-blue-900/30">
+                    className="bg-gradient-to-br from-colestia-blue to-[#1a237e] p-6 rounded-2xl shadow-lg shadow-colestia-blue/30 dark:shadow-colestia-blue/20">
                     <div className="flex items-center justify-between">
                         <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
                             <Users className="text-white" size={24} />
@@ -310,17 +310,17 @@ const AdminDashboard = () => {
                     className="lg:col-span-3 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center">
-                                <Star className="text-purple-600 dark:text-purple-400" size={20} />
+                            <div className="w-10 h-10 bg-colestia-purple/10 dark:bg-colestia-purple/20 rounded-xl flex items-center justify-center">
+                                <Star className="text-colestia-purple dark:text-colestia-gold" size={20} />
                             </div>
                             <h3 className="font-bold text-gray-900 dark:text-white">{labels.topProjects}</h3>
                         </div>
-                        <button className="text-purple-600 text-sm font-medium hover:underline">{labels.viewAll}</button>
+                        <button className="text-colestia-purple text-sm font-medium hover:underline">{labels.viewAll}</button>
                     </div>
                     <div className="space-y-4">
                         {topProjects.map((project, index) => (
                             <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold">
+                                <div className="w-10 h-10 bg-gradient-to-br from-colestia-purple to-colestia-gold rounded-xl flex items-center justify-center text-white font-bold">
                                     {index + 1}
                                 </div>
                                 <div className="flex-1">
@@ -334,7 +334,7 @@ const AdminDashboard = () => {
                                     </div>
                                     <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
                                         <div
-                                            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all"
+                                            className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full transition-all"
                                             style={{ width: `${project.progress}%` }}
                                         />
                                     </div>

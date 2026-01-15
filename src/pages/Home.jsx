@@ -16,7 +16,7 @@ import logoDIP from '../assets/partners/dip.png';
 import logoMSU from '../assets/partners/msu.png';
 import logoSEC from '../assets/partners/sec.png';
 
-import Card3D from '../components/Card3D';
+
 
 import Spotlight from '../components/Spotlight';
 import InteractiveGrid from '../components/InteractiveGrid';
@@ -111,7 +111,7 @@ const Home = () => {
                             transition={{ duration: 0.8 }}
                         >
                             <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-8">
-                                {t('about_we_are')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">colestia</span>
+                                {t('about_we_are')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-colestia-purple to-colestia-blue">colestia</span>
                             </h2>
 
                             <div className="border-l-4 border-colestia-purple pl-6 space-y-4">
@@ -188,7 +188,7 @@ const Home = () => {
             </section>
 
             {/* 3. Ecosystem Flow Diagram (Visualizing the Brief) */}
-            <section className="py-24 bg-[#050505]">
+            <section className="py-24 bg-colestia-bg">
                 <div className="container mx-auto px-6 text-center">
                     <h2 className="text-3xl font-display font-bold text-white mb-16">{t('ecosystem_title')}</h2>
 
@@ -197,8 +197,8 @@ const Home = () => {
                         <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-colestia-purple/30 to-transparent -translate-y-1/2 z-0" />
 
                         {/* Step 1 */}
-                        <div className="relative z-10 bg-colestia-card p-8 rounded-2xl border border-white/5 mx-auto max-w-xs">
-                            <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-blue-400">
+                        <div className="relative z-10 bg-colestia-card p-8 rounded-2xl border border-colestia-blue/30 shadow-[0_0_30px_rgba(39,52,136,0.4)] mx-auto max-w-xs">
+                            <div className="w-16 h-16 bg-colestia-blue rounded-full flex items-center justify-center mx-auto mb-6 text-white shadow-[0_0_20px_rgba(39,52,136,0.3)]">
                                 <Globe size={32} />
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2">{t('eco_step_1_title')}</h3>
@@ -206,7 +206,7 @@ const Home = () => {
                         </div>
 
                         {/* Step 2 (Colestia) */}
-                        <div className="relative z-10 bg-colestia-card p-8 rounded-2xl border border-colestia-purple/30 shadow-[0_0_30px_rgba(122,30,166,0.1)] mx-auto max-w-xs">
+                        <div className="relative z-10 bg-colestia-card p-8 rounded-2xl border border-colestia-purple/30 shadow-[0_0_30px_rgba(149,1,255,0.4)] mx-auto max-w-xs">
                             <div className="w-16 h-16 bg-colestia-purple/10 rounded-full flex items-center justify-center mx-auto mb-6 text-colestia-purple">
                                 <Shield size={32} />
                             </div>
@@ -215,8 +215,8 @@ const Home = () => {
                         </div>
 
                         {/* Step 3 */}
-                        <div className="relative z-10 bg-colestia-card p-8 rounded-2xl border border-white/5 mx-auto max-w-xs">
-                            <div className="w-16 h-16 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-400">
+                        <div className="relative z-10 bg-colestia-card p-8 rounded-2xl border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] mx-auto max-w-xs">
+                            <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6 text-white">
                                 <Zap size={32} />
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2">{t('eco_step_3_title')}</h3>
@@ -269,7 +269,11 @@ const Home = () => {
                                     transition={{ delay: index * 0.1 }}
                                     className="group flex-shrink-0 w-[280px] md:w-[350px] perspective-1000"
                                 >
-                                    <Card3D>
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                        className="h-full"
+                                    >
                                         <Spotlight className="h-full rounded-2xl" size={400}>
                                             <div className="relative bg-[#0a0a0a] rounded-2xl overflow-hidden border border-white/10 group-hover:border-colestia-purple/50 transition-all duration-500 group-hover:shadow-[0_20px_60px_rgba(122,30,166,0.3)] h-full">
                                                 <div className="flex flex-col h-full">
@@ -278,7 +282,7 @@ const Home = () => {
                                                         <img
                                                             src={director.img}
                                                             alt={director.name}
-                                                            className="w-full h-full object-cover object-top group-hover:scale-105 transition-all duration-700"
+                                                            className="w-full h-full object-cover object-top"
                                                         />
                                                         {/* Gradient Overlay */}
                                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -289,12 +293,12 @@ const Home = () => {
                                                         <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-colestia-purple transition-colors">
                                                             {director.name}
                                                         </h3>
-                                                        <p className="text-colestia-magenta text-sm font-medium mb-3">{director.role}</p>
+                                                        <p className="text-colestia-gold text-sm font-medium mb-3">{director.role}</p>
 
                                                         {/* View More Button */}
                                                         <button
                                                             onClick={(e) => {
-                                                                e.stopPropagation(); // Prevent tilt interference
+                                                                e.stopPropagation();
                                                                 setSelectedDirector(director);
                                                             }}
                                                             className="mt-auto px-4 py-2 bg-colestia-purple/20 hover:bg-colestia-purple/40 text-white rounded-lg transition-all duration-300 text-sm font-medium border border-colestia-purple/30 hover:border-colestia-purple/60 relative z-30 cursor-pointer animate-shine"
@@ -305,7 +309,7 @@ const Home = () => {
                                                 </div>
                                             </div>
                                         </Spotlight>
-                                    </Card3D>
+                                    </motion.div>
                                 </motion.div>
                             ))}
                         </div>
@@ -441,13 +445,13 @@ const Home = () => {
 
 
             {/* Newsletter Subscription Section */}
-            <section className="py-20 bg-gradient-to-b from-[#050505] to-colestia-bg">
+            <section className="py-20 bg-gradient-to-b from-colestia-bg to-colestia-bg">
                 <div className="container mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="bg-gradient-to-r from-colestia-purple to-colestia-magenta rounded-3xl p-12 md:p-16 text-center shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
+                        className="bg-gradient-to-r from-colestia-purple to-colestia-gold rounded-3xl p-12 md:p-16 text-center shadow-[0_20px_60px_rgba(149,1,255,0.4)]"
                     >
                         <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
                             {t('newsletter_title')}
