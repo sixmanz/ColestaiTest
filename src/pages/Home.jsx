@@ -199,21 +199,21 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
-                            className="flex flex-col pl-0 md:pl-10"
+                            className="flex flex-col pl-0 md:pl-10 justify-center"
                         >
-                            <div className="mb-4">
-                                <h2 className="-mt-4 text-3xl md:text-4xl font-display font-bold leading-tight">
-                                    <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_creative')}</span> <span className="text-[#FFD700]">{t('home_creative_title_idea')}</span> <br />
-                                    <span className="text-white">{t('home_creative_title_2')}</span> <span className="text-white">{t('home_creative_title_3')}</span>
+                            <div className="mb-6 md:mb-8">
+                                <h2 className="-mt-4 text-3xl md:text-5xl font-display font-bold leading-tight">
+                                    <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_creative')}</span> <span className="text-[#FFD700]">{t('home_creative_title_idea')}</span>
+                                    <span className="block mt-2 text-white">{t('home_creative_title_2')} {t('home_creative_title_3')}</span>
                                 </h2>
                             </div>
 
-                            <div className="space-y-6 text-gray-300 font-light text-lg">
-                                <h3 className="text-xl md:text-2xl text-white font-semibold leading-snug">
+                            <div className="space-y-6 text-gray-300 font-light text-lg md:text-xl">
+                                <h3 className="text-2xl md:text-3xl text-white font-semibold leading-snug">
                                     <span className="text-colestia-purple">colestia</span> {t('home_creative_subtitle_1')}
                                 </h3>
 
-                                <div className="space-y-4 leading-relaxed">
+                                <div className="space-y-6 leading-relaxed text-base md:text-lg">
                                     <p>
                                         <span className="text-colestia-purple font-semibold">colestia</span> {t('home_creative_desc_1')}
                                     </p>

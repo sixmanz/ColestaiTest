@@ -299,10 +299,10 @@ const Products = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-12 text-center"
                 >
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6 text-balance">
                         {t('products_title')}
                     </h1>
-                    <p className="text-gray-400 max-w-2xl mx-auto mb-4">
+                    <p className="text-gray-400 max-w-2xl mx-auto mb-4 text-pretty leading-relaxed">
                         {t('products_subtitle')}
                     </p>
                 </motion.div>

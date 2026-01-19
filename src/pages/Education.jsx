@@ -22,7 +22,7 @@ const Education = () => {
                         <div className="p-3 bg-colestia-purple/20 rounded-xl border border-colestia-purple/30 backdrop-blur-sm">
                             <BookOpen className="text-colestia-purple" size={28} />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-display font-bold text-white">{t('edu_title')}</h1>
+                        <h1 className="text-4xl md:text-5xl font-display font-bold text-white text-balance">{t('edu_title')}</h1>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
@@ -92,25 +92,25 @@ const Education = () => {
                             <ul className="space-y-4 text-gray-300 relative z-10">
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
-                                    <span>
+                                    <span className="leading-relaxed">
                                         <strong className="text-white">{t('edu_risk_volatility')}:</strong> {t('edu_risk_volatility_desc')}
                                     </span>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
-                                    <span>
+                                    <span className="leading-relaxed">
                                         <strong className="text-white">{t('edu_risk_reg')}:</strong> {t('edu_risk_reg_desc')}
                                     </span>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
-                                    <span>
+                                    <span className="leading-relaxed">
                                         <strong className="text-white">{t('edu_risk_tech')}:</strong> {t('edu_risk_tech_desc')}
                                     </span>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
-                                    <span>
+                                    <span className="leading-relaxed">
                                         <strong className="text-white">{t('edu_risk_guarantee')}:</strong> {t('edu_risk_guarantee_desc')}
                                     </span>
                                 </li>
