@@ -98,7 +98,7 @@ const AdminTeam = () => {
             {/* Content Table */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full">
+                    <table className="w-full min-w-[700px]">
                         <thead className="bg-gray-50 dark:bg-gray-700/50">
                             <tr>
                                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">{t('admin_name')}</th>

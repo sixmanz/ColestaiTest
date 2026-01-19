@@ -319,12 +319,12 @@ const Products = () => {
                         <h3 className="text-lg font-semibold text-white">{t('filter_title')}</h3>
                     </div>
 
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex overflow-x-auto md:flex-wrap gap-3 pb-4 md:pb-0 -mx-6 px-6 md:mx-0 md:px-0 scrollbar-hide select-none mask-linear-fade">
                         {GENRES.map((genre) => (
                             <button
                                 key={genre.id}
                                 onClick={() => setSelectedGenre(genre.id)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${selectedGenre === genre.id
+                                className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${selectedGenre === genre.id
                                     ? 'bg-gradient-to-r from-colestia-purple to-colestia-blue text-white shadow-lg shadow-colestia-purple/30'
                                     : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
                                     }`}
@@ -364,7 +364,7 @@ const Products = () => {
                         </div>
 
                         {/* Mobile Carousel / Desktop Grid */}
-                        <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                        <div className="flex md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
                             {isLoading
                                 ? Array(3).fill(0).map((_, i) => (
                                     <div key={i} className="min-w-[85vw] md:min-w-0 snap-center">
@@ -407,7 +407,7 @@ const Products = () => {
                             </span>
                         </div>
 
-                        <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                        <div className="flex md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
                             {isLoading
                                 ? Array(3).fill(0).map((_, i) => (
                                     <div key={i} className="min-w-[85vw] md:min-w-0 snap-center">
@@ -453,7 +453,7 @@ const Products = () => {
                         <p className="text-gray-400 mb-8 max-w-2xl">
                             {t('coming_desc')}
                         </p>
-                        <div className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                        <div className="flex md:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-x-auto md:overflow-visible pb-8 md:pb-0 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
                             {isLoading
                                 ? Array(3).fill(0).map((_, i) => (
                                     <div key={i} className="min-w-[85vw] md:min-w-0 snap-center">

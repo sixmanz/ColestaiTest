@@ -53,8 +53,8 @@ const Navbar = () => {
                     </div>
                 </Link>
 
-                {/* Desktop Links */}
-                <div className="hidden md:flex items-center gap-8">
+                {/* Desktop Links - Hidden on Mobile & Tablet, Visible on Laptop+ */}
+                <div className="hidden lg:flex items-center gap-8">
                     {navLinks.map((link) => (
                         <Magnetic key={link.path}>
                             <NavLink
@@ -90,9 +90,9 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                {/* Mobile Toggle */}
+                {/* Mobile/Tablet Toggle */}
                 <button
-                    className="md:hidden text-white"
+                    className="lg:hidden text-white"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                     {isMobileMenuOpen ? <X /> : <Menu />}
@@ -106,7 +106,7 @@ const Navbar = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: '100vh' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-colestia-bg absolute top-full left-0 w-full overflow-hidden flex flex-col items-center pt-20 gap-8"
+                        className="lg:hidden bg-colestia-bg absolute top-full left-0 w-full overflow-hidden flex flex-col items-center pt-20 gap-8"
                     >
                         {navLinks.map((link) => (
                             <Link

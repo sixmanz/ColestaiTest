@@ -13,7 +13,7 @@ const AboutUs = () => {
     const { t, language } = useLanguage();
 
     return (
-        <div className="pt-28 pb-24 bg-[#050505] min-h-screen relative overflow-hidden">
+        <div className="pt-20 pb-16 md:pt-28 md:pb-24 bg-[#050505] min-h-screen relative overflow-hidden">
             <InteractiveGrid />
 
             {/* Ambient Background Lights */}
@@ -28,11 +28,11 @@ const AboutUs = () => {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="mb-32 md:mb-40 max-w-7xl mx-auto" // Wider container for editorial feel
+                    className="mb-20 md:mb-40 max-w-7xl mx-auto" // Wider container for editorial feel
                 >
                     {/* Slogan - Sharp & High Contrast */}
-                    <div className="py-20 md:py-32 mb-20 md:mb-32 text-center relative border-b border-white/5">
-                        <h2 className="relative z-10 text-5xl md:text-9xl font-display font-bold tracking-tighter mb-8 text-white leading-[0.9]">
+                    <div className="py-12 md:py-32 mb-12 md:mb-32 text-center relative border-b border-white/5">
+                        <h2 className="relative z-10 text-4xl md:text-9xl font-display font-bold tracking-tighter mb-6 md:mb-8 text-white leading-[0.9]">
                             colestia
                         </h2>
                         <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 relative z-10">
@@ -47,21 +47,21 @@ const AboutUs = () => {
                     </div>
 
                     {/* Mission Statement - Centered Editorial */}
-                    <div className="max-w-4xl mx-auto text-center mb-24 md:mb-40">
-                        <div className="w-px h-16 md:h-24 bg-gradient-to-b from-transparent via-colestia-purple to-transparent mx-auto mb-8 md:mb-12" />
-                        <h1 className="text-2xl md:text-4xl font-light text-white leading-relaxed mb-12">
-                            <span className="font-bold block mb-4 text-transparent bg-clip-text bg-gradient-to-r from-colestia-purple to-colestia-blue">
+                    <div className="max-w-4xl mx-auto text-center mb-16 md:mb-40">
+                        <div className="w-px h-12 md:h-24 bg-gradient-to-b from-transparent via-colestia-purple to-transparent mx-auto mb-6 md:mb-12" />
+                        <h1 className="text-xl md:text-4xl font-light text-white leading-relaxed mb-8 md:mb-12">
+                            <span className="font-bold block mb-3 md:mb-4 text-transparent bg-clip-text bg-gradient-to-r from-colestia-purple to-colestia-blue">
                                 {t('about_mission_title')}
                             </span>
                             {t('about_mission_title_break')}
                         </h1>
-                        <p className="text-lg md:text-xl text-gray-400 font-light max-w-2xl mx-auto">
+                        <p className="text-base md:text-xl text-gray-400 font-light max-w-2xl mx-auto">
                             {t('about_mission_desc')}
                         </p>
                     </div>
 
                     {/* Origin Story - Grid Layout with Divider */}
-                    <div className="grid md:grid-cols-12 gap-8 md:gap-12 mb-20 md:mb-32 pt-12 border-t border-white/10 items-start">
+                    <div className="grid md:grid-cols-12 gap-8 md:gap-12 mb-16 md:mb-32 pt-8 md:pt-12 border-t border-white/10 items-start">
                         <div className="md:col-span-4">
                             <h3 className="text-sm font-bold text-colestia-purple tracking-widest uppercase mb-4">{t('about_header_origin')}</h3>
                             <h2 className="text-3xl md:text-4xl text-white font-display font-medium">{t('about_origin_title')}</h2>
@@ -85,7 +85,7 @@ const AboutUs = () => {
                     {/* Roles: Creator vs Supporter - Clean Grid (No Numbers) */}
                     <div className="grid md:grid-cols-2 gap-px bg-white/5"> {/* Gap for Divider Line */}
                         {/* Creator Side */}
-                        <div className="bg-[#050505] p-8 md:p-16 relative group hover:bg-white/[0.02] transition-colors duration-500">
+                        <div className="bg-[#050505] p-6 md:p-16 relative group hover:bg-white/[0.02] transition-colors duration-500">
 
                             <div className="relative z-10">
                                 <h3 className="text-sm font-bold text-colestia-purple tracking-widest uppercase mb-4">{t('about_header_creator')}</h3>
@@ -104,7 +104,7 @@ const AboutUs = () => {
                         </div>
 
                         {/* Supporter Side */}
-                        <div className="bg-[#050505] p-8 md:p-16 relative group hover:bg-white/[0.02] transition-colors duration-500">
+                        <div className="bg-[#050505] p-6 md:p-16 relative group hover:bg-white/[0.02] transition-colors duration-500">
 
                             <div className="relative z-10">
                                 <h3 className="text-sm font-bold text-colestia-blue tracking-widest uppercase mb-4">{t('about_header_supporter')}</h3>
@@ -176,17 +176,18 @@ const AboutUs = () => {
                         <div className="w-20 h-1 bg-gradient-to-r from-colestia-blue to-transparent mx-auto rounded-full" />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 px-4 md:px-0">
+                    {/* Mobile: Horizontal Scroll | Desktop: Grid */}
+                    <div className="flex overflow-x-auto snap-x snap-mandatory pb-8 -mx-6 px-6 md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-4 md:gap-8 md:overflow-visible scrollbar-hide">
                         {teamMembers.map((member, index) => (
                             <motion.div
                                 key={index}
                                 initial={{ opacity: 0, y: 30 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.15 }}
-                                className="group relative"
+                                className="group relative min-w-[280px] sm:min-w-[320px] w-[85%] md:w-auto snap-center mr-4 md:mr-0 flex-shrink-0"
                             >
                                 {/* Card Container */}
-                                <div className="relative overflow-hidden rounded-2xl aspect-[3/4] mb-6 border border-white/10 group-hover:border-colestia-blue/50 transition-all duration-500 shadow-2xl">
+                                <div className="relative overflow-hidden rounded-2xl aspect-[3/4] mb-0 md:mb-6 border border-white/10 group-hover:border-colestia-blue/50 transition-all duration-500 shadow-xl md:shadow-2xl">
                                     <div className="absolute inset-0 bg-colestia-blue/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                                     <img
                                         src={member.image}

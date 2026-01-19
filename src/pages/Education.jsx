@@ -4,8 +4,11 @@ import Button from '../components/Button';
 import { BookOpen, ShieldAlert, Cpu } from 'lucide-react';
 import Spotlight from '../components/Spotlight';
 import InteractiveGrid from '../components/InteractiveGrid';
+import { useLanguage } from '../context/LanguageContext';
 
 const Education = () => {
+    const { t } = useLanguage();
+
     return (
         <div className="pt-28 pb-24 min-h-screen bg-black relative overflow-hidden">
             <InteractiveGrid />
@@ -19,12 +22,12 @@ const Education = () => {
                         <div className="p-3 bg-colestia-purple/20 rounded-xl border border-colestia-purple/30 backdrop-blur-sm">
                             <BookOpen className="text-colestia-purple" size={28} />
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-display font-bold text-white">Investor Education</h1>
+                        <h1 className="text-4xl md:text-5xl font-display font-bold text-white">{t('edu_title')}</h1>
                     </div>
 
                     <div className="bg-white/5 border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
                         <p className="text-xl text-gray-300 leading-relaxed pl-4 border-l-4 border-colestia-purple">
-                            Colestia is committed to transparency. Before engaging with any project, it is crucial to understand the underlying token models and associated risks.
+                            {t('edu_intro')}
                         </p>
                     </div>
                 </motion.div>
@@ -38,7 +41,7 @@ const Education = () => {
                 >
                     <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3 text-gradient-main">
                         <Cpu className="text-purple-400" />
-                        Understanding Token Models
+                        {t('edu_model_title')}
                     </h2>
 
                     <div className="grid md:grid-cols-2 gap-6">
@@ -47,9 +50,9 @@ const Education = () => {
                                 <div className="absolute top-4 right-4 text-white/5 group-hover:text-colestia-purple/20 transition-colors">
                                     <Cpu size={80} />
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-3 relative z-10">Utility Tokens</h3>
+                                <h3 className="text-xl font-bold text-white mb-3 relative z-10">{t('edu_token_utility')}</h3>
                                 <p className="text-gray-400 text-base leading-relaxed relative z-10">
-                                    Tokens that provide access to a product or service. They are not investments but rather keys to the ecosystem functionality.
+                                    {t('edu_token_utility_desc')}
                                 </p>
                             </div>
                         </Spotlight>
@@ -59,9 +62,9 @@ const Education = () => {
                                 <div className="absolute top-4 right-4 text-white/5 group-hover:text-emerald-500/20 transition-colors">
                                     <ShieldAlert size={80} />
                                 </div>
-                                <h3 className="text-xl font-bold text-white mb-3 relative z-10">Asset-Backed Tokens</h3>
+                                <h3 className="text-xl font-bold text-white mb-3 relative z-10">{t('edu_token_asset')}</h3>
                                 <p className="text-gray-400 text-base leading-relaxed relative z-10">
-                                    Tokens representing ownership or rights to physical or digital assets (e.g., Real Estate, Copyrights).
+                                    {t('edu_token_asset_desc')}
                                 </p>
                             </div>
                         </Spotlight>
@@ -83,32 +86,32 @@ const Education = () => {
 
                             <h2 className="text-2xl font-bold text-red-400 mb-6 flex items-center gap-3 relative z-10">
                                 <ShieldAlert />
-                                Risk Disclosure
+                                {t('edu_risk_title')}
                             </h2>
 
                             <ul className="space-y-4 text-gray-300 relative z-10">
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
                                     <span>
-                                        <strong className="text-white">Volatility:</strong> Digital assets are highly volatile. You should never invest more than you can afford to lose.
+                                        <strong className="text-white">{t('edu_risk_volatility')}:</strong> {t('edu_risk_volatility_desc')}
                                     </span>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
                                     <span>
-                                        <strong className="text-white">Regulatory Uncertainty:</strong> The legal framework for digital assets is evolving and varies by jurisdiction.
+                                        <strong className="text-white">{t('edu_risk_reg')}:</strong> {t('edu_risk_reg_desc')}
                                     </span>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
                                     <span>
-                                        <strong className="text-white">Technology Risks:</strong> Smart contracts and blockchain technology may have unforeseen vulnerabilities.
+                                        <strong className="text-white">{t('edu_risk_tech')}:</strong> {t('edu_risk_tech_desc')}
                                     </span>
                                 </li>
                                 <li className="flex gap-3">
                                     <span className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2.5 shrink-0" />
                                     <span>
-                                        <strong className="text-white">No Guarantees:</strong> Past performance of a project is not indicative of future results.
+                                        <strong className="text-white">{t('edu_risk_guarantee')}:</strong> {t('edu_risk_guarantee_desc')}
                                     </span>
                                 </li>
                             </ul>
@@ -118,11 +121,11 @@ const Education = () => {
 
                 <div className="text-center">
                     <p className="text-gray-500 text-sm mb-6">
-                        Ready to explore vetted projects with this knowledge?
+                        {t('edu_cta_text')}
                     </p>
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                         <Button variant="primary" onClick={() => window.location.href = '/products'}>
-                            View Project Showcase
+                            {t('edu_cta_btn')}
                         </Button>
                     </motion.div>
                 </div>

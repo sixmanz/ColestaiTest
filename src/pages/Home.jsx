@@ -93,10 +93,10 @@ const Home = () => {
                     >
 
 
-                        <h1 className="text-4xl md:text-8xl font-display font-bold text-white mb-6 leading-tight">
+                        <h1 className="text-3xl md:text-6xl lg:text-8xl font-display font-bold text-white mb-4 md:mb-6 leading-tight">
                             colestia
                         </h1>
-                        <h2 className="text-4xl md:text-8xl font-display font-bold text-white mb-6 leading-tight">
+                        <h2 className="text-3xl md:text-6xl lg:text-8xl font-display font-bold text-white mb-6 leading-tight">
                             <span className="text-gradient-main">{t('hero_dream_crafted')}</span>
                         </h2>
 
@@ -137,15 +137,15 @@ const Home = () => {
             </section>
 
             {/* 2. "We are colestia" Section - Polished Minimal */}
-            <section className="py-20 md:py-28 bg-colestia-bg">
+            <section className="py-12 md:py-20 lg:py-28 bg-colestia-bg">
                 <div className="container mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16 md:mb-20"
+                        className="text-center mb-12 md:mb-16 lg:mb-20"
                     >
-                        <h2 className="text-4xl md:text-6xl font-display font-bold text-white mb-6">
+                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
                             {t('home_we_are_title')} <span className="text-gradient-main">colestia</span>
                         </h2>
                         <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -174,9 +174,9 @@ const Home = () => {
             </section>
 
             {/* 3. "Creative Idea" Section */}
-            <section className="py-20 md:py-24 bg-colestia-bg relative">
+            <section className="py-12 md:py-20 lg:py-24 bg-colestia-bg relative">
                 <div className="container mx-auto px-6">
-                    <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+                    <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-start">
                         {/* Image Left */}
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
@@ -228,21 +228,21 @@ const Home = () => {
             </section>
 
             {/* 4. Feature Highlights Section */}
-            <section className="py-20 md:py-24 bg-colestia-bg text-white">
+            <section className="py-12 md:py-24 bg-colestia-bg text-white">
                 <div className="container mx-auto px-6">
                     {/* Section Heading */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-10 md:mb-16"
                     >
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white">
+                        <h2 className="text-2xl md:text-4xl font-display font-bold text-white">
                             {t('home_exclusive_for')} <span className="text-gradient-main">colestian</span>
                         </h2>
                     </motion.div>
 
-                    <div className="grid md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/20">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-0 md:gap-0 divide-y sm:divide-y-0 sm:divide-x divide-white/20">
                         {/* Feature 1 */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -307,15 +307,15 @@ const Home = () => {
             </section >
 
             {/* 4. Directors Section - Horizontal Carousel */}
-            < section className="py-24 bg-colestia-bg overflow-hidden" >
+            < section className="py-12 md:py-24 bg-colestia-bg overflow-hidden" >
                 <div className="container mx-auto px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-16"
+                        className="text-center mb-8 md:mb-16"
                     >
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
+                        <h2 className="text-2xl md:text-4xl font-display font-bold text-white mb-4">
                             {t('creators_title')} <span className="text-gradient-main">{t('creators_span')}</span>
                         </h2>
                         <p className="text-gray-400 max-w-2xl mx-auto">
