@@ -40,6 +40,18 @@ const ProjectDetail = () => {
     const formatCurrency = (val) => `฿${(val / 1000000).toFixed(1)}M`;
     const formatNumber = (val) => val ? val.toLocaleString() : '0';
 
+    // Calculate Days Left
+    const daysLeft = React.useMemo(() => {
+        if (!project.endDate) return 0;
+        const end = new Date(project.endDate);
+        const now = new Date();
+        const diffTime = end - now;
+        if (diffTime < 0) return 0;
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }, [project.endDate]);
+
+    const videoSrc = project.trailerUrl || heroVideo;
+
     return (
         <div className="min-h-screen bg-[#050505] text-gray-100 font-sans selection:bg-colestia-purple/30 pb-20">
             <InteractiveGrid />
@@ -58,7 +70,7 @@ const ProjectDetail = () => {
                 {/* Background Video */}
                 <video
                     ref={videoRef}
-                    src={heroVideo}
+                    src={videoSrc}
                     className="absolute inset-0 w-full h-full object-cover scale-105"
                     autoPlay
                     loop
@@ -155,7 +167,7 @@ const ProjectDetail = () => {
                                             <div className="flex items-center gap-2 mb-1 text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">
                                                 <Clock size={14} /> Time Left
                                             </div>
-                                            <p className="text-lg md:text-2xl font-bold text-white">24 <span className="text-sm font-normal text-gray-500">Days</span></p>
+                                            <p className="text-lg md:text-2xl font-bold text-white">{daysLeft} <span className="text-sm font-normal text-gray-500">Days</span></p>
                                         </div>
                                     </div>
 
@@ -281,14 +293,22 @@ const ProjectDetail = () => {
                         <div className="bg-[#0A0A0A] rounded-2xl p-6 border border-white/10">
                             <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-white/5 pb-2">Project Details</h4>
                             <div className="space-y-4">
-                                {project.details ? project.details.map((detail, idx) => (
-                                    <div key={idx} className="flex justify-between items-center py-2">
-                                        <span className="text-gray-500 text-sm">{language === 'th' ? detail.labelTh : detail.label}</span>
-                                        <span className="text-white font-medium text-right bg-white/5 px-2 py-1 rounded text-sm">{language === 'th' ? detail.valueTh : detail.value}</span>
-                                    </div>
-                                )) : (
-                                    <p className="text-gray-500 text-sm italic">Details loading...</p>
-                                )}
+                                <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span className="text-gray-500 text-sm">{t('label_director') || 'Director'}</span>
+                                    <span className="text-white font-medium text-right">{project.director || '-'}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span className="text-gray-500 text-sm">{t('label_studio') || 'Studio'}</span>
+                                    <span className="text-white font-medium text-right">{project.studio || '-'}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span className="text-gray-500 text-sm">{t('label_genre') || 'Genre'}</span>
+                                    <span className="text-white font-medium text-right capitalize">{project.genre || '-'}</span>
+                                </div>
+                                <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                    <span className="text-gray-500 text-sm">{t('label_end_date') || 'End Date'}</span>
+                                    <span className="text-white font-medium text-right">{project.endDate ? new Date(project.endDate).toLocaleDateString() : '-'}</span>
+                                </div>
                             </div>
                             <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-2 gap-3">
                                 <button onClick={() => setModalOpen(true)} className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 text-white text-sm font-bold hover:bg-white/10 transition-colors border border-white/5">
