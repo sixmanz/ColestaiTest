@@ -26,6 +26,13 @@ import AdminTeam from './pages/admin/AdminTeam';
 import AdminNews from './pages/admin/AdminNews';
 import AdminEducation from './pages/admin/AdminEducation';
 
+// New Pages
+import News from './pages/News';
+import Services from './pages/Services';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import ForgotPassword from './pages/ForgotPassword';
+
 // Placeholder content for simple pages
 const PlaceholderPage = ({ title }) => (
   <div className="pt-32 pb-20 min-h-[60vh] flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
@@ -74,7 +81,7 @@ const App = () => {
   }, [pathname]);
 
   // Hide navbar/footer on login, register, and admin pages
-  const hideNavFooter = pathname === '/login' || pathname === '/register' || pathname.startsWith('/admin');
+  const hideNavFooter = pathname === '/login' || pathname === '/register' || pathname.startsWith('/admin') || pathname === '/forgot-password';
 
   return (
     <div className="min-h-screen bg-colestia-bg text-white selection:bg-colestia-gold selection:text-black">
@@ -92,14 +99,14 @@ const App = () => {
               <Route path="/about-us" element={<PageTransition><AboutUs /></PageTransition>} />
               <Route path="/login" element={<PageTransition><Login /></PageTransition>} />
 
-              {/* Placeholders for secondary links */}
-              <Route path="/service" element={<PageTransition><PlaceholderPage title="Services" /></PageTransition>} />
-              <Route path="/news" element={<PageTransition><PlaceholderPage title="News & Updates" /></PageTransition>} />
+              {/* Functional Pages (Previously Placeholders) */}
+              <Route path="/service" element={<PageTransition><Services /></PageTransition>} />
+              <Route path="/news" element={<PageTransition><News /></PageTransition>} />
               <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-              <Route path="/privacy" element={<PageTransition><PlaceholderPage title="Privacy Policy" /></PageTransition>} />
-              <Route path="/terms" element={<PageTransition><PlaceholderPage title="Terms of Service" /></PageTransition>} />
+              <Route path="/privacy" element={<PageTransition><PrivacyPolicy /></PageTransition>} />
+              <Route path="/terms" element={<PageTransition><TermsOfService /></PageTransition>} />
               <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
-              <Route path="/forgot-password" element={<PageTransition><PlaceholderPage title="Forgot Password" /></PageTransition>} />
+              <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>

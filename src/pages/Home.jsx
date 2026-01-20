@@ -38,11 +38,12 @@ const BentoCard = ({ title, description, className = "" }) => {
                 hover:bg-white/[0.08]
                 transition-all duration-500
                 group
+                text-center flex flex-col items-center
                 ${className}
             `}
         >
             {/* Title */}
-            <h3 className="text-lg md:text-xl font-semibold text-white mb-4 leading-snug pr-4">
+            <h3 className="text-lg md:text-xl font-semibold text-white mb-4 leading-snug">
                 {title}
             </h3>
 
@@ -85,7 +86,7 @@ const Home = () => {
                 <VideoBackground />
                 <InteractiveGrid />
 
-                <div className="relative z-20 text-center px-6 max-w-5xl mx-auto">
+                <div className="relative z-20 text-center px-4 md:px-6 max-w-5xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -93,30 +94,30 @@ const Home = () => {
                     >
 
 
-                        <h1 className="text-3xl md:text-6xl lg:text-8xl font-display font-bold text-white mb-4 md:mb-6 leading-tight">
+                        <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-display font-bold text-white mb-2 md:mb-6 leading-tight tracking-tight">
                             colestia
                         </h1>
-                        <h2 className="text-3xl md:text-6xl lg:text-8xl font-display font-bold text-white mb-6 leading-tight">
+                        <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-display font-bold text-white mb-6 leading-tight">
                             <span className="text-gradient-main">{t('hero_dream_crafted')}</span>
                         </h2>
 
                         <p
-                            className="text-lg md:text-xl text-white mb-10 max-w-2xl mx-auto font-light leading-relaxed px-4 md:px-0"
+                            className="text-base sm:text-lg md:text-xl text-white mb-8 md:mb-10 max-w-xl md:max-w-2xl mx-auto font-light leading-relaxed px-2 md:px-0"
                             style={{ textShadow: '0 2px 10px rgba(0, 0, 0, 5)' }}
                         >
                             {t('hero_tagline')}
 
-                            <br /><span className="text-white/100 text-md">{t('hero_subtagline')}</span>
+                            <br /><span className="text-white/100 text-sm md:text-md mt-2 block">{t('hero_subtagline')}</span>
                         </p>
 
-                        <div className="flex flex-col md:flex-row gap-4 justify-center px-6 md:px-0">
-                            <Link to="/products">
-                                <Button variant="primary" className="w-full md:w-auto">
+                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-6 md:px-0">
+                            <Link to="/products" className="w-full sm:w-auto">
+                                <Button variant="primary" className="w-full sm:w-auto py-3 md:py-4 text-sm md:text-base">
                                     {t('hero_explore')} <ArrowRight size={18} />
                                 </Button>
                             </Link>
-                            <Link to="/education">
-                                <Button variant="outline" className="w-full md:w-auto">
+                            <Link to="/education" className="w-full sm:w-auto">
+                                <Button variant="outline" className="w-full sm:w-auto py-3 md:py-4 text-sm md:text-base">
                                     {t('hero_education')}
                                 </Button>
                             </Link>
@@ -128,54 +129,57 @@ const Home = () => {
                 <motion.div
                     animate={{ y: [0, 10, 0] }}
                     transition={{ repeat: Infinity, duration: 2 }}
-                    className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20"
+                    className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20"
                 >
-                    <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-2">
-                        <div className="w-1 h-2 bg-white rounded-full" />
+                    <div className="w-5 h-9 md:w-6 md:h-10 border-2 border-white/30 rounded-full flex justify-center p-2">
+                        <div className="w-1 h-1.5 md:h-2 bg-white rounded-full" />
                     </div>
                 </motion.div>
             </section>
 
             {/* 2. "We are colestia" Section - Polished Minimal */}
-            <section className="py-12 md:py-20 lg:py-28 bg-colestia-bg">
-                <div className="container mx-auto px-6">
+            <section className="py-16 md:py-24 lg:py-28 bg-colestia-bg">
+                <div className="container mx-auto px-4 md:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-12 md:mb-16 lg:mb-20"
+                        className="text-center mb-10 md:mb-16 lg:mb-20"
                     >
-                        <h2 className="text-3xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
+                        <h2 className="text-3xl md:text-5xl lg:text-7xl font-display font-bold text-white mb-4 md:mb-6 leading-tight">
                             {t('home_we_are_title')} <span className="text-gradient-main">colestia</span>
                         </h2>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed px-4">
                             {t('home_we_are_quote')}
                         </p>
                     </motion.div>
 
                     {/* Grid (Numbers Removed) */}
-                    <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    <div className="grid md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto px-2 md:px-0">
                         <BentoCard
                             title={t('home_we_are_subtitle_1')}
                             description={t('home_we_are_desc_1')}
+                            className="p-6 md:p-8"
                         />
 
                         <BentoCard
                             title={t('home_we_are_subtitle_2')}
                             description={t('home_we_are_desc_2')}
+                            className="p-6 md:p-8"
                         />
 
                         <BentoCard
                             title={t('home_we_are_subtitle_3')}
                             description={t('home_we_are_desc_3')}
+                            className="p-6 md:p-8"
                         />
                     </div>
                 </div>
             </section>
 
             {/* 3. "Creative Idea" Section */}
-            <section className="py-12 md:py-20 lg:py-24 bg-colestia-bg relative">
-                <div className="container mx-auto px-6">
+            <section className="py-16 md:py-24 bg-colestia-bg relative">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-start">
                         {/* Image Left */}
                         <motion.div
@@ -183,8 +187,8 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
-                            style={{ y: y2 }}
-                            className="relative h-[300px] md:h-[500px] rounded-2xl overflow-hidden glass-panel border border-white/10"
+                            style={{ y: typeof window !== 'undefined' && window.innerWidth > 768 ? y2 : 0 }}
+                            className="relative h-[250px] md:h-[500px] rounded-2xl overflow-hidden glass-panel border border-white/10"
                         >
                             <img
                                 src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2070&auto=format&fit=crop"
@@ -199,21 +203,21 @@ const Home = () => {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8 }}
-                            className="flex flex-col pl-0 md:pl-10 justify-center"
+                            className="flex flex-col pl-0 md:pl-10 justify-center text-center md:text-left"
                         >
                             <div className="mb-6 md:mb-8">
-                                <h2 className="-mt-4 text-3xl md:text-5xl font-display font-bold leading-tight">
+                                <h2 className="text-2xl md:text-5xl font-display font-bold leading-tight">
                                     <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_creative')}</span> <span className="text-[#FFD700]">{t('home_creative_title_idea')}</span>
-                                    <span className="block mt-2 text-white">{t('home_creative_title_2')} {t('home_creative_title_3')}</span>
+                                    <span className="block mt-2 text-white text-xl md:text-4xl">{t('home_creative_title_2')} {t('home_creative_title_3')}</span>
                                 </h2>
                             </div>
 
-                            <div className="space-y-6 text-gray-300 font-light text-lg md:text-xl">
-                                <h3 className="text-2xl md:text-3xl text-white font-semibold leading-snug">
+                            <div className="space-y-6 text-gray-300 font-light text-base md:text-xl">
+                                <h3 className="text-xl md:text-3xl text-white font-semibold leading-snug">
                                     <span className="text-colestia-purple">colestia</span> {t('home_creative_subtitle_1')}
                                 </h3>
 
-                                <div className="space-y-6 leading-relaxed text-base md:text-lg">
+                                <div className="space-y-4 md:space-y-6 leading-relaxed text-sm md:text-lg px-2 md:px-0">
                                     <p>
                                         <span className="text-colestia-purple font-semibold">colestia</span> {t('home_creative_desc_1')}
                                     </p>
@@ -228,32 +232,32 @@ const Home = () => {
             </section>
 
             {/* 4. Feature Highlights Section */}
-            <section className="py-12 md:py-24 bg-colestia-bg text-white">
-                <div className="container mx-auto px-6">
+            <section className="py-16 md:py-24 bg-colestia-bg text-white">
+                <div className="container mx-auto px-4 md:px-6">
                     {/* Section Heading */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="text-center mb-10 md:mb-16"
+                        className="text-center mb-8 md:mb-16"
                     >
-                        <h2 className="text-2xl md:text-4xl font-display font-bold text-white">
+                        <h2 className="text-2xl md:text-5xl font-display font-bold text-white">
                             {t('home_exclusive_for')} <span className="text-gradient-main">colestian</span>
                         </h2>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-0 md:gap-0 divide-y sm:divide-y-0 sm:divide-x divide-white/20">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-0 md:gap-0 divide-y sm:divide-y-0 sm:divide-x divide-white/20 border-t border-b border-white/10 sm:border-none py-8 sm:py-0">
                         {/* Feature 1 */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
-                            className="flex flex-col items-center text-center px-6 py-8"
+                            className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8"
                         >
-                            <Clapperboard size={64} className="text-white mb-6" strokeWidth={1.5} />
-                            <h3 className="text-lg font-bold mb-4 h-12 flex items-center">{t('feature_1_title')}</h3>
-                            <p className="text-gray-400 text-sm font-light leading-relaxed">
+                            <Clapperboard size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16" strokeWidth={1.5} />
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-center">{t('feature_1_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
                                 {t('feature_1_desc')}
                             </p>
                         </motion.div>
@@ -264,11 +268,11 @@ const Home = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.2 }}
-                            className="flex flex-col items-center text-center px-6 py-8"
+                            className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8"
                         >
-                            <Lightbulb size={64} className="text-white mb-6" strokeWidth={1.5} />
-                            <h3 className="text-lg font-bold mb-4 h-12 flex items-center">{t('feature_2_title')}</h3>
-                            <p className="text-gray-400 text-sm font-light leading-relaxed">
+                            <Lightbulb size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16" strokeWidth={1.5} />
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-center">{t('feature_2_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
                                 {t('feature_2_desc')}
                             </p>
                         </motion.div>
@@ -279,11 +283,11 @@ const Home = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.3 }}
-                            className="flex flex-col items-center text-center px-6 py-8"
+                            className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8"
                         >
-                            <Gift size={64} className="text-white mb-6" strokeWidth={1.5} />
-                            <h3 className="text-lg font-bold mb-4 h-12 flex items-center">{t('feature_3_title')}</h3>
-                            <p className="text-gray-400 text-sm font-light leading-relaxed">
+                            <Gift size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16" strokeWidth={1.5} />
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-center">{t('feature_3_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
                                 {t('feature_3_desc')}
                             </p>
                         </motion.div>
@@ -294,11 +298,11 @@ const Home = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.4 }}
-                            className="flex flex-col items-center text-center px-6 py-8"
+                            className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8"
                         >
-                            <Copyright size={64} className="text-white mb-6" strokeWidth={1.5} />
-                            <h3 className="text-lg font-bold mb-4 h-12 flex items-center">{t('feature_4_title')}</h3>
-                            <p className="text-gray-400 text-sm font-light leading-relaxed">
+                            <Copyright size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16" strokeWidth={1.5} />
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-center">{t('feature_4_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
                                 {t('feature_4_desc')}
                             </p>
                         </motion.div>
@@ -307,18 +311,18 @@ const Home = () => {
             </section >
 
             {/* 4. Directors Section - Horizontal Carousel */}
-            < section className="py-12 md:py-24 bg-colestia-bg overflow-hidden" >
-                <div className="container mx-auto px-6">
+            < section className="py-16 md:py-24 bg-colestia-bg overflow-hidden" >
+                <div className="container mx-auto px-4 md:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         className="text-center mb-8 md:mb-16"
                     >
-                        <h2 className="text-2xl md:text-4xl font-display font-bold text-white mb-4">
+                        <h2 className="text-2xl md:text-5xl font-display font-bold text-white mb-4">
                             {t('creators_title')} <span className="text-gradient-main">{t('creators_span')}</span>
                         </h2>
-                        <p className="text-gray-400 max-w-2xl mx-auto">
+                        <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto px-4">
                             {t('creators_desc')}
                         </p>
                     </motion.div>
@@ -338,7 +342,7 @@ const Home = () => {
                     {/* Scrollable Directors Container */}
                     <div
                         ref={directorsScrollRef}
-                        className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory w-fit mx-auto max-w-full"
+                        className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory w-full px-4 md:px-8"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
                         {directors.map((director, index) => (
@@ -348,10 +352,10 @@ const Home = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group flex-shrink-0 w-[280px] md:w-[350px] perspective-1000 snap-center first:pl-4 md:first:pl-8 last:pr-4 md:last:pr-8 py-4"
+                                className="group flex-shrink-0 w-[240px] md:w-[350px] perspective-1000 snap-center py-4"
                             >
                                 <motion.div
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ scale: 1.02 }}
                                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                                     className="h-full"
                                 >
@@ -359,7 +363,7 @@ const Home = () => {
                                         <div className="relative bg-gradient-to-b from-[#1e3a5f] to-[#0f172a] rounded-2xl overflow-hidden border border-white/10 group-hover:border-colestia-purple/40 transition-all duration-500 group-hover:shadow-[0_20px_60px_rgba(147,51,234,0.3)] h-full">
                                             <div className="flex flex-col h-full">
                                                 {/* Photo Section */}
-                                                <div className="relative w-full h-[380px] md:h-[450px] flex-shrink-0 overflow-hidden">
+                                                <div className="relative w-full h-[320px] md:h-[450px] flex-shrink-0 overflow-hidden">
                                                     <img
                                                         src={director.img}
                                                         alt={director.name}
@@ -372,11 +376,11 @@ const Home = () => {
                                                 </div>
 
                                                 {/* Info Section */}
-                                                <div className="flex-1 p-6 flex flex-col relative z-20 bg-transparent">
-                                                    <h3 className="text-2xl font-display font-bold text-white mb-1">
+                                                <div className="flex-1 p-4 md:p-6 flex flex-col relative z-20 bg-transparent">
+                                                    <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-1">
                                                         {director.name}
                                                     </h3>
-                                                    <p className="text-blue-200 text-sm font-medium mb-4">{director.role}</p>
+                                                    <p className="text-blue-200 text-xs md:text-sm font-medium mb-4">{director.role}</p>
 
                                                     {/* View More Button */}
                                                     <button
@@ -384,7 +388,7 @@ const Home = () => {
                                                             e.stopPropagation();
                                                             setSelectedDirector(director);
                                                         }}
-                                                        className="mt-auto w-full py-3 bg-[#5b21b6] hover:bg-[#4c1d95] text-white rounded-xl transition-all duration-300 text-sm font-bold shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                                                        className="mt-auto w-full py-2.5 md:py-3 bg-[#5b21b6] hover:bg-[#4c1d95] text-white rounded-xl transition-all duration-300 text-xs md:text-sm font-bold shadow-lg hover:shadow-xl hover:scale-[1.02]"
                                                     >
                                                         {t('see_more')}
                                                     </button>
@@ -410,149 +414,36 @@ const Home = () => {
                 <div className="container mx-auto px-6">
 
                     {/* Scroll Hint for Mobile */}
-                    <p className="text-center text-gray-500 text-sm mt-8 md:hidden">
+                    <p className="text-center text-gray-500 text-xs mt-6 md:hidden">
                         {t('swipe_hint')}
                     </p>
                 </div>
             </section >
 
-
-
-            {/* 5. Partners Section 
-            <section className="py-24 bg-[#050505]">
-                <div className="mx-auto px-6 md:px-24">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                    >
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
-                            Our <span className="text-gradient-main">Partners</span>
-                        </h2>
-                        <p className="text-gray-400 max-w-2xl mx-auto">
-                            "Partners shaping the future of the media and blockchain technology industries."
-                        </p>
-                    </motion.div>*/}
-
-            {/* Partner Grid - 5 columns in a single row 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6">*/}
-
-            {/* Partner 1: กระทรวงวัฒนธรรม 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.1 }}
-                            className="group"
-                        >
-                            <div className="bg-white rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_40px_rgba(122,30,166,0.3)] transition-all duration-500 hover:-translate-y-2 h-40 md:h-48 flex items-center justify-center">
-                                <img
-                                    src={logoCulture}
-                                    alt="กระทรวงวัฒนธรรม"
-                                    className="max-h-32 md:max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-                                />
-                            </div>
-                        </motion.div>*/}
-
-            {/* Partner 2: กรมทรัพย์สินทางปัญญา 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.15 }}
-                            className="group"
-                        >
-                            <div className="bg-white rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_40px_rgba(122,30,166,0.3)] transition-all duration-500 hover:-translate-y-2 h-40 md:h-48 flex items-center justify-center">
-                                <img
-                                    src={logoDIP}
-                                    alt="กรมทรัพย์สินทางปัญญา"
-                                    className="max-h-32 md:max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-                                />
-                            </div>
-                        </motion.div>*/}
-
-            {/* Partner 3: Flips Innovative 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
-                            className="group"
-                        >
-                            <div className="bg-white rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_40px_rgba(122,30,166,0.3)] transition-all duration-500 hover:-translate-y-2 h-40 md:h-48 flex items-center justify-center">
-                                <img
-                                    src={logoFlips}
-                                    alt="Flips Innovative"
-                                    className="max-h-32 md:max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-                                />
-                            </div>
-                        </motion.div>*/}
-
-            {/* Partner 4: Fraction 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.25 }}
-                            className="group"
-                        >
-                            <div className="bg-white rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_40px_rgba(122,30,166,0.3)] transition-all duration-500 hover:-translate-y-2 h-40 md:h-48 flex items-center justify-center">
-                                <img
-                                    src={logoFraction}
-                                    alt="Fraction"
-                                    className="max-h-32 md:max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-                                />
-                            </div>
-                        </motion.div>*/}
-
-
-
-            {/* Partner 5: มหาวิทยาลัยมหาสารคาม 
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.2 }}
-                            className="group"
-                        >
-                            <div className="bg-white rounded-2xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_40px_rgba(122,30,166,0.3)] transition-all duration-500 hover:-translate-y-2 h-40 md:h-48 flex items-center justify-center">
-                                <img
-                                    src={logoMSU}
-                                    alt="มหาวิทยาลัยมหาสารคาม"
-                                    className="max-h-32 md:max-h-40 max-w-full object-contain group-hover:scale-105 transition-transform duration-500"
-                                />
-                            </div>
-                        </motion.div>
-                    </div>
-                </div>
-            </section>*/}
-
-
             {/* Newsletter Subscription Section */}
-            <section className="py-20 bg-gradient-to-b from-colestia-bg to-colestia-bg">
-                <div className="container mx-auto px-6">
+            <section className="py-16 md:py-20 bg-gradient-to-b from-colestia-bg to-colestia-bg">
+                <div className="container mx-auto px-4 md:px-6">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        className="bg-gradient-to-r from-colestia-purple to-colestia-gold rounded-3xl p-12 md:p-16 text-center shadow-[0_20px_60px_rgba(149,1,255,0.4)]"
+                        className="bg-gradient-to-r from-colestia-purple to-colestia-gold rounded-3xl p-8 md:p-16 text-center shadow-[0_20px_60px_rgba(149,1,255,0.4)]"
                     >
-                        <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
+                        <h2 className="text-2xl md:text-4xl font-display font-bold text-white mb-3 md:mb-4">
                             {t('newsletter_title')}
                         </h2>
-                        <p className="text-white/90 text-lg mb-8 max-w-2xl mx-auto">
+                        <p className="text-white/90 text-sm md:text-lg mb-6 md:mb-8 max-w-2xl mx-auto">
                             {t('newsletter_desc')}
                         </p>
 
                         {/* Email Input Form */}
-                        <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-md mx-auto">
                             <input
                                 type="email"
                                 placeholder={t('newsletter_placeholder')}
-                                className="flex-1 px-6 py-4 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/100 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all"
+                                className="flex-1 px-5 py-3 md:px-6 md:py-4 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white placeholder-white/100 focus:outline-none focus:ring-2 focus:ring-white/50 transition-all text-sm md:text-base"
                             />
-                            <button className="px-8 py-4 bg-white text-colestia-purple rounded-full font-semibold hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105">
+                            <button className="px-6 py-3 md:px-8 md:py-4 bg-white text-colestia-purple rounded-full font-semibold hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 hover:scale-105 text-sm md:text-base">
                                 {t('newsletter_btn')}
                             </button>
                         </div>
@@ -577,7 +468,7 @@ const Home = () => {
                                 animate={{ scale: 1, opacity: 1 }}
                                 exit={{ scale: 0.9, opacity: 0 }}
                                 transition={{ type: "spring", duration: 0.5 }}
-                                className="bg-[#0a0a0a] border border-colestia-purple/30 rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-hidden relative shadow-[0_20px_60px_rgba(122,30,166,0.4)]"
+                                className="bg-[#0a0a0a] border border-colestia-purple/30 rounded-2xl max-w-5xl w-full max-h-[85vh] md:max-h-[90vh] overflow-hidden relative shadow-[0_20px_60px_rgba(122,30,166,0.4)] flex flex-col md:block"
                                 onClick={(e) => e.stopPropagation()}
                             >
                                 {/* Close Button */}
@@ -590,32 +481,32 @@ const Home = () => {
                                 </button>
 
                                 {/* Two Column Layout */}
-                                <div className="grid md:grid-cols-2 gap-0 h-full">
+                                <div className="grid md:grid-cols-2 gap-0 h-full overflow-hidden">
                                     {/* Left Column - Director Image */}
-                                    <div className="relative h-[40vh] md:h-auto overflow-hidden">
+                                    <div className="relative h-[35vh] md:h-full overflow-hidden shrink-0">
                                         <img
                                             src={selectedDirector.img}
                                             alt={selectedDirector.name}
-                                            className="w-full h-full object-contain object-center bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a]"
+                                            className="w-full h-full object-contain md:object-cover object-top bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a]"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent md:hidden" />
                                     </div>
 
                                     {/* Right Column - Content */}
-                                    <div className="p-8 overflow-y-auto max-h-[50vh] md:max-h-[90vh]">
+                                    <div className="p-6 md:p-8 overflow-y-auto custom-scrollbar h-full md:h-auto">
                                         {/* Name and Role */}
-                                        <div className="mb-6">
+                                        <div className="mb-4 md:mb-6">
                                             <h2 className="text-2xl md:text-3xl font-display font-bold text-white mb-2">
                                                 {selectedDirector.name}
                                             </h2>
-                                            <p className="text-colestia-magenta text-base font-medium">
+                                            <p className="text-colestia-magenta text-sm md:text-base font-medium">
                                                 {selectedDirector.role}
                                             </p>
                                         </div>
 
                                         {/* Biography */}
                                         <div className="space-y-3 mb-6">
-                                            <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
+                                            <h3 className="text-base md:text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
                                                 {t('director_bio')}
                                             </h3>
                                             <p
@@ -626,7 +517,7 @@ const Home = () => {
 
                                         {/* Recent Works */}
                                         <div className="space-y-3">
-                                            <h3 className="text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
+                                            <h3 className="text-base md:text-lg font-bold text-white border-l-4 border-colestia-purple pl-4">
                                                 {t('director_works')}
                                             </h3>
                                             <p className="text-gray-300 leading-relaxed italic text-sm md:text-base">
@@ -642,6 +533,7 @@ const Home = () => {
                 )
             }
         </div >
+
     );
 };
 

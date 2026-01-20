@@ -8,8 +8,8 @@ export default {
         extend: {
             colors: {
                 colestia: {
-                    bg: '#201c1d',       // Deepest Black (from palette)
-                    card: '#201c1d',
+                    bg: '#050505',       // Deepest Black (standardized)
+                    card: '#050505',
 
                     // The New Palette - Minimalist Refactor
                     purple: '#9501ff',   // Vibrant Purple (Primary)

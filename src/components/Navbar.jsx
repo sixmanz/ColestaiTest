@@ -92,10 +92,10 @@ const Navbar = () => {
 
                 {/* Mobile/Tablet Toggle */}
                 <button
-                    className="lg:hidden text-white"
+                    className="lg:hidden text-white w-10 h-10 flex items-center justify-center rounded-full active:bg-white/10 transition-colors z-50 relative"
                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
-                    {isMobileMenuOpen ? <X /> : <Menu />}
+                    {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
             </div>
 
@@ -106,43 +106,67 @@ const Navbar = () => {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: '100vh' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="lg:hidden bg-colestia-bg absolute top-full left-0 w-full overflow-hidden flex flex-col items-center pt-20 gap-8"
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="lg:hidden fixed top-0 left-0 w-full bg-[#050505] overflow-hidden flex flex-col items-center justify-center gap-6 z-40"
                     >
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.path}
-                                to={link.path}
-                                className="text-2xl font-display text-white hover:text-colestia-purple"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
+                        {/* Background Gradient Blob */}
+                        <div className="absolute top-[-20%] right-[-20%] w-[400px] h-[400px] bg-colestia-purple/20 rounded-full blur-[80px] pointer-events-none" />
+                        <div className="absolute bottom-[-20%] left-[-20%] w-[400px] h-[400px] bg-colestia-blue/20 rounded-full blur-[80px] pointer-events-none" />
+
+                        <div className="flex flex-col items-center gap-6 mt-12 relative z-10 w-full px-6">
+                            {navLinks.map((link, index) => (
+                                <motion.div
+                                    key={link.path}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 + index * 0.05 }}
+                                >
+                                    <Link
+                                        to={link.path}
+                                        className="text-3xl font-display font-bold text-white hover:text-colestia-purple transition-colors tracking-tight"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        {link.name}
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
 
                         {/* Language Toggle - Mobile */}
-                        <button
+                        <motion.button
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
                             onClick={toggleLanguage}
-                            className="flex items-center gap-3 px-6 py-2 rounded-full border border-white/20 hover:border-colestia-purple/50 transition-all duration-300"
+                            className="flex items-center gap-3 px-6 py-3 rounded-full border border-white/20 hover:border-colestia-purple/50 bg-white/5 backdrop-blur-sm transition-all duration-300 mt-4 relative z-10"
                         >
                             <Globe size={20} className="text-colestia-purple" />
                             <span className="text-lg font-medium text-white">
-                                {language === 'th' ? 'ไทย' : 'English'}
+                                {language === 'th' ? 'Thai (TH)' : 'English (EN)'}
                             </span>
-                        </button>
+                        </motion.button>
 
                         {/* Join Now Button - Mobile */}
-                        <Link
-                            to="/login"
-                            className="bg-gradient-to-r from-colestia-purple to-colestia-blue text-white px-8 py-3 rounded-full text-lg font-semibold hover:shadow-[0_0_20px_rgba(149,1,255,0.4)] transition-all duration-300 mt-4"
-                            onClick={() => setIsMobileMenuOpen(false)}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                            className="w-full px-6 relative z-10"
                         >
-                            {t('nav_join')}
-                        </Link>
+                            <Link
+                                to="/login"
+                                className="block w-full text-center bg-gradient-to-r from-colestia-purple to-colestia-blue text-white py-4 rounded-xl text-xl font-bold font-display shadow-[0_0_30px_rgba(149,1,255,0.3)] hover:shadow-[0_0_40px_rgba(149,1,255,0.5)] transition-all duration-300 active:scale-95"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                {t('nav_join')}
+                            </Link>
+                        </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
         </nav>
     );
 };
+
 
 export default Navbar;
