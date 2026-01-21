@@ -343,16 +343,18 @@ const Products = () => {
                     className="sticky top-28 z-40 mb-12 backdrop-blur-xl bg-black/60 border-y border-white/10 py-4 -mx-6 px-6 md:mx-0 md:px-6 md:rounded-2xl md:border"
                 >
                     <div className="flex items-center justify-between gap-4 overflow-x-auto scrollbar-hide">
-                        <div className="flex items-center gap-2 flex-shrink-0">
-                            <Filter size={18} className="text-colestia-purple" />
-                            <span className="text-sm font-bold text-white hidden md:inline">{t('filter_title')}</span>
+                        {/* Left: Filter Label */}
+                        <div className="flex items-center gap-4 flex-shrink-0">
+                            <div className="flex items-center gap-2 flex-shrink-0">
+                                <Filter size={18} className="text-colestia-purple" />
+                                <span className="text-sm font-bold text-white hidden md:inline">{t('filter_title')}</span>
+                            </div>
+                            <div className="h-6 w-px bg-white/20 hidden md:block" />
                         </div>
-
-                        <div className="h-6 w-px bg-white/20 hidden md:block" />
 
                         {/* Scrolling Container for Filters */}
                         <div className="flex-1 overflow-x-auto scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
-                            <div className="flex gap-1.5 min-w-max pb-2 md:pb-0 pr-6 md:pr-0">
+                            <div className="flex gap-1.5 min-w-max pb-2 md:pb-0 pr-6 md:pr-0 w-full md:justify-center">
                                 {GENRES.map((genre) => (
                                     <button
                                         key={genre.id}
@@ -374,165 +376,174 @@ const Products = () => {
                                 ))}
                             </div>
                         </div>
+
                     </div>
                 </motion.div>
 
                 {/* 3. Popular Section - Horizontal Scroll by default, Grid if View All */}
-                {onSaleMovies.length > 0 && (
-                    <motion.div
-                        layout
-                        className="mb-16"
-                    >
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-2 ml-1">
-                                <Flame className="text-amber-500 fill-amber-500" />
-                                <h2 className="text-2xl font-display font-bold text-white tracking-wide">{t('section_popular')}</h2>
+                {
+                    onSaleMovies.length > 0 && (
+                        <motion.div
+                            layout
+                            className="mb-16"
+                        >
+                            <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center gap-2 ml-1">
+                                    <Flame className="text-amber-500 fill-amber-500" />
+                                    <h2 className="text-2xl font-display font-bold text-white tracking-wide">{t('section_popular')}</h2>
+                                </div>
+
+                                {/* View All Toggle */}
+                                <button
+                                    onClick={() => setViewAllPopular(!viewAllPopular)}
+                                    className="flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-full hover:bg-white/10"
+                                >
+                                    {viewAllPopular ? (
+                                        <><LayoutList size={16} /> {language === 'th' ? 'แบบเลื่อน' : 'Carousel'}</>
+                                    ) : (
+                                        <><LayoutGrid size={16} /> {language === 'th' ? 'ดูทั้งหมด' : 'View All'}</>
+                                    )}
+                                </button>
                             </div>
 
-                            {/* View All Toggle */}
-                            <button
-                                onClick={() => setViewAllPopular(!viewAllPopular)}
-                                className="flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-full hover:bg-white/10"
-                            >
-                                {viewAllPopular ? (
-                                    <><LayoutList size={16} /> {language === 'th' ? 'แบบเลื่อน' : 'Carousel'}</>
-                                ) : (
-                                    <><LayoutGrid size={16} /> {language === 'th' ? 'ดูทั้งหมด' : 'View All'}</>
-                                )}
-                            </button>
-                        </div>
-
-                        {viewAllPopular ? (
-                            // Grid View
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                            >
-                                {isLoading ? Array(3).fill(0).map((_, i) => <SkeletonCard key={i} />) :
-                                    onSaleMovies.map(movie => (
-                                        <div key={movie.id} className="h-[400px]">
-                                            <MovieCard movie={movie} />
-                                        </div>
-                                    ))
-                                }
-                            </motion.div>
-                        ) : (
-                            // Horizontal Scroll View
-                            <div className="relative group">
-                                <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                            {viewAllPopular ? (
+                                // Grid View
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                                >
                                     {isLoading ? Array(3).fill(0).map((_, i) => <SkeletonCard key={i} />) :
                                         onSaleMovies.map(movie => (
-                                            <div key={movie.id} className="min-w-[85vw] md:min-w-[350px] snap-center h-[400px]">
+                                            <div key={movie.id} className="h-[400px]">
                                                 <MovieCard movie={movie} />
                                             </div>
                                         ))
                                     }
-                                    {/* Spacer for padding at the end */}
-                                    <div className="min-w-[20px] md:min-w-[0px]" />
-                                </div>
-
-                                {/* Scroll Indicator (Fade + Arrow) */}
-                                {!isLoading && onSaleMovies.length > 2 && (
-                                    <div className="absolute right-0 top-0 bottom-8 w-24 md:w-32 bg-gradient-to-l from-black via-black/60 to-transparent pointer-events-none flex items-center justify-end px-4 md:px-8 opacity-100 transition-opacity duration-500 md:rounded-r-xl">
-                                        <ChevronRight className="text-white/80 animate-pulse drop-shadow-lg" size={40} strokeWidth={3} />
+                                </motion.div>
+                            ) : (
+                                // Horizontal Scroll View
+                                <div className="relative group">
+                                    <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                                        {isLoading ? Array(3).fill(0).map((_, i) => <SkeletonCard key={i} />) :
+                                            onSaleMovies.map(movie => (
+                                                <div key={movie.id} className="min-w-[85vw] md:min-w-[350px] snap-center h-[400px]">
+                                                    <MovieCard movie={movie} />
+                                                </div>
+                                            ))
+                                        }
+                                        {/* Spacer for padding at the end */}
+                                        <div className="min-w-[20px] md:min-w-[0px]" />
                                     </div>
-                                )}
-                            </div>
-                        )}
-                    </motion.div>
-                )}
+
+                                    {/* Scroll Indicator (Fade + Arrow) */}
+                                    {!isLoading && onSaleMovies.length > 2 && (
+                                        <div className="absolute right-0 top-0 bottom-8 w-24 md:w-32 bg-gradient-to-l from-black via-black/60 to-transparent pointer-events-none flex items-center justify-end px-4 md:px-8 opacity-100 transition-opacity duration-500 md:rounded-r-xl">
+                                            <ChevronRight className="text-white/80 animate-pulse drop-shadow-lg" size={40} strokeWidth={3} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </motion.div>
+                    )
+                }
 
                 {/* 4. New Arrivals / All Others - Horizontal Scroll by default */}
-                {newMovies.length > 0 && (
-                    <motion.div layout className="mb-16">
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center gap-2 ml-1">
-                                <Zap className="text-colestia-blue fill-colestia-blue" />
-                                <h2 className="text-2xl font-display font-bold text-white tracking-wide">
-                                    {selectedGenre === 'all' ? t('section_new') : 'Results'}
-                                </h2>
+                {
+                    newMovies.length > 0 && (
+                        <motion.div layout className="mb-16">
+                            <div className="flex items-center justify-between mb-6">
+                                <div className="flex items-center gap-2 ml-1">
+                                    <Zap className="text-colestia-blue fill-colestia-blue" />
+                                    <h2 className="text-2xl font-display font-bold text-white tracking-wide">
+                                        {selectedGenre === 'all' ? t('section_new') : 'Results'}
+                                    </h2>
+                                </div>
+
+                                {/* View All Toggle */}
+                                <button
+                                    onClick={() => setViewAllNew(!viewAllNew)}
+                                    className="flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-full hover:bg-white/10"
+                                >
+                                    {viewAllNew ? (
+                                        <><LayoutList size={16} /> {language === 'th' ? 'แบบเลื่อน' : 'Carousel'}</>
+                                    ) : (
+                                        <><LayoutGrid size={16} /> {language === 'th' ? 'ดูทั้งหมด' : 'View All'}</>
+                                    )}
+                                </button>
                             </div>
 
-                            {/* View All Toggle */}
-                            <button
-                                onClick={() => setViewAllNew(!viewAllNew)}
-                                className="flex items-center gap-1.5 text-sm font-medium text-gray-400 hover:text-white transition-colors px-3 py-1.5 rounded-full hover:bg-white/10"
-                            >
-                                {viewAllNew ? (
-                                    <><LayoutList size={16} /> {language === 'th' ? 'แบบเลื่อน' : 'Carousel'}</>
-                                ) : (
-                                    <><LayoutGrid size={16} /> {language === 'th' ? 'ดูทั้งหมด' : 'View All'}</>
-                                )}
-                            </button>
-                        </div>
-
-                        {viewAllNew ? (
-                            // Grid View
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
-                            >
-                                {isLoading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) :
-                                    newMovies.map(movie => (
-                                        <div key={movie.id} className="h-[360px]">
-                                            <MovieCard movie={movie} />
-                                        </div>
-                                    ))
-                                }
-                            </motion.div>
-                        ) : (
-                            // Horizontal Scroll View
-                            <div className="relative group">
-                                <div className="flex overflow-x-auto gap-4 md:gap-6 pb-8 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                            {viewAllNew ? (
+                                // Grid View
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+                                >
                                     {isLoading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) :
                                         newMovies.map(movie => (
-                                            <div key={movie.id} className="min-w-[45vw] md:min-w-[260px] snap-center h-[360px]">
+                                            <div key={movie.id} className="h-[360px]">
                                                 <MovieCard movie={movie} />
                                             </div>
                                         ))
                                     }
-                                    {/* Spacer for padding at the end */}
-                                    <div className="min-w-[20px] md:min-w-[0px]" />
-                                </div>
-
-                                {/* Scroll Indicator (Fade + Arrow) */}
-                                {!isLoading && newMovies.length > 2 && (
-                                    <div className="absolute right-0 top-0 bottom-8 w-16 md:w-24 bg-gradient-to-l from-black via-black/60 to-transparent pointer-events-none flex items-center justify-end px-2 md:px-4 opacity-100 transition-opacity duration-500 md:rounded-r-xl">
-                                        <ChevronRight className="text-white/80 animate-pulse drop-shadow-lg" size={32} strokeWidth={3} />
+                                </motion.div>
+                            ) : (
+                                // Horizontal Scroll View
+                                <div className="relative group">
+                                    <div className="flex overflow-x-auto gap-4 md:gap-6 pb-8 snap-x snap-mandatory scrollbar-hide -mx-6 px-6 md:mx-0 md:px-0">
+                                        {isLoading ? Array(4).fill(0).map((_, i) => <SkeletonCard key={i} />) :
+                                            newMovies.map(movie => (
+                                                <div key={movie.id} className="min-w-[45vw] md:min-w-[260px] snap-center h-[360px]">
+                                                    <MovieCard movie={movie} />
+                                                </div>
+                                            ))
+                                        }
+                                        {/* Spacer for padding at the end */}
+                                        <div className="min-w-[20px] md:min-w-[0px]" />
                                     </div>
-                                )}
-                            </div>
-                        )}
-                    </motion.div>
-                )}
+
+                                    {/* Scroll Indicator (Fade + Arrow) */}
+                                    {!isLoading && newMovies.length > 2 && (
+                                        <div className="absolute right-0 top-0 bottom-8 w-16 md:w-24 bg-gradient-to-l from-black via-black/60 to-transparent pointer-events-none flex items-center justify-end px-2 md:px-4 opacity-100 transition-opacity duration-500 md:rounded-r-xl">
+                                            <ChevronRight className="text-white/80 animate-pulse drop-shadow-lg" size={32} strokeWidth={3} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </motion.div>
+                    )
+                }
 
                 {/* 5. Coming Soon */}
-                {comingSoonMovies.length > 0 && (
-                    <div className="mt-12 border-t border-white/10 pt-16">
-                        <div className="flex items-center gap-2 mb-8 justify-center">
-                            <Clock className="text-gray-500" />
-                            <h2 className="text-2xl font-display font-bold text-gray-300 tracking-wide">{t('section_coming')}</h2>
-                        </div>
+                {
+                    comingSoonMovies.length > 0 && (
+                        <div className="mt-12 border-t border-white/10 pt-16">
+                            <div className="flex items-center gap-2 mb-8 justify-center">
+                                <Clock className="text-gray-500" />
+                                <h2 className="text-2xl font-display font-bold text-gray-300 tracking-wide">{t('section_coming')}</h2>
+                            </div>
 
-                        <div className="flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory scrollbar-hide px-6 -mx-6 md:mx-0 md:px-0">
-                            {comingSoonMovies.map(movie => (
-                                <div key={movie.id} className="min-w-[280px] md:min-w-[320px] h-[450px] snap-center">
-                                    <ComingSoonCard movie={movie} />
-                                </div>
-                            ))}
+                            <div className="flex overflow-x-auto gap-6 pb-12 snap-x snap-mandatory scrollbar-hide px-6 -mx-6 md:mx-0 md:px-0">
+                                {comingSoonMovies.map(movie => (
+                                    <div key={movie.id} className="min-w-[280px] md:min-w-[320px] h-[450px] snap-center">
+                                        <ComingSoonCard movie={movie} />
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
-                {filteredMovies.length === 0 && !isLoading && (
-                    <div className="text-center py-32 opacity-50">
-                        <p className="text-xl">{t('no_results')}</p>
-                    </div>
-                )}
-            </div>
-        </div>
+                {
+                    filteredMovies.length === 0 && !isLoading && (
+                        <div className="text-center py-32 opacity-50">
+                            <p className="text-xl">{t('no_results')}</p>
+                        </div>
+                    )
+                }
+            </div >
+        </div >
     );
 };
 
