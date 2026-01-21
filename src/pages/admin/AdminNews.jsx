@@ -19,7 +19,7 @@ const initialNews = [
         id: '2',
         title: 'ปรัชญา ปิ่นแก้ว เข้าร่วมเป็น Director ใน Colestia',
         titleEn: 'Prachya Pinkaew Joins Colestia as Director',
-        summary: 'ผู้กำกับชื่อดังจากหนัง องค์บาก เข้าร่วมทีม Colestia',
+        summary: 'ผู้กำกับชื่อดังจากภาพยนตร์ องค์บาก เข้าร่วมทีม Colestia',
         content: 'ปรัชญา ปิ่นแก้ว ผู้กำกับภาพยนตร์ชื่อดังของไทย ผู้สร้างสรรค์ผลงานอย่าง องค์บาก และ ต้มยำกุ้ง ได้เข้าร่วมกับ Colestia...',
         image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?w=500',
         status: 'published',

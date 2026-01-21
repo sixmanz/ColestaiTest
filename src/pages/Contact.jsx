@@ -94,7 +94,7 @@ const Contact = () => {
                         <Film className="text-purple-400" size={40} />
                     </div>
                     <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">{t('contact_title') || 'ติดต่อเรา'}</h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">{t('contact_subtitle') || 'สนใจนำหนังมาลงทุน หรือต้องการร่วมงานกับเรา? ส่งรายละเอียดให้เราได้เลย'}</p>
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">{t('contact_subtitle') || 'สนใจนำภาพยนตร์มาลงทุน หรือต้องการร่วมงานกับเรา? ส่งรายละเอียดให้เราได้เลย'}</p>
                 </motion.div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
@@ -215,7 +215,7 @@ const Contact = () => {
                                                 <option value="feature_film">{t('contact_type_feature') || 'ภาพยนตร์โรง'}</option>
                                                 <option value="series">{t('contact_type_series') || 'ซีรีส์'}</option>
                                                 <option value="documentary">{t('contact_type_doc') || 'สารคดี'}</option>
-                                                <option value="short_film">{t('contact_type_short') || 'หนังสั้น'}</option>
+                                                <option value="short_film">{t('contact_type_short') || 'ภาพยนตร์สั้น'}</option>
                                                 <option value="other">{t('contact_type_other') || 'อื่นๆ'}</option>
                                             </select>
                                         </div>

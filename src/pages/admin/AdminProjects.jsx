@@ -340,7 +340,7 @@ const AdminProjects = () => {
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Genre</label>
                                         <input name="genre" value={formData.genre} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="e.g. Sci-Fi, Drama, Action" />
-                                        <p className="text-xs text-gray-400 mt-1">ประเภทหนัง (คั่นด้วย comma ถ้ามีหลายประเภท)</p>
+                                        <p className="text-xs text-gray-400 mt-1">ประเภทภาพยนตร์ (คั่นด้วย comma ถ้ามีหลายประเภท)</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>

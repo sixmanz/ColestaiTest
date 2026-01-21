@@ -48,7 +48,7 @@ const Education = () => {
         {
             id: 4,
             title: "How to Pitch Your Script to Investors",
-            titleTh: "เทคนิคการเสนอขายบทหนังให้นายทุน",
+            titleTh: "เทคนิคการเสนอขายบทภาพยนตร์ให้นายทุน",
             category: "Investment",
             readTime: "4 min read",
             image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=800&q=80", // Pitch/Meeting
@@ -58,12 +58,12 @@ const Education = () => {
         {
             id: 5,
             title: "Legal Frameworks for Indie Filmmakers",
-            titleTh: "กฎหมายเบื้องต้นสำหรับนักทำหนังอิสระ",
+            titleTh: "กฎหมายเบื้องต้นสำหรับนักทำภาพยนตร์อิสระ",
             category: "Legal",
             readTime: "8 min read",
             image: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=800&q=80", // Law/Justice
             desc: "Contracts, release forms, and copyright laws every filmmaker needs to know.",
-            descTh: "สัญญา แบบฟอร์มอนุญาต และกฎหมายลิขสิทธิ์ที่นักทำหนังทุกคนควรรู้"
+            descTh: "สัญญา แบบฟอร์มอนุญาต และกฎหมายลิขสิทธิ์ที่นักทำภาพยนตร์ทุกคนควรรู้"
         },
         {
             id: 6,
@@ -118,8 +118,8 @@ const Education = () => {
                             key={cat}
                             onClick={() => setActiveCategory(cat)}
                             className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${activeCategory === cat
-                                    ? 'bg-gradient-to-r from-colestia-purple to-colestia-blue text-white shadow-lg shadow-colestia-purple/25'
-                                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
+                                ? 'bg-gradient-to-r from-colestia-purple to-colestia-blue text-white shadow-lg shadow-colestia-purple/25'
+                                : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
                                 }`}
                         >
                             {cat}
