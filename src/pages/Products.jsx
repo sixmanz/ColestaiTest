@@ -98,7 +98,16 @@ const FeaturedHero = ({ movie }) => {
                         </div>
                     </div>
 
-                    <div className="w-full md:w-auto flex-shrink-0">
+                    <div className="w-full md:w-auto flex-shrink-0 flex flex-col md:flex-row gap-4">
+                        <Link to={`/project/${movie.id || movie.firestoreId}`}>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className="w-full md:w-auto bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2"
+                            >
+                                {t('btn_view_details')}
+                            </motion.button>
+                        </Link>
                         <Link to={`/project/${movie.id || movie.firestoreId}`}>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
@@ -205,14 +214,22 @@ const MovieCard = ({ movie }) => {
                         </div>
 
                         {/* CTA Button */}
-                        <Link to={`/project/${movie.id || movie.firestoreId}`} className="mt-2">
-                            <button className={`w-full py-2.5 rounded-xl font-bold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${isHovered
-                                ? 'bg-white text-black shadow-lg scale-105'
-                                : 'bg-white/5 text-white hover:bg-white/10'
-                                }`}>
-                                {t('btn_invest')} <Zap size={14} className={isHovered ? "fill-black" : ""} />
-                            </button>
-                        </Link>
+                        {/* CTA Buttons */}
+                        <div className="mt-3 flex gap-2">
+                            <Link to={`/project/${movie.id || movie.firestoreId}`} className="flex-1">
+                                <button className="w-full h-full py-2 rounded-xl font-medium text-xs border border-white/20 text-gray-300 hover:text-white hover:bg-white/10 transition-all">
+                                    {t('btn_view_details')}
+                                </button>
+                            </Link>
+                            <Link to={`/project/${movie.id || movie.firestoreId}`} className="flex-1">
+                                <button className={`w-full py-2.5 rounded-xl font-bold text-xs transition-all duration-300 flex items-center justify-center gap-1 ${isHovered
+                                    ? 'bg-colestia-purple text-white shadow-lg'
+                                    : 'bg-white/10 text-white'
+                                    }`}>
+                                    {t('btn_invest')} <Zap size={14} className="fill-white" />
+                                </button>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </Spotlight>

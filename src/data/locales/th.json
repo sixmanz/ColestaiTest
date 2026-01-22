@@ -82,6 +82,7 @@
     "label_investors": "นักลงทุน",
     "label_director": "ผู้กำกับ",
     "btn_invest": "ลงทุนเลย",
+    "btn_view_details": "ดูรายละเอียด",
     "btn_notify": "แจ้งเตือนเมื่อเปิดระดมทุน",
     "label_expected": "คาดว่าเปิดระดมทุน",
     "btn_back": "กลับสู่หน้ารายการ",

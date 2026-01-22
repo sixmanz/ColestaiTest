@@ -15,6 +15,7 @@ import logoCulture from '../assets/partners/culture.png';
 import logoDIP from '../assets/partners/dip.png';
 import logoMSU from '../assets/partners/msu.png';
 import logoSEC from '../assets/partners/sec.png';
+import { projects } from '../data/projectsData'; // Import projects data
 
 
 
@@ -177,55 +178,170 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* 3. "Creative Idea" Section */}
-            <section className="py-16 md:py-24 bg-colestia-bg relative">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="grid md:grid-cols-2 gap-8 lg:gap-16 items-start">
-                        {/* Image Left */}
+            {/* 3. "Creative Idea" Section - Refined Premium Design */}
+            <section className="py-24 md:py-32 bg-colestia-bg relative overflow-hidden">
+                {/* Background Decor */}
+                <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-colestia-purple/5 rounded-full blur-[128px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+
+                <div className="container mx-auto px-6 relative z-10">
+                    <div className="grid md:grid-cols-12 gap-12 lg:gap-20 items-center">
+                        {/* Image Left - Premium Frame */}
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            className="relative h-[250px] md:h-[500px] rounded-2xl overflow-hidden glass-panel border border-white/10"
+                            transition={{ duration: 0.8, ease: "easeOut" }}
+                            className="md:col-span-6 relative group"
                         >
-                            <img
-                                src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2070&auto=format&fit=crop"
-                                alt="Filmmaking"
-                                className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700"
-                            />
+                            <div className="absolute -inset-1 bg-gradient-to-tr from-colestia-purple to-colestia-blue opacity-30 rounded-2xl blur-lg group-hover:opacity-50 transition-opacity duration-700"></div>
+                            <div className="relative h-[300px] md:h-[600px] rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                                <img
+                                    src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2070&auto=format&fit=crop"
+                                    alt="Filmmaking"
+                                    className="w-full h-full object-cover transition-transform duration-1000 transform group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+                            </div>
                         </motion.div>
 
-                        {/* Text Right */}
+                        {/* Text Right - Editorial Layout */}
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            className="flex flex-col pl-0 md:pl-10 justify-center text-center md:text-left"
+                            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                            className="md:col-span-6 flex flex-col justify-center"
                         >
-                            <div className="mb-6 md:mb-8">
-                                <h2 className="text-2xl md:text-5xl font-display font-bold leading-tight">
-                                    <span className="text-colestia-purple">colestia</span> <span className="text-white">{t('home_creative_title_creative')}</span> <span className="text-[#FFD700]">{t('home_creative_title_idea')}</span>
-                                    <span className="block mt-2 text-white text-xl md:text-4xl">{t('home_creative_title_2')} {t('home_creative_title_3')}</span>
+                            <div className="mb-8 md:mb-12">
+                                <h2 className="text-4xl md:text-7xl font-display font-bold leading-[0.9] tracking-tight mb-6">
+                                    <span className="text-colestia-purple block mb-2">colestia</span>
+                                    <span className="text-white block">
+                                        {t('home_creative_title_creative')} <span className="italic font-light text-[#FFD700] ml-2">{t('home_creative_title_idea')}</span>
+                                    </span>
+                                    <span className="text-white/40 block mt-2 text-2xl md:text-4xl font-light tracking-wide">
+                                        {t('home_creative_title_2')} {t('home_creative_title_3')}
+                                    </span>
                                 </h2>
+                                <div className="w-24 h-1 bg-gradient-to-r from-colestia-purple to-transparent rounded-full opacity-50"></div>
                             </div>
 
-                            <div className="space-y-6 text-gray-300 font-light text-base md:text-xl">
-                                <h3 className="text-xl md:text-3xl text-white font-semibold leading-snug">
-                                    <span className="text-colestia-purple">colestia</span> {t('home_creative_subtitle_1')}
-                                </h3>
-
-                                <div className="space-y-4 md:space-y-6 leading-relaxed text-sm md:text-lg px-2 md:px-0">
-                                    <p>
-                                        <span className="text-colestia-purple font-semibold">colestia</span> {t('home_creative_desc_1')}
-                                    </p>
-                                    <p>
-                                        {t('home_creative_desc_2')}
+                            <div className="space-y-8">
+                                <div>
+                                    <h3 className="text-2xl md:text-3xl text-white font-medium leading-snug mb-4">
+                                        <span className="text-colestia-purple">colestia</span> {t('home_creative_subtitle_1')}
+                                    </h3>
+                                    <p className="text-gray-400 text-lg leading-relaxed border-l-2 border-white/10 pl-6">
+                                        <span className="text-white font-medium">colestia</span> {t('home_creative_desc_1')}
                                     </p>
                                 </div>
+
+                                <p className="text-gray-400 text-lg leading-relaxed font-light">
+                                    {t('home_creative_desc_2')}
+                                </p>
                             </div>
                         </motion.div>
+                    </div>
+                </div>
+            </section>
+
+            {/* 3.5 Popular Projects Section */}
+            <section className="py-16 md:py-24 bg-[#050505] relative cursor-default">
+                <div className="container mx-auto px-4 md:px-6">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="flex flex-col md:flex-row justify-between items-end mb-12"
+                    >
+                        <div>
+                            <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-2">
+                                {t('section_popular')} <span className="text-colestia-purple">Projects</span>
+                            </h2>
+                            <p className="text-gray-400 text-sm md:text-base max-w-xl">
+                                {t('products_subtitle')}
+                            </p>
+                        </div>
+                        <Link to="/products">
+                            <Button variant="outline" className="hidden md:flex items-center gap-2 mt-4 md:mt-0">
+                                {t('see_more')} <ArrowRight size={16} />
+                            </Button>
+                        </Link>
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                        {projects
+                            .sort((a, b) => b.percentage - a.percentage)
+                            .slice(0, 4)
+                            .map((project, index) => (
+                                <motion.div
+                                    key={project.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="group relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/10 hover:border-colestia-purple/50 transition-colors duration-500 shadow-lg"
+                                >
+                                    {/* Poster Image */}
+                                    <img
+                                        src={project.poster}
+                                        alt={project.titleEn}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    />
+
+                                    {/* Gradient Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
+
+                                    {/* Content (Visible on Hover/Mobile) */}
+                                    <div className="absolute bottom-0 left-0 w-full p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+
+                                        {/* Genre Badge */}
+                                        <span className="inline-block px-3 py-1 bg-colestia-purple/20 text-colestia-magenta text-xs font-bold uppercase tracking-wider rounded-full mb-3 backdrop-blur-sm border border-colestia-purple/30">
+                                            {project.genre}
+                                        </span>
+
+                                        <h3 className="text-xl md:text-2xl font-bold text-white leading-tight mb-2 drop-shadow-md">
+                                            {language === 'th' ? project.titleTh : project.titleEn}
+                                        </h3>
+
+                                        {/* Funding Info */}
+                                        <div className="space-y-3 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                                            {/* Progress Bar */}
+                                            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue"
+                                                    style={{ width: `${Math.min(project.percentage, 100)}%` }} // Use string interpolation for width
+                                                />
+                                            </div>
+
+                                            <div className="flex justify-between text-xs font-medium text-white/80">
+                                                <span>{project.percentage}% Funded</span>
+                                                <span className="text-colestia-magenta">{project.currency || '฿'}{project.currentFunding.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+
+                                        {/* Action Buttons */}
+                                        <div className="flex gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-150">
+                                            <Link to={`/project/${project.id}`} className="flex-1">
+                                                <button className="w-full py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white font-bold rounded-xl hover:bg-white/20 transition-all duration-300">
+                                                    {t('btn_view_details')}
+                                                </button>
+                                            </Link>
+                                            <Link to={`/project/${project.id}`} className="flex-1">
+                                                <button className="w-full py-3 bg-colestia-purple text-white font-bold rounded-xl hover:bg-colestia-purple/80 shadow-lg shadow-colestia-purple/20 transition-all duration-300">
+                                                    {t('btn_invest')}
+                                                </button>
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                    </div>
+                    <div className="mt-8 md:hidden text-center">
+                        <Link to="/products">
+                            <Button variant="outline" className="w-full">
+                                {t('see_more')}
+                            </Button>
+                        </Link>
                     </div>
                 </div>
             </section>
