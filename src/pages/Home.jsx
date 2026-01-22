@@ -62,19 +62,22 @@ const BentoCard = ({ title, description, className = "" }) => {
 const Home = () => {
     const { t, language } = useLanguage();
     const directorsScrollRef = useRef(null);
+    const moviesScrollRef = useRef(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
     const { directors } = useDirectors();
 
-    const scrollDirectors = (direction) => {
-        if (directorsScrollRef.current) {
-            // Scroll by container width (shows next set of cards)
-            const containerWidth = directorsScrollRef.current.clientWidth;
-            directorsScrollRef.current.scrollBy({
+    const scrollContainer = (ref, direction) => {
+        if (ref.current) {
+            const containerWidth = ref.current.clientWidth;
+            ref.current.scrollBy({
                 left: direction === 'left' ? -containerWidth : containerWidth,
                 behavior: 'smooth'
             });
         }
     };
+
+    const scrollDirectors = (direction) => scrollContainer(directorsScrollRef, direction);
+    const scrollMovies = (direction) => scrollContainer(moviesScrollRef, direction);
 
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, 100]);
@@ -268,73 +271,91 @@ const Home = () => {
                         </Link>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-                        {projects
-                            .sort((a, b) => b.percentage - a.percentage)
-                            .slice(0, 4)
-                            .map((project, index) => (
-                                <motion.div
-                                    key={project.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className="group relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/10 hover:border-colestia-purple/50 transition-colors duration-500 shadow-lg"
-                                >
-                                    {/* Poster Image */}
-                                    <img
-                                        src={project.poster}
-                                        alt={project.titleEn}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    />
+                    <div className="relative group/carousel">
+                        {/* Navigation Arrows */}
+                        <button
+                            onClick={() => scrollMovies('left')}
+                            className="absolute -left-4 md:-left-8 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-colestia-purple/80 backdrop-blur-md text-white p-2 md:p-3 rounded-full transition-all duration-300 shadow-xl opacity-0 group-hover/carousel:opacity-100 hidden md:block"
+                        >
+                            <ChevronLeft size={20} />
+                        </button>
 
-                                    {/* Gradient Overlay */}
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
+                        <div
+                            ref={moviesScrollRef}
+                            className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory px-2 pb-4"
+                            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                        >
+                            {projects
+                                .sort((a, b) => b.percentage - a.percentage)
+                                .map((project, index) => (
+                                    <motion.div
+                                        key={project.id}
+                                        initial={{ opacity: 0, y: 20 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        transition={{ delay: index * 0.1 }}
+                                        className="flex-shrink-0 w-[240px] md:w-[280px] snap-start"
+                                    >
+                                        <div className="group relative rounded-2xl overflow-hidden aspect-[2/3] border border-white/10 hover:border-colestia-purple/50 transition-colors duration-500 shadow-lg">
+                                            {/* Poster Image */}
+                                            <img
+                                                src={project.poster}
+                                                alt={project.titleEn}
+                                                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                            />
 
-                                    {/* Content (Visible on Hover/Mobile) */}
-                                    <div className="absolute bottom-0 left-0 w-full p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                                            {/* Gradient Overlay */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300" />
 
-                                        {/* Genre Badge */}
-                                        <span className="inline-block px-3 py-1 bg-colestia-purple/20 text-colestia-magenta text-xs font-bold uppercase tracking-wider rounded-full mb-3 backdrop-blur-sm border border-colestia-purple/30">
-                                            {project.genre}
-                                        </span>
+                                            {/* Content */}
+                                            <div className="absolute bottom-0 left-0 w-full p-4 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                                                {/* Genre Badge */}
+                                                <span className="inline-block px-2 py-0.5 bg-colestia-purple/20 text-colestia-magenta text-[10px] font-bold uppercase tracking-wider rounded-full mb-2 backdrop-blur-sm border border-colestia-purple/30">
+                                                    {project.genre}
+                                                </span>
 
-                                        <h3 className="text-xl md:text-2xl font-bold text-white leading-tight mb-2 drop-shadow-md">
-                                            {language === 'th' ? project.titleTh : project.titleEn}
-                                        </h3>
+                                                <h3 className="text-lg font-bold text-white leading-tight mb-1 truncate">
+                                                    {language === 'th' ? project.titleTh : project.titleEn}
+                                                </h3>
 
-                                        {/* Funding Info */}
-                                        <div className="space-y-3 mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                                            {/* Progress Bar */}
-                                            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-                                                <div
-                                                    className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue"
-                                                    style={{ width: `${Math.min(project.percentage, 100)}%` }} // Use string interpolation for width
-                                                />
-                                            </div>
+                                                {/* Funding Info */}
+                                                <div className="space-y-2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                    <div className="w-full h-1 bg-white/20 rounded-full overflow-hidden">
+                                                        <div
+                                                            className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue"
+                                                            style={{ width: `${Math.min(project.percentage, 100)}%` }}
+                                                        />
+                                                    </div>
+                                                    <div className="flex justify-between text-[10px] font-medium text-white/80">
+                                                        <span>{project.percentage}% {t('admin_projects_funded')}</span>
+                                                    </div>
+                                                </div>
 
-                                            <div className="flex justify-between text-xs font-medium text-white/80">
-                                                <span>{project.percentage}% {t('admin_projects_funded')}</span>
-                                                <span className="text-colestia-magenta">{project.currency || '฿'}{project.currentFunding.toLocaleString()}</span>
+                                                {/* Action Buttons */}
+                                                <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                                                    <Link to={`/project/${project.id}`} className="flex-1">
+                                                        <button className="w-full py-2 bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-bold rounded-lg hover:bg-white/20 transition-all">
+                                                            {t('btn_view_details_short') || t('btn_view_details')}
+                                                        </button>
+                                                    </Link>
+                                                    <Link to={`/project/${project.id}`} className="flex-1">
+                                                        <button className="w-full py-2 bg-colestia-purple text-white text-xs font-bold rounded-lg hover:bg-colestia-purple/80 transition-all">
+                                                            {t('btn_invest')}
+                                                        </button>
+                                                    </Link>
+                                                </div>
                                             </div>
                                         </div>
+                                    </motion.div>
+                                ))}
+                        </div>
 
-                                        {/* Action Buttons */}
-                                        <div className="flex gap-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-150">
-                                            <Link to={`/project/${project.id}`} className="flex-1">
-                                                <button className="w-full py-3 bg-white/10 backdrop-blur-md border border-white/30 text-white font-bold rounded-xl hover:bg-white/20 transition-all duration-300">
-                                                    {t('btn_view_details')}
-                                                </button>
-                                            </Link>
-                                            <Link to={`/project/${project.id}`} className="flex-1">
-                                                <button className="w-full py-3 bg-colestia-purple text-white font-bold rounded-xl hover:bg-colestia-purple/80 shadow-lg shadow-colestia-purple/20 transition-all duration-300">
-                                                    {t('btn_invest')}
-                                                </button>
-                                            </Link>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
+                        <button
+                            onClick={() => scrollMovies('right')}
+                            className="absolute -right-4 md:-right-8 top-1/2 -translate-y-1/2 z-10 bg-black/50 hover:bg-colestia-purple/80 backdrop-blur-md text-white p-2 md:p-3 rounded-full transition-all duration-300 shadow-xl opacity-0 group-hover/carousel:opacity-100 hidden md:block"
+                        >
+                            <ChevronRight size={20} />
+                        </button>
                     </div>
                     <div className="mt-8 md:hidden text-center">
                         <Link to="/products">

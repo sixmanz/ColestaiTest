@@ -83,6 +83,7 @@
     "label_director": "Director",
     "btn_invest": "Invest Now",
     "btn_view_details": "View Details",
+    "btn_view_details_short": "View Details",
     "btn_notify": "Notify When Open",
     "label_expected": "Expected Funding",
     "btn_back": "Back to Showcase",
