@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { teamMembers } from '../data/teamData';
+import { useLanguage } from '../context/LanguageContext';
 
 
 
 const Team = () => {
+    const { t, language } = useLanguage();
     return (
         <div className="pt-28 pb-24 bg-black min-h-screen">
             <div className="container mx-auto px-6">
@@ -15,7 +17,7 @@ const Team = () => {
                     className="text-center mb-16"
                 >
                     <h1 className="text-4xl md:text-4xl font-display font-bold text-white mb-4">
-                        Our <span className="text-gradient-main">Team</span>
+                        {t('section_our_team').split(' ')[0]} <span className="text-gradient-main">{t('section_our_team').split(' ').slice(1).join(' ')}</span>
                     </h1>
                     {/*<p className="text-gray-400 max-w-2xl mx-auto">
                         Visionary leaders driving innovation in film and blockchain technology.
@@ -43,10 +45,10 @@ const Team = () => {
                             </div>
 
                             <h3 className="text-xl font-bold text-white mb-1 group-hover:text-colestia-purple transition-colors">
-                                {member.name}
+                                {language === 'th' ? member.nameTh : member.name}
                             </h3>
                             <p className="text-xs text-gray-400 tracking-wider uppercase">
-                                {member.role}
+                                {language === 'th' ? member.roleTh : member.role}
                             </p>
                         </motion.div>
                     ))}

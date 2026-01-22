@@ -1,0 +1,8 @@
+{
+    "portal_id": "portal-th-01",
+    "portal_name": "Thai Licensed ICO Portal",
+    "license_type": "TH",
+    "allowed_user": "thai",
+    "redirect_url": "https://ico-portal.co.th/shadow-ip",
+    "compliance_note": "Token offering conducted under SEC Thailand regulations."
+}

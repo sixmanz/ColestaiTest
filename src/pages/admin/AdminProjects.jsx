@@ -109,6 +109,15 @@ const AdminProjects = () => {
         }
     };
 
+    const getStatusLabel = (filter) => {
+        switch (filter) {
+            case 'active': return t('admin_projects_active_fundraising');
+            case 'coming_soon': return t('admin_projects_coming_soon');
+            case 'finished': return t('admin_projects_closed_fundraising');
+            default: return t('admin_projects_all');
+        }
+    };
+
     if (isLoading) return <div className="flex justify-center items-center h-64"><Loader className="animate-spin text-purple-600" size={32} /></div>;
 
     return (
@@ -125,9 +134,9 @@ const AdminProjects = () => {
                             onChange={(e) => setStatusFilter(e.target.value)}
                             className="appearance-none pl-4 pr-10 py-2 border border-purple-200 dark:border-purple-900/50 rounded-xl bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 font-bold focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
                         >
-                            <option value="active">🟢 กำลังระดมทุน (Active)</option>
-                            <option value="coming_soon">🟡 กำลังจะเปิด (Coming Soon)</option>
-                            <option value="finished">🔴 ปิดระดมทุนแล้ว (Finished)</option>
+                            <option value="active">{t('admin_status_active_label')}</option>
+                            <option value="coming_soon">{t('admin_status_coming_soon_label')}</option>
+                            <option value="finished">{t('admin_status_finished_label')}</option>
                         </select>
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-purple-600">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -159,10 +168,8 @@ const AdminProjects = () => {
             {/* Unified Projects List */}
             <div className="space-y-4">
                 <div className="flex items-center justify-between text-sm text-gray-500 px-1">
-                    <span>Showing <span className="font-bold text-gray-900 dark:text-white">{filteredProjects.length}</span> projects in <span className="font-bold text-gray-700 dark:text-gray-300">
-                        {statusFilter === 'active' ? 'Active Fundraising' :
-                            statusFilter === 'coming_soon' ? 'Coming Soon' :
-                                statusFilter === 'finished' ? 'Closed Fundraising' : 'All Projects'}
+                    <span>{t('admin_projects_showing')} <span className="font-bold text-gray-900 dark:text-white">{filteredProjects.length}</span> {t('admin_projects_in')} <span className="font-bold text-gray-700 dark:text-gray-300">
+                        {getStatusLabel(statusFilter)}
                     </span></span>
                 </div>
 
@@ -211,11 +218,11 @@ const AdminProjects = () => {
                                         <div className="flex flex-col gap-1 text-xs text-gray-500">
                                             <span className="flex items-center gap-1.5">
                                                 <span className={`w-2 h-2 rounded-full ${project.status === 'coming_soon' ? 'bg-amber-400' : 'bg-green-500'}`}></span>
-                                                Start: {new Date(project.startDate).toLocaleDateString()}
+                                                {t('admin_projects_start')}: {new Date(project.startDate).toLocaleDateString()}
                                             </span>
                                             <span className="flex items-center gap-1.5">
                                                 <span className={`w-2 h-2 rounded-full ${project.status === 'active' ? 'bg-red-400' : 'bg-gray-400'}`}></span>
-                                                End: {new Date(project.endDate).toLocaleDateString()}
+                                                {t('admin_projects_end')}: {new Date(project.endDate).toLocaleDateString()}
                                             </span>
                                         </div>
                                     </div>
@@ -224,11 +231,11 @@ const AdminProjects = () => {
                                     <div className="col-span-1 lg:col-span-2 space-y-3">
                                         <div className="flex justify-between items-end text-sm">
                                             <div>
-                                                <p className="text-gray-500 text-xs mb-0.5">Raised Amount</p>
+                                                <p className="text-gray-500 text-xs mb-0.5">{t('admin_projects_raised')}</p>
                                                 <p className="font-bold text-gray-900 dark:text-white text-lg">฿{project.currentFunding?.toLocaleString() || 0}</p>
                                             </div>
                                             <div className="text-right">
-                                                <p className="text-gray-500 text-xs mb-0.5">Goal</p>
+                                                <p className="text-gray-500 text-xs mb-0.5">{t('admin_projects_goal')}</p>
                                                 <p className="font-medium text-gray-600 dark:text-gray-300">฿{project.goalFunding?.toLocaleString()}</p>
                                             </div>
                                         </div>
@@ -240,7 +247,7 @@ const AdminProjects = () => {
                                                     <span className={`text-xs font-semibold inline-block 
                                                         ${project.status === 'finished' ? 'text-gray-600' :
                                                             project.status === 'coming_soon' ? 'text-amber-600' : 'text-purple-600 dark:text-purple-400'}`}>
-                                                        {project.percentage}% Funded
+                                                        {project.percentage}% {t('admin_projects_funded')}
                                                     </span>
                                                 </div>
                                             </div>
@@ -254,7 +261,7 @@ const AdminProjects = () => {
 
                                         <div className="flex items-center gap-4 text-xs text-gray-500">
                                             <div className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-md">
-                                                👥 {project.investors?.toLocaleString() || 0} Investors
+                                                👥 {project.investors?.toLocaleString() || 0} {t('admin_projects_investors')}
                                             </div>
                                             <div className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-md mb-2 md:mb-0">
                                                 🎬 {project.genre}
@@ -268,13 +275,13 @@ const AdminProjects = () => {
                                             onClick={() => openModal(project)}
                                             className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-blue-600 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:hover:bg-blue-900/30 rounded-lg transition-colors text-sm font-medium"
                                         >
-                                            <Edit2 size={16} /> Edit Details
+                                            <Edit2 size={16} /> {t('admin_btn_edit_details')}
                                         </button>
                                         <button
                                             onClick={() => handleDelete(project.id)}
                                             className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 text-red-600 bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:text-red-400 dark:hover:bg-red-900/30 rounded-lg transition-colors text-sm font-medium"
                                         >
-                                            <Trash2 size={16} /> Delete Project
+                                            <Trash2 size={16} /> {t('admin_btn_delete_project')}
                                         </button>
                                     </div>
                                 </div>
@@ -285,8 +292,8 @@ const AdminProjects = () => {
                     {filteredProjects.length === 0 && (
                         <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-700 flex flex-col items-center justify-center text-gray-500">
                             <Search size={48} className="mb-4 text-gray-300" />
-                            <p className="text-lg font-medium">No projects found</p>
-                            <p className="text-sm">Try changing the filter or search query</p>
+                            <p className="text-lg font-medium">{t('admin_no_projects')}</p>
+                            <p className="text-sm">{t('admin_no_projects_desc')}</p>
                         </div>
                     )}
                 </div>
@@ -304,7 +311,7 @@ const AdminProjects = () => {
                         >
                             <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800 z-10">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    {editingProject ? 'Edit Project' : 'New Project'}
+                                    {editingProject ? t('admin_modal_edit_project') : t('admin_modal_new_project')}
                                 </h3>
                                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
                                     <X size={20} />
@@ -314,36 +321,31 @@ const AdminProjects = () => {
                             <form onSubmit={handleSubmit} className="p-6 space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (EN)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_title_en')}</label>
                                         <input required name="titleEn" value={formData.titleEn} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="e.g. Space Wars Eternal" />
-                                        <p className="text-xs text-gray-400 mt-1">ชื่อภาษาอังกฤษ (ไม่เกิน 100 ตัวอักษร)</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title (TH)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_title_th')}</label>
                                         <input required name="titleTh" value={formData.titleTh} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="เช่น สงครามอวกาศนิรันดร์" />
-                                        <p className="text-xs text-gray-400 mt-1">ชื่อภาษาไทย (ไม่เกิน 100 ตัวอักษร)</p>
                                     </div>
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description (EN)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_desc_en')}</label>
                                     <textarea required name="descriptionEn" value={formData.descriptionEn} onChange={handleInputChange} rows="3" className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="Project description in English..." />
-                                    <p className="text-xs text-gray-400 mt-1">คำอธิบายโปรเจกต์ภาษาอังกฤษ (แนะนำ 150-500 ตัวอักษร)</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description (TH)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_desc_th')}</label>
                                     <textarea required name="description" value={formData.description} onChange={handleInputChange} rows="3" className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="คำอธิบายโปรเจกต์ภาษาไทย..." />
-                                    <p className="text-xs text-gray-400 mt-1">คำอธิบายโปรเจกต์ภาษาไทย (แนะนำ 150-500 ตัวอักษร)</p>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Genre</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_genre')}</label>
                                         <input name="genre" value={formData.genre} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="e.g. Sci-Fi, Drama, Action" />
-                                        <p className="text-xs text-gray-400 mt-1">ประเภทภาพยนตร์ (คั่นด้วย comma ถ้ามีหลายประเภท)</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Status</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_status')}</label>
                                         <select name="status" value={formData.status} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600">
                                             <option value="active">Active (กำลังระดมทุน)</option>
                                             <option value="finished">Finished (สำเร็จแล้ว)</option>
@@ -353,38 +355,32 @@ const AdminProjects = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Poster URL</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t('admin_form_poster')}</label>
                                     <input required name="poster" value={formData.poster} onChange={handleInputChange} className="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600" placeholder="https://example.com/poster.jpg" />
-                                    <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 800 x 1200 px (อัตราส่วน 2:3) | รูปแบบ: JPG, PNG, WebP | ขนาดไฟล์: ไม่เกิน 2MB</p>
                                 </div>
 
                                 <div className="grid grid-cols-3 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Goal Funding</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin_form_goal')}</label>
                                         <input type="number" name="goalFunding" value={formData.goalFunding} onChange={handleInputChange} className="w-full p-2 border rounded-lg" placeholder="10000000" />
-                                        <p className="text-xs text-gray-400 mt-1">เป้าหมาย (บาท)</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Current</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin_form_current')}</label>
                                         <input type="number" name="currentFunding" value={formData.currentFunding} onChange={handleInputChange} className="w-full p-2 border rounded-lg" placeholder="5000000" />
-                                        <p className="text-xs text-gray-400 mt-1">ปัจจุบัน (บาท)</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Percent</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin_form_percent')}</label>
                                         <input type="number" name="percentage" value={formData.percentage} onChange={handleInputChange} className="w-full p-2 border rounded-lg" placeholder="50" />
-                                        <p className="text-xs text-gray-400 mt-1">ความคืบหน้า (%)</p>
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin_form_start_date')}</label>
                                         <input type="date" name="startDate" value={formData.startDate} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
-                                        <p className="text-xs text-gray-400 mt-1">วันเริ่มต้นระดมทุน</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">{t('admin_form_end_date')}</label>
                                         <input type="date" name="endDate" value={formData.endDate} onChange={handleInputChange} className="w-full p-2 border rounded-lg" />
-                                        <p className="text-xs text-gray-400 mt-1">วันสิ้นสุดระดมทุน</p>
                                     </div>
                                 </div>
 
@@ -394,14 +390,14 @@ const AdminProjects = () => {
                                         onClick={() => setIsModalOpen(false)}
                                         className="px-6 py-2 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors font-medium text-gray-700"
                                     >
-                                        Cancel
+                                        {t('admin_btn_cancel')}
                                     </button>
                                     <button
                                         type="submit"
                                         className="px-6 py-2 bg-gradient-to-r from-colestia-purple to-colestia-blue text-white rounded-xl hover:opacity-90 transition-all font-medium flex items-center gap-2 shadow-lg shadow-colestia-purple/30"
                                     >
                                         <Save size={18} />
-                                        Save Project
+                                        {t('admin_btn_save')}
                                     </button>
                                 </div>
                             </form>

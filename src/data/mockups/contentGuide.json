@@ -1,0 +1,29 @@
+{
+    "content_id": "cnt-001",
+    "title": "Understanding Film IP Tokenization",
+    "slug": "understanding-film-ip-tokenization",
+    "content_type": "guide",
+    "summary": "An introduction to how intellectual property in film can be tokenized responsibly.",
+    "body": "This article explains the fundamentals of IP tokenization in the film industry...",
+    "category": "tokenization",
+    "tags": [
+        "film",
+        "ip",
+        "tokenization",
+        "sec"
+    ],
+    "language": "en",
+    "author": {
+        "author_type": "advisor",
+        "name": "Legal Advisory Team"
+    },
+    "publish_status": "published",
+    "publish_date": "2026-01-10T00:00:00Z",
+    "last_updated": "2026-01-15T00:00:00Z",
+    "disclaimer_version": "v1.0",
+    "seo": {
+        "meta_title": "Film IP Tokenization Guide | Colestia",
+        "meta_description": "Learn how film IP tokenization works under regulatory frameworks.",
+        "og_image": "https://cdn.colestia.io/og/tokenization-guide.png"
+    }
+}

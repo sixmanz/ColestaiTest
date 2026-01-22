@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Save, Search, Loader, BookOpen, Eye, EyeOff, Play } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 // Static mockup data for Education/Learning Hub
 const initialEducation = [
@@ -43,6 +44,7 @@ const initialEducation = [
 ];
 
 const AdminEducation = () => {
+    const { t } = useLanguage();
     const [education, setEducation] = useState(initialEducation);
     const [isLoading, setIsLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -72,17 +74,17 @@ const AdminEducation = () => {
         e.preventDefault();
         if (editingItem) {
             setEducation(education.map(n => n.id === editingItem.id ? { ...formData, id: editingItem.id } : n));
-            alert('Education content updated! (Mockup Mode)');
+            alert(t('msg_edu_updated'));
         } else {
             const newItem = { ...formData, id: Date.now().toString(), createdAt: new Date().toISOString().split('T')[0] };
             setEducation([newItem, ...education]);
-            alert('Education content created! (Mockup Mode)');
+            alert(t('msg_edu_created'));
         }
         setIsModalOpen(false);
     };
 
     const handleDelete = (id) => {
-        if (window.confirm('Are you sure you want to delete this content?')) {
+        if (window.confirm(t('msg_edu_delete_confirm'))) {
             setEducation(education.filter(n => n.id !== id));
         }
     };
@@ -108,13 +110,13 @@ const AdminEducation = () => {
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Education Management</h2>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('admin_edu_management')}</h2>
                 <button
                     onClick={() => openModal()}
                     className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
                 >
                     <Plus size={20} />
-                    Add Content
+                    {t('admin_add_edu_content')}
                 </button>
             </div>
 
@@ -123,7 +125,7 @@ const AdminEducation = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                 <input
                     type="text"
-                    placeholder="Search education content..."
+                    placeholder={t('admin_search_edu')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -163,11 +165,13 @@ const AdminEducation = () => {
                             <div className="p-4">
                                 <div className="flex items-center gap-2 mb-2 flex-wrap">
                                     <span className={`text-xs px-2 py-1 rounded-full ${getDifficultyColor(item.difficulty)}`}>
-                                        {item.difficulty}
+                                        {item.difficulty === 'beginner' ? t('admin_diff_beginner') :
+                                            item.difficulty === 'intermediate' ? t('admin_diff_intermediate') :
+                                                t('admin_diff_advanced')}
                                     </span>
                                     <span className={`text-xs px-2 py-1 rounded-full ${item.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                                         }`}>
-                                        {item.status || 'draft'}
+                                        {item.status === 'published' ? t('admin_status_published') : t('admin_status_draft')}
                                     </span>
                                 </div>
                                 <h3 className="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">{item.title}</h3>
@@ -199,7 +203,7 @@ const AdminEducation = () => {
             )}
 
             {filteredEducation.length === 0 && !isLoading && (
-                <div className="text-center py-12 text-gray-500">No education content found. Create one to get started.</div>
+                <div className="text-center py-12 text-gray-500">{t('admin_no_edu_found')}</div>
             )}
 
             {/* Modal */}
@@ -221,7 +225,7 @@ const AdminEducation = () => {
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    {editingItem ? 'Edit Content' : 'New Content'}
+                                    {editingItem ? t('admin_modal_edit_edu') : t('admin_modal_new_edu')}
                                 </h3>
                                 <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-700">
                                     <X size={24} />
@@ -229,7 +233,7 @@ const AdminEducation = () => {
                             </div>
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (Thai)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_title_th')}</label>
                                     <input
                                         type="text"
                                         name="title"
@@ -240,7 +244,7 @@ const AdminEducation = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (English)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_title_en')}</label>
                                     <input
                                         type="text"
                                         name="titleEn"
@@ -251,33 +255,33 @@ const AdminEducation = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Difficulty</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_difficulty')}</label>
                                         <select
                                             name="difficulty"
                                             value={formData.difficulty}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                         >
-                                            <option value="beginner">Beginner</option>
-                                            <option value="intermediate">Intermediate</option>
-                                            <option value="advanced">Advanced</option>
+                                            <option value="beginner">{t('admin_diff_beginner')}</option>
+                                            <option value="intermediate">{t('admin_diff_intermediate')}</option>
+                                            <option value="advanced">{t('admin_diff_advanced')}</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_header_status')}</label>
                                         <select
                                             name="status"
                                             value={formData.status}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                         >
-                                            <option value="draft">Draft</option>
-                                            <option value="published">Published</option>
+                                            <option value="draft">{t('admin_status_draft')}</option>
+                                            <option value="published">{t('admin_status_published')}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_image_url')}</label>
                                     <input
                                         type="url"
                                         name="image"
@@ -287,7 +291,7 @@ const AdminEducation = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Video URL (optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_help_video_url')}</label>
                                     <input
                                         type="url"
                                         name="videoUrl"
@@ -298,7 +302,7 @@ const AdminEducation = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Summary</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_summary')}</label>
                                     <input
                                         type="text"
                                         name="summary"
@@ -308,7 +312,7 @@ const AdminEducation = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_content')}</label>
                                     <textarea
                                         name="content"
                                         value={formData.content}
@@ -323,7 +327,7 @@ const AdminEducation = () => {
                                     className="w-full py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
                                 >
                                     <Save size={20} />
-                                    {editingItem ? 'Update Content' : 'Create Content'}
+                                    {editingItem ? t('admin_btn_update_edu') : t('admin_btn_create_edu')}
                                 </button>
                             </form>
                         </motion.div>

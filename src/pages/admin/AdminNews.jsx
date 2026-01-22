@@ -68,11 +68,11 @@ const AdminNews = () => {
         e.preventDefault();
         if (editingItem) {
             setNews(news.map(n => n.id === editingItem.id ? { ...formData, id: editingItem.id } : n));
-            alert('News updated! (Mockup Mode)');
+            // alert('News updated! (Mockup Mode)');
         } else {
             const newItem = { ...formData, id: Date.now().toString(), createdAt: new Date().toISOString().split('T')[0] };
             setNews([newItem, ...news]);
-            alert('News created! (Mockup Mode)');
+            // alert('News created! (Mockup Mode)');
         }
         setIsModalOpen(false);
     };
@@ -146,7 +146,7 @@ const AdminNews = () => {
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className={`text-xs px-2 py-1 rounded-full ${item.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                                         }`}>
-                                        {item.status || 'draft'}
+                                        {item.status === 'published' ? t('admin_status_published') : t('admin_status_draft')}
                                     </span>
                                     <span className="text-xs text-gray-500">{item.createdAt}</span>
                                 </div>
@@ -179,7 +179,7 @@ const AdminNews = () => {
             )}
 
             {filteredNews.length === 0 && !isLoading && (
-                <div className="text-center py-12 text-gray-500">No news found. Create one to get started.</div>
+                <div className="text-center py-12 text-gray-500">{t('admin_news_no_found')}</div>
             )}
 
             {/* Modal */}
@@ -201,7 +201,7 @@ const AdminNews = () => {
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    {editingItem ? 'Edit News' : 'New News'}
+                                    {editingItem ? t('admin_modal_edit_news') : t('admin_modal_new_news')}
                                 </h3>
                                 <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-700">
                                     <X size={24} />
@@ -209,86 +209,75 @@ const AdminNews = () => {
                             </div>
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (Thai)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_title_th')}</label>
                                     <input
                                         type="text"
                                         name="title"
                                         value={formData.title}
                                         onChange={handleInputChange}
                                         required
-                                        placeholder="เช่น Colestia เปิดตัวโปรเจคใหม่"
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">หัวข้อข่าวภาษาไทย (ไม่เกิน 150 ตัวอักษร)</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title (English)</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_title_en')}</label>
                                     <input
                                         type="text"
                                         name="titleEn"
                                         value={formData.titleEn}
                                         onChange={handleInputChange}
-                                        placeholder="e.g. Colestia Launches New Project"
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">News title in English (max 150 characters)</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_image_url')}</label>
                                     <input
                                         type="url"
                                         name="image"
                                         value={formData.image}
                                         onChange={handleInputChange}
-                                        placeholder="https://example.com/news-image.jpg"
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 1200 x 630 px (อัตราส่วน 1.91:1) | รูปแบบ: JPG, PNG | ขนาดไฟล์: ไม่เกิน 2MB</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Summary</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_summary')}</label>
                                     <input
                                         type="text"
                                         name="summary"
                                         value={formData.summary}
                                         onChange={handleInputChange}
-                                        placeholder="สรุปย่อเนื้อหาข่าว..."
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">สรุปย่อสำหรับแสดงในหน้ารวมข่าว (แนะนำ 80-150 ตัวอักษร)</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_content')}</label>
                                     <textarea
                                         name="content"
                                         value={formData.content}
                                         onChange={handleInputChange}
                                         rows={6}
                                         required
-                                        placeholder="เนื้อหาข่าวฉบับเต็ม..."
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     />
-                                    <p className="text-xs text-gray-400 mt-1">เนื้อหาข่าวเต็ม (แนะนำ 500-2000 ตัวอักษร) | สามารถใช้ HTML tags ได้</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_status')}</label>
                                     <select
                                         name="status"
                                         value={formData.status}
                                         onChange={handleInputChange}
                                         className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     >
-                                        <option value="draft">Draft (ฉบับร่าง)</option>
-                                        <option value="published">Published (เผยแพร่แล้ว)</option>
+                                        <option value="draft">{t('admin_status_draft')}</option>
+                                        <option value="published">{t('admin_status_published')}</option>
                                     </select>
-                                    <p className="text-xs text-gray-400 mt-1">Draft = ยังไม่แสดง | Published = แสดงบนเว็บไซต์</p>
                                 </div>
                                 <button
                                     type="submit"
                                     className="w-full py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
                                 >
                                     <Save size={20} />
-                                    {editingItem ? 'Update News' : 'Create News'}
+                                    {editingItem ? t('admin_btn_update_news') : t('admin_btn_create_news')}
                                 </button>
                             </form>
                         </motion.div>

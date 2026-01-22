@@ -61,30 +61,7 @@ const recentActivities = [
 
 const AdminDashboard = () => {
     const { stats, isLoading } = useDashboardStats();
-    const { t, language } = useLanguage();
-
-    const labels = {
-        dashboard: language === 'th' ? 'ภาพรวมแดชบอร์ด' : 'Dashboard Overview',
-        welcome: language === 'th' ? 'ยินดีต้อนรับกลับมา!' : 'Welcome back!',
-        summary: language === 'th' ? 'นี่คือสรุปข้อมูลล่าสุดของคุณ' : "Here's your latest summary",
-        totalProjects: language === 'th' ? 'โปรเจกต์ทั้งหมด' : 'Total Projects',
-        totalInvestors: language === 'th' ? 'นักลงทุนทั้งหมด' : 'Total Investors',
-        totalRevenue: language === 'th' ? 'รายได้รวม' : 'Total Revenue',
-        growthRate: language === 'th' ? 'อัตราการเติบโต' : 'Growth Rate',
-        visitors: language === 'th' ? 'ผู้เข้าชมเว็บไซต์' : 'Website Visitors',
-        investors: language === 'th' ? 'นักลงทุนรายใหม่' : 'New Investors',
-        revenue: language === 'th' ? 'รายได้และค่าใช้จ่าย' : 'Revenue & Expenses',
-        topProjects: language === 'th' ? 'โปรเจกต์ยอดนิยม' : 'Top Projects',
-        recentActivity: language === 'th' ? 'กิจกรรมล่าสุด' : 'Recent Activity',
-        quickStats: language === 'th' ? 'สถิติด่วน' : 'Quick Stats',
-        viewAll: language === 'th' ? 'ดูทั้งหมด' : 'View All',
-        funding: language === 'th' ? 'เงินทุน' : 'Funding',
-        progress: language === 'th' ? 'ความคืบหน้า' : 'Progress',
-        thisMonth: language === 'th' ? 'เดือนนี้' : 'This Month',
-        vsLastMonth: language === 'th' ? 'เทียบกับเดือนก่อน' : 'vs last month',
-        people: language === 'th' ? 'คน' : 'people',
-        baht: language === 'th' ? 'บาท' : 'THB',
-    };
+    const { t } = useLanguage();
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -107,8 +84,8 @@ const AdminDashboard = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{labels.dashboard}</h1>
-                    <p className="text-gray-500 mt-1">{labels.welcome} {labels.summary}</p>
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white">{t('admin_dash_welcome')}</h1>
+                    <p className="text-gray-500 mt-1">{t('admin_dash_summary')}</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
@@ -131,7 +108,7 @@ const AdminDashboard = () => {
                             <ArrowUpRight size={14} /> +12%
                         </span>
                     </div>
-                    <h3 className="text-white/80 text-sm mt-4">{labels.totalProjects}</h3>
+                    <h3 className="text-white/80 text-sm mt-4">{t('admin_total_projects')}</h3>
                     <p className="text-3xl font-bold text-white">{isLoading ? '...' : stats.projects}</p>
                 </motion.div>
 
@@ -146,7 +123,7 @@ const AdminDashboard = () => {
                             <ArrowUpRight size={14} /> +27%
                         </span>
                     </div>
-                    <h3 className="text-white/80 text-sm mt-4">{labels.totalInvestors}</h3>
+                    <h3 className="text-white/80 text-sm mt-4">{t('admin_dash_new_investors')}</h3>
                     <p className="text-3xl font-bold text-white">1,146</p>
                 </motion.div>
 
@@ -161,7 +138,7 @@ const AdminDashboard = () => {
                             <ArrowUpRight size={14} /> +35%
                         </span>
                     </div>
-                    <h3 className="text-white/80 text-sm mt-4">{labels.totalRevenue}</h3>
+                    <h3 className="text-white/80 text-sm mt-4">{t('admin_header_amount')}</h3>
                     <p className="text-3xl font-bold text-white">฿29.7M</p>
                 </motion.div>
 
@@ -176,7 +153,7 @@ const AdminDashboard = () => {
                             <ArrowUpRight size={14} /> +8%
                         </span>
                     </div>
-                    <h3 className="text-white/80 text-sm mt-4">{labels.growthRate}</h3>
+                    <h3 className="text-white/80 text-sm mt-4">{t('admin_dash_growth')}</h3>
                     <p className="text-3xl font-bold text-white">24.5%</p>
                 </motion.div>
             </div>
@@ -192,8 +169,8 @@ const AdminDashboard = () => {
                                 <Eye className="text-blue-600 dark:text-blue-400" size={20} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-gray-900 dark:text-white">{labels.visitors}</h3>
-                                <p className="text-xs text-gray-500">{labels.thisMonth}</p>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_visitors')}</h3>
+                                <p className="text-xs text-gray-500">{t('admin_dash_this_month')}</p>
                             </div>
                         </div>
                         <span className="text-green-600 text-sm font-medium flex items-center gap-1">
@@ -213,13 +190,13 @@ const AdminDashboard = () => {
                                 <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Area type="monotone" dataKey="visitors" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorVisitors)" name={labels.visitors} />
+                                <Area type="monotone" dataKey="visitors" stroke="#3b82f6" strokeWidth={2} fillOpacity={1} fill="url(#colorVisitors)" name={t('admin_dash_visitors')} />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
                     <div className="mt-4 text-center">
                         <span className="text-2xl font-bold text-gray-900 dark:text-white">19,790</span>
-                        <span className="text-gray-500 text-sm ml-2">{labels.people}</span>
+                        <span className="text-gray-500 text-sm ml-2">{t('admin_dash_people')}</span>
                     </div>
                 </motion.div>
 
@@ -232,8 +209,8 @@ const AdminDashboard = () => {
                                 <UserCheck className="text-emerald-600 dark:text-emerald-400" size={20} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-gray-900 dark:text-white">{labels.investors}</h3>
-                                <p className="text-xs text-gray-500">{labels.thisMonth}</p>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_new_investors')}</h3>
+                                <p className="text-xs text-gray-500">{t('admin_dash_this_month')}</p>
                             </div>
                         </div>
                         <span className="text-green-600 text-sm font-medium flex items-center gap-1">
@@ -247,7 +224,7 @@ const AdminDashboard = () => {
                                 <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="investors" name={labels.investors} radius={[4, 4, 0, 0]}>
+                                <Bar dataKey="investors" name={t('admin_dash_new_investors')} radius={[4, 4, 0, 0]}>
                                     {investorsData.map((entry, index) => (
                                         <Cell key={index} fill={`hsl(160, 70%, ${50 - index * 4}%)`} />
                                     ))}
@@ -257,7 +234,7 @@ const AdminDashboard = () => {
                     </div>
                     <div className="mt-4 text-center">
                         <span className="text-2xl font-bold text-gray-900 dark:text-white">312</span>
-                        <span className="text-gray-500 text-sm ml-2">{labels.people}</span>
+                        <span className="text-gray-500 text-sm ml-2">{t('admin_dash_people')}</span>
                     </div>
                 </motion.div>
 
@@ -270,8 +247,8 @@ const AdminDashboard = () => {
                                 <BarChart3 className="text-colestia-blue dark:text-blue-400" size={20} />
                             </div>
                             <div>
-                                <h3 className="font-bold text-gray-900 dark:text-white">{labels.revenue}</h3>
-                                <p className="text-xs text-gray-500">{labels.thisMonth}</p>
+                                <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_revenue_expenses')}</h3>
+                                <p className="text-xs text-gray-500">{t('admin_dash_this_month')}</p>
                             </div>
                         </div>
                         <span className="text-green-600 text-sm font-medium flex items-center gap-1">
@@ -285,19 +262,19 @@ const AdminDashboard = () => {
                                 <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="revenue" name={language === 'th' ? 'รายได้' : 'Revenue'} fill="#22c55e" radius={[4, 4, 0, 0]} />
-                                <Bar dataKey="expenses" name={language === 'th' ? 'ค่าใช้จ่าย' : 'Expenses'} fill="#f97316" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="revenue" name={t('admin_dash_revenue')} fill="#22c55e" radius={[4, 4, 0, 0]} />
+                                <Bar dataKey="expenses" name={t('admin_dash_expenses')} fill="#f97316" radius={[4, 4, 0, 0]} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
                     <div className="mt-4 flex justify-center gap-6">
                         <div className="flex items-center gap-2">
                             <span className="w-3 h-3 rounded-full bg-green-500"></span>
-                            <span className="text-sm text-gray-500">{language === 'th' ? 'รายได้' : 'Revenue'}</span>
+                            <span className="text-sm text-gray-500">{t('admin_dash_revenue')}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <span className="w-3 h-3 rounded-full bg-orange-500"></span>
-                            <span className="text-sm text-gray-500">{language === 'th' ? 'ค่าใช้จ่าย' : 'Expenses'}</span>
+                            <span className="text-sm text-gray-500">{t('admin_dash_expenses')}</span>
                         </div>
                     </div>
                 </motion.div>
@@ -313,9 +290,9 @@ const AdminDashboard = () => {
                             <div className="w-10 h-10 bg-colestia-purple/10 dark:bg-colestia-purple/20 rounded-xl flex items-center justify-center">
                                 <Star className="text-colestia-purple dark:text-colestia-gold" size={20} />
                             </div>
-                            <h3 className="font-bold text-gray-900 dark:text-white">{labels.topProjects}</h3>
+                            <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_top_projects')}</h3>
                         </div>
-                        <button className="text-colestia-purple text-sm font-medium hover:underline">{labels.viewAll}</button>
+                        <button className="text-colestia-purple text-sm font-medium hover:underline">{t('admin_dash_view_all')}</button>
                     </div>
                     <div className="space-y-4">
                         {topProjects.map((project, index) => (
@@ -325,11 +302,11 @@ const AdminDashboard = () => {
                                 </div>
                                 <div className="flex-1">
                                     <h4 className="font-semibold text-gray-900 dark:text-white">{project.name}</h4>
-                                    <p className="text-sm text-gray-500">{project.investors} {labels.investors.toLowerCase()} • {project.funding}</p>
+                                    <p className="text-sm text-gray-500">{project.investors} {t('admin_dash_people').toLowerCase()} • {project.funding}</p>
                                 </div>
                                 <div className="w-32">
                                     <div className="flex items-center justify-between text-sm mb-1">
-                                        <span className="text-gray-500">{labels.progress}</span>
+                                        <span className="text-gray-500">{t('admin_dash_progress')}</span>
                                         <span className="font-medium text-gray-900 dark:text-white">{project.progress}%</span>
                                     </div>
                                     <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
@@ -352,7 +329,7 @@ const AdminDashboard = () => {
                             <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
                                 <Activity className="text-blue-600 dark:text-blue-400" size={20} />
                             </div>
-                            <h3 className="font-bold text-gray-900 dark:text-white">{labels.recentActivity}</h3>
+                            <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_recent_activity')}</h3>
                         </div>
                     </div>
                     <div className="space-y-4">

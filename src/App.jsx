@@ -25,6 +25,7 @@ import AdminDirectors from './pages/admin/AdminDirectors';
 import AdminTeam from './pages/admin/AdminTeam';
 import AdminNews from './pages/admin/AdminNews';
 import AdminEducation from './pages/admin/AdminEducation';
+import AdminTransactions from './pages/admin/AdminTransactions';
 
 // New Pages
 import News from './pages/News';
@@ -118,6 +119,7 @@ const App = () => {
                 <Route path="team" element={<AdminTeam />} />
                 <Route path="news" element={<AdminNews />} />
                 <Route path="education" element={<AdminEducation />} />
+                <Route path="transactions" element={<AdminTransactions />} />
               </Route>
             </Routes>
           </AnimatePresence>

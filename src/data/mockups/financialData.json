@@ -1,0 +1,28 @@
+{
+    "project_id": "prj-101",
+    "funding_purpose": "Post-production and global marketing",
+    "cost_structure": [
+        {
+            "category": "post-production",
+            "percentage": 45
+        },
+        {
+            "category": "marketing",
+            "percentage": 35
+        },
+        {
+            "category": "operations",
+            "percentage": 20
+        }
+    ],
+    "revenue_sources": [
+        "box_office",
+        "streaming_platforms",
+        "international_licensing"
+    ],
+    "risk_factors": [
+        "market_acceptance",
+        "distribution_delay",
+        "regulatory_changes"
+    ]
+}

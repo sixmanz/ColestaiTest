@@ -37,16 +37,16 @@ const AdminTeam = () => {
         try {
             if (editingMember) {
                 await updateDoc(doc(db, 'team', editingMember.id), formData);
-                alert('Team member updated successfully!');
+                alert(t('msg_team_updated_success'));
             } else {
                 await addDoc(collection(db, 'team'), formData);
-                alert('Team member added successfully!');
+                alert(t('msg_team_added_success'));
             }
             setIsModalOpen(false);
             window.location.reload();
         } catch (error) {
             console.error("Error saving team member: ", error);
-            alert('Error saving team member');
+            alert(t('msg_team_save_error'));
         }
     };
 
@@ -153,7 +153,7 @@ const AdminTeam = () => {
                         >
                             <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-white dark:bg-gray-800">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    {editingMember ? 'Edit Team Member' : 'Add Team Member'}
+                                    {editingMember ? t('admin_modal_edit_team') : t('admin_modal_add_team')}
                                 </h3>
                                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
                                     <X size={20} />
@@ -163,67 +163,67 @@ const AdminTeam = () => {
                             <form onSubmit={handleSubmit} className="p-6 space-y-6">
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name (English)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_name_en')}</label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={formData.name}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="e.g. John Smith"
+                                            placeholder={t('admin_hint_name_en')}
                                             required
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ชื่อ-นามสกุลภาษาอังกฤษ (ไม่เกิน 50 ตัวอักษร)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_name_en')}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name (Thai)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_name_th')}</label>
                                         <input
                                             type="text"
                                             name="nameTh"
                                             value={formData.nameTh}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="เช่น จอห์น สมิธ"
+                                            placeholder={t('admin_hint_name_th')}
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ชื่อ-นามสกุลภาษาไทย (ไม่เกิน 50 ตัวอักษร)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_name_th')}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role (English)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_role_en')}</label>
                                         <input
                                             type="text"
                                             name="role"
                                             value={formData.role}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="e.g. CEO, Marketing Manager, Developer"
+                                            placeholder={t('admin_hint_role_en')}
                                             required
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ตำแหน่งภาษาอังกฤษ</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_role_en')}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role (Thai)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_role_th')}</label>
                                         <input
                                             type="text"
                                             name="roleTh"
                                             value={formData.roleTh}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="เช่น ประธาน, ผู้จัดการฝ่ายการตลาด"
+                                            placeholder={t('admin_hint_role_th')}
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ตำแหน่งภาษาไทย</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_role_th')}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Image URL</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_image_url')}</label>
                                         <input
                                             type="text"
                                             name="image"
                                             value={formData.image}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="https://example.com/team-photo.jpg"
+                                            placeholder={t('admin_hint_image_url')}
                                             required
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 400 x 400 px (สี่เหลี่ยม) | รูปแบบ: JPG, PNG | ขนาดไฟล์: ไม่เกิน 1MB</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_image')}</p>
                                     </div>
                                 </div>
 
@@ -233,14 +233,14 @@ const AdminTeam = () => {
                                         onClick={() => setIsModalOpen(false)}
                                         className="px-6 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium"
                                     >
-                                        Cancel
+                                        {t('admin_btn_cancel')}
                                     </button>
                                     <button
                                         type="submit"
                                         className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all font-medium flex items-center gap-2"
                                     >
                                         <Save size={18} />
-                                        <span>{editingMember ? 'Update Member' : 'Add Member'}</span>
+                                        <span>{editingMember ? t('admin_btn_update_member') : t('admin_btn_add_member')}</span>
                                     </button>
                                 </div>
                             </form>

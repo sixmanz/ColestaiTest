@@ -3,11 +3,18 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../components/Button';
 import ExternalLinkModal from '../components/ExternalLinkModal';
-import { ArrowLeft, Play, AlertCircle, ExternalLink, X, Loader, Clock, Users, Target, ShieldCheck, ChevronRight, Share2, Heart, Award, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, Play, AlertCircle, ExternalLink, X, Loader, Clock, Users, Target, ShieldCheck, ChevronRight, Share2, Heart, Award, Volume2, VolumeX, MapPin, Globe, Image as ImageIcon } from 'lucide-react';
 import heroVideo from '../assets/hero.mp4';
 import InteractiveGrid from '../components/InteractiveGrid';
 import { useLanguage } from '../context/LanguageContext';
 import { useProjects } from '../hooks/useProjects';
+
+// New Card Components
+import TokenInfoPanel from '../components/cards/TokenInfoPanel';
+import FinancialBreakdown from '../components/cards/FinancialBreakdown';
+import ComplianceDisclaimer from '../components/cards/ComplianceDisclaimer';
+import CreatorProfileCard from '../components/cards/CreatorProfileCard';
+import ReadinessPanel from '../components/cards/ReadinessPanel';
 
 const ProjectDetail = () => {
     const { id } = useParams();
@@ -29,7 +36,7 @@ const ProjectDetail = () => {
     }, [videoRef]);
 
     if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader className="animate-spin text-white" /></div>;
-    if (!project) return <div className="pt-32 text-center text-white">Project not found</div>;
+    if (!project) return <div className="pt-32 text-center text-white">{t('msg_project_not_found')}</div>;
 
     const displayTitle = language === 'th' && project.titleTh ? project.titleTh : project.titleEn || project.title;
     const displayTagline = language === 'th' ? project.description : project.descriptionEn;
@@ -60,7 +67,7 @@ const ProjectDetail = () => {
             <div className="fixed top-0 left-0 w-full p-6 z-50 pointer-events-none">
                 <div className="container mx-auto pointer-events-auto flex justify-between items-center">
                     <Link to="/products" className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/30 shadow-lg">
-                        <ArrowLeft size={18} /> {t('btn_back') || 'Back'}
+                        <ArrowLeft size={18} /> {t('btn_back')}
                     </Link>
                 </div>
             </div>
@@ -95,7 +102,7 @@ const ProjectDetail = () => {
                                     </span>
                                     {project.status === 'active' && (
                                         <span className="flex items-center gap-2 bg-emerald-500/20 backdrop-blur-md border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> Live Now
+                                            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> {t('label_live_now')}
                                         </span>
                                     )}
                                 </div>
@@ -117,7 +124,7 @@ const ProjectDetail = () => {
                                     onClick={() => setTrailerOpen(true)}
                                     className="h-12 md:h-14 px-6 md:px-8 rounded-full bg-white text-black font-bold text-base md:text-lg hover:scale-105 transition-transform flex items-center gap-3 shadow-[0_0_30px_rgba(255,255,255,0.4)]"
                                 >
-                                    <Play size={18} fill="currentColor" /> {t('btn_trailer') || 'Watch Trailer'}
+                                    <Play size={18} fill="currentColor" /> {t('btn_trailer')}
                                 </button>
                                 <button
                                     onClick={() => setIsMuted(!isMuted)}
@@ -140,7 +147,7 @@ const ProjectDetail = () => {
 
                                 <div className="relative z-10 space-y-4 md:space-y-6">
                                     <div className="border-b border-white/10 pb-4 md:pb-6">
-                                        <p className="text-gray-400 text-xs uppercase tracking-wider mb-2">{t('label_raised') || 'Raised Amount'}</p>
+                                        <p className="text-gray-400 text-xs uppercase tracking-wider mb-2">{t('label_raised')}</p>
                                         <div className="flex items-baseline gap-2 md:gap-3 flex-wrap">
                                             <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{formatCurrency(project.currentFunding)}</span>
                                             <span className="text-xs md:text-sm text-gray-500">/ {formatCurrency(project.goalFunding)}</span>
@@ -153,26 +160,26 @@ const ProjectDetail = () => {
                                                 className="h-full bg-gradient-to-r from-colestia-purple to-colestia-cyan shadow-[0_0_10px_rgba(79,172,254,0.5)]"
                                             />
                                         </div>
-                                        <p className="text-right text-colestia-cyan text-sm font-bold mt-1">{project.percentage}% Funded</p>
+                                        <p className="text-right text-colestia-cyan text-sm font-bold mt-1">{project.percentage}% {t('admin_projects_funded')}</p>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <div className="flex items-center gap-2 mb-1 text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">
-                                                <Users size={14} /> Backers
+                                                <Users size={14} /> {t('label_investors')}
                                             </div>
                                             <p className="text-lg md:text-2xl font-bold text-white">{formatNumber(project.investors)}</p>
                                         </div>
                                         <div>
                                             <div className="flex items-center gap-2 mb-1 text-gray-400 text-[10px] md:text-xs uppercase tracking-wider">
-                                                <Clock size={14} /> Time Left
+                                                <Clock size={14} /> {t('label_time_left')}
                                             </div>
-                                            <p className="text-lg md:text-2xl font-bold text-white">{daysLeft} <span className="text-sm font-normal text-gray-500">Days</span></p>
+                                            <p className="text-lg md:text-2xl font-bold text-white">{daysLeft} <span className="text-sm font-normal text-gray-500">{t('label_days')}</span></p>
                                         </div>
                                     </div>
 
                                     <Button className="w-full py-3 md:py-4 text-base md:text-lg font-bold shadow-lg shadow-colestia-purple/20">
-                                        Invest Now <ChevronRight size={20} className="ml-2" />
+                                        {t('btn_invest')} <ChevronRight size={20} className="ml-2" />
                                     </Button>
                                 </div>
                             </motion.div>
@@ -187,17 +194,16 @@ const ProjectDetail = () => {
 
                     {/* LEFT COLUMN: Content (8 cols) */}
                     <div className="lg:col-span-8">
-                        {/* Tab Headers */}
                         <div className="flex items-center gap-8 border-b border-white/10 mb-8 sticky top-20 bg-[#050505]/95 backdrop-blur z-30 pt-4">
-                            {['Story', 'Rewards', 'Cast'].map((tab) => (
+                            {['story', 'rewards', 'cast'].map((tab) => (
                                 <button
                                     key={tab}
-                                    onClick={() => setActiveTab(tab.toLowerCase())}
-                                    className={`pb-4 text-sm font-bold tracking-wide uppercase transition-colors relative ${activeTab === tab.toLowerCase() ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`pb-4 text-sm font-bold tracking-wide uppercase transition-colors relative ${activeTab === tab ? 'text-white' : 'text-gray-500 hover:text-gray-300'
                                         }`}
                                 >
-                                    {tab}
-                                    {activeTab === tab.toLowerCase() && (
+                                    {t(`tab_${tab}`)}
+                                    {activeTab === tab && (
                                         <motion.div layoutId="activeTab" className="absolute bottom-0 left-0 w-full h-0.5 bg-colestia-purple" />
                                     )}
                                 </button>
@@ -210,7 +216,7 @@ const ProjectDetail = () => {
                                     <section>
                                         <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                                             <div className="w-1 h-8 bg-colestia-purple rounded-full" />
-                                            Synopsis
+                                            {t('title_synopsis')}
                                         </h3>
                                         <div className="prose prose-lg prose-invert text-gray-300 font-light leading-loose max-w-none">
                                             {displayDescription}
@@ -220,19 +226,51 @@ const ProjectDetail = () => {
                                     <section className="grid md:grid-cols-2 gap-6">
                                         <div className="bg-[#0A0A0A] p-8 rounded-2xl border border-white/5 hover:border-colestia-purple/30 transition-colors group">
                                             <Target className="text-colestia-purple mb-4 group-hover:scale-110 transition-transform" size={32} />
-                                            <h4 className="text-xl font-bold text-white mb-3">Why this Project?</h4>
+                                            <h4 className="text-xl font-bold text-white mb-3">{t('title_opportunity')}</h4>
                                             <p className="text-gray-400 leading-relaxed text-sm">
                                                 {t('desc_opportunity').replace('{category}', displayCategory).replace('{title}', displayTitle)}
                                             </p>
                                         </div>
                                         <div className="bg-[#0A0A0A] p-8 rounded-2xl border border-white/5 hover:border-amber-500/30 transition-colors group">
                                             <Award className="text-amber-500 mb-4 group-hover:scale-110 transition-transform" size={32} />
-                                            <h4 className="text-xl font-bold text-white mb-3">Exclusive Benefits</h4>
+                                            <h4 className="text-xl font-bold text-white mb-3">{t('title_benefits')}</h4>
                                             <p className="text-gray-400 leading-relaxed text-sm">
-                                                Investors receive exclusive NFTs, premiere invites, and revenue share tokens.
+                                                {t('desc_benefits')}
                                             </p>
                                         </div>
                                     </section>
+
+                                    {/* Gallery Section */}
+                                    {project.gallery && project.gallery.length > 0 && (
+                                        <section>
+                                            <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                                                <ImageIcon className="text-colestia-purple" size={24} /> {t('title_gallery')}
+                                            </h3>
+                                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                                {project.gallery.map((img, idx) => (
+                                                    <div key={idx} className="aspect-video rounded-xl overflow-hidden border border-white/10 group">
+                                                        <img
+                                                            src={img}
+                                                            alt={`Gallery ${idx + 1}`}
+                                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </section>
+                                    )}
+
+                                    {/* Financial Breakdown Section */}
+                                    <FinancialBreakdown financialData={{
+                                        funding_purpose: 'Post-production and global marketing',
+                                        cost_structure: [
+                                            { category: 'post-production', percentage: 45 },
+                                            { category: 'marketing', percentage: 35 },
+                                            { category: 'operations', percentage: 20 }
+                                        ],
+                                        revenue_sources: ['box_office', 'streaming_platforms', 'international_licensing'],
+                                        risk_factors: ['market_acceptance', 'distribution_delay', 'regulatory_changes']
+                                    }} />
                                 </motion.div>
                             )}
 
@@ -260,7 +298,7 @@ const ProjectDetail = () => {
                                                 <p className="text-2xl font-mono font-bold text-white mb-3">฿{reward.price.toLocaleString()}</p>
                                                 <button className={`w-full py-3 rounded-xl text-sm font-bold transition-all transform hover:scale-105 ${reward.tier === 'special' ? 'bg-amber-500 text-black hover:bg-amber-400 shadow-lg shadow-amber-500/20' : 'bg-white text-black hover:bg-gray-200'
                                                     }`}>
-                                                    Select Reward
+                                                    {t('btn_select_reward')}
                                                 </button>
                                             </div>
                                         </div>
@@ -277,8 +315,8 @@ const ProjectDetail = () => {
                                                 <div className="w-full h-full bg-gradient-to-tr from-gray-700 to-gray-600" />
                                             </div>
                                             <div>
-                                                <p className="font-bold text-white text-sm">Cast Member {i}</p>
-                                                <p className="text-xs text-gray-500">Character Name</p>
+                                                <p className="font-bold text-white text-sm">{t('label_cast_member')} {i}</p>
+                                                <p className="text-xs text-gray-500">{t('label_character_name')}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -291,44 +329,101 @@ const ProjectDetail = () => {
                     <div className="lg:col-span-4 space-y-6">
                         {/* Project Info Box */}
                         <div className="bg-[#0A0A0A] rounded-2xl p-6 border border-white/10">
-                            <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-white/5 pb-2">Project Details</h4>
+
+                            <h4 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-6 border-b border-white/5 pb-2">{t('title_data')}</h4>
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center py-2 border-b border-white/5">
-                                    <span className="text-gray-500 text-sm">{t('label_director') || 'Director'}</span>
+                                    <span className="text-gray-500 text-sm">{t('label_director')}</span>
                                     <span className="text-white font-medium text-right">{project.director || '-'}</span>
                                 </div>
                                 <div className="flex justify-between items-center py-2 border-b border-white/5">
-                                    <span className="text-gray-500 text-sm">{t('label_studio') || 'Studio'}</span>
+                                    <span className="text-gray-500 text-sm">{t('label_studio')}</span>
                                     <span className="text-white font-medium text-right">{project.studio || '-'}</span>
                                 </div>
                                 <div className="flex justify-between items-center py-2 border-b border-white/5">
-                                    <span className="text-gray-500 text-sm">{t('label_genre') || 'Genre'}</span>
+                                    <span className="text-gray-500 text-sm">{t('admin_genre')}</span>
                                     <span className="text-white font-medium text-right capitalize">{project.genre || '-'}</span>
                                 </div>
                                 <div className="flex justify-between items-center py-2 border-b border-white/5">
-                                    <span className="text-gray-500 text-sm">{t('label_end_date') || 'End Date'}</span>
+                                    <span className="text-gray-500 text-sm">{t('label_end')}</span>
                                     <span className="text-white font-medium text-right">{project.endDate ? new Date(project.endDate).toLocaleDateString() : '-'}</span>
                                 </div>
+                                {project.productionStage && (
+                                    <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                        <span className="text-gray-500 text-sm flex items-center gap-2"><Clock size={14} /> {t('label_stage')}</span>
+                                        <span className="text-white font-medium text-right">{project.productionStage}</span>
+                                    </div>
+                                )}
+                                {project.country && (
+                                    <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                        <span className="text-gray-500 text-sm flex items-center gap-2"><MapPin size={14} /> {t('label_country')}</span>
+                                        <span className="text-white font-medium text-right">{project.country}</span>
+                                    </div>
+                                )}
+                                {project.language && (
+                                    <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                        <span className="text-gray-500 text-sm flex items-center gap-2"><Globe size={14} /> {t('label_language')}</span>
+                                        <span className="text-white font-medium text-right">{project.language}</span>
+                                    </div>
+                                )}
+                                {project.targetAudience && (
+                                    <div className="flex justify-between items-center py-2 border-b border-white/5">
+                                        <span className="text-gray-500 text-sm flex items-center gap-2"><Users size={14} /> {t('label_audience')}</span>
+                                        <span className="text-white font-medium text-right truncate max-w-[150px]" title={project.targetAudience}>{project.targetAudience}</span>
+                                    </div>
+                                )}
                             </div>
                             <div className="mt-6 pt-6 border-t border-white/10 grid grid-cols-2 gap-3">
                                 <button onClick={() => setModalOpen(true)} className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 text-white text-sm font-bold hover:bg-white/10 transition-colors border border-white/5">
-                                    <ExternalLink size={16} /> Portal
+                                    <ExternalLink size={16} /> {t('btn_portal_short')}
                                 </button>
                                 <button className="flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 text-white text-sm font-bold hover:bg-white/10 transition-colors border border-white/5">
-                                    <Share2 size={16} /> Share
+                                    <Share2 size={16} /> {t('btn_share')}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="bg-colestia-blue/5 rounded-2xl p-6 border border-colestia-blue/10">
-                            <div className="flex gap-3 mb-2">
-                                <ShieldCheck className="text-colestia-blue" />
-                                <h4 className="font-bold text-colestia-blue">Risk Disclaimer</h4>
-                            </div>
-                            <p className="text-xs text-colestia-blue/70 leading-relaxed">
-                                {t('disclaimer_detail') || 'Investment involves risk. Please read the whitepaper.'}
-                            </p>
-                        </div>
+                        {/* Token Information Panel */}
+                        <TokenInfoPanel tokenData={{
+                            token_name: `${displayTitle?.toUpperCase()?.replace(/\s+/g, '-')?.slice(0, 10) || 'PROJECT'}-IP`,
+                            token_type: 'investment',
+                            token_standard: 'ERC-20',
+                            use_cases: ['Revenue participation', 'Governance voting on creative decisions'],
+                            lifecycle: ['issuance', 'holding'],
+                            non_financial_benefits: ['Exclusive behind-the-scenes content', 'Private premiere invitation', 'Credit in film'],
+                            restriction_notes: 'Tokens are not tradable on secondary markets via Colestia.'
+                        }} />
+
+                        {/* Creator Profile Card */}
+                        <CreatorProfileCard creator={{
+                            creator_name: project.studio || 'Studio Name',
+                            role: 'studio',
+                            experience_level: 'professional',
+                            past_projects: ['Previous Project 1', 'Previous Project 2']
+                        }} />
+
+                        {/* Readiness Assessment */}
+                        <ReadinessPanel readinessData={{
+                            risk_score: 78,
+                            legal_ready: true,
+                            script_status: 'final',
+                            budget_ready: true,
+                            rights_clearance: true,
+                            last_updated: new Date().toISOString()
+                        }} />
+
+                        {/* Compliance Disclaimer */}
+                        <ComplianceDisclaimer complianceData={{
+                            is_token_sale: false,
+                            platform_role: 'informative_only',
+                            regulator: 'SEC Thailand',
+                            jurisdiction: 'Thailand',
+                            jurisdiction: 'Thailand',
+                            disclaimer_text: t('disclaimer_detail'),
+                            last_legal_review: '2025-12-20T00:00:00Z',
+                            last_legal_review: '2025-12-20T00:00:00Z',
+                            policy_version: 'v1.1'
+                        }} />
                     </div>
 
                 </div>

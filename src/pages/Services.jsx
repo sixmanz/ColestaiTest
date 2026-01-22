@@ -6,51 +6,15 @@ import { Film, TrendingUp, Users, Globe, Video, Clapperboard } from 'lucide-reac
 import { useLanguage } from '../context/LanguageContext';
 
 const Services = () => {
-    const { language } = useLanguage();
+    const { t } = useLanguage();
 
     const services = [
-        {
-            icon: <TrendingUp size={32} />,
-            title: "Film Financing",
-            titleTh: "การระดมทุนภาพยนตร์",
-            desc: "Connecting filmmakers with a global network of investors through our secure and transparent production-funding platform.",
-            descTh: "เชื่อมโยงผู้สร้างภาพยนตร์กับเครือข่ายนักลงทุนทั่วโลกผ่านแพลตฟอร์มระดมทุนที่ปลอดภัยและโปร่งใส"
-        },
-        {
-            icon: <Film size={32} />,
-            title: "Production Support",
-            titleTh: "สนับสนุนการผลิต",
-            desc: "End-to-end production assistance, from pre-production planning to post-production coordination.",
-            descTh: "บริการช่วยเหลือด้านการผลิตแบบครบวงจร ตั้งแต่การวางแผนก่อนการถ่ายทำไปจนถึงขั้นตอนหลังการผลิต"
-        },
-        {
-            icon: <Globe size={32} />,
-            title: "Global Distribution",
-            titleTh: "การจัดจำหน่ายระดับโลก",
-            desc: "Strategic partnerships with streaming platforms and theater chains to ensure your content reaches the widest audience.",
-            descTh: "พันธมิตรเชิงกลยุทธ์กับแพลตฟอร์มสตรีมมิ่งและเครือข่ายโรงภาพยนตร์ เพื่อให้ผลงานของคุณเข้าถึงผู้ชมได้กว้างขวางที่สุด"
-        },
-        {
-            icon: <Users size={32} />,
-            title: "Talent Management",
-            titleTh: "การบริหารจัดการนักแสดง",
-            desc: "Representing and managing contracts for actors, directors, and key creative personnel.",
-            descTh: "ดูแลและบริหารจัดการสัญญาสำหรับนักแสดง ผู้กำกับ และทีมงานสร้างสรรค์หลัก"
-        },
-        {
-            icon: <Video size={32} />,
-            title: "Equipments & Studio",
-            titleTh: "อุปกรณ์และสตูดิโอ",
-            desc: "Rental services for high-end camera gear, lighting, and sound stages for productions of any scale.",
-            descTh: "บริการเช่าอุปกรณ์กล้อง ไฟ และสตูดิโอถ่ายทำระดับไฮเอนด์ สำหรับการผลิตทุกขนาด"
-        },
-        {
-            icon: <Clapperboard size={32} />,
-            title: "IP Licensing",
-            titleTh: "ลิขสิทธิ์ทรัพย์สินทางปัญญา",
-            desc: "Legal and commercial support for licensing movie rights, merchandise, and adaptations.",
-            descTh: "สนับสนุนด้านกฎหมายและธุรกิจสำหรับการขายลิขสิทธิ์ภาพยนตร์ สินค้าที่ระลึก และการดัดแปลงผลงาน"
-        }
+        { icon: <TrendingUp size={32} />, titleKey: "service_1_title", descKey: "service_1_desc" },
+        { icon: <Film size={32} />, titleKey: "service_2_title", descKey: "service_2_desc" },
+        { icon: <Globe size={32} />, titleKey: "service_3_title", descKey: "service_3_desc" },
+        { icon: <Users size={32} />, titleKey: "service_4_title", descKey: "service_4_desc" },
+        { icon: <Video size={32} />, titleKey: "service_5_title", descKey: "service_5_desc" },
+        { icon: <Clapperboard size={32} />, titleKey: "service_6_title", descKey: "service_6_desc" }
     ];
 
     return (
@@ -62,10 +26,9 @@ const Services = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-16 text-center"
                 >
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">Our Services</h1>
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">{t('title_our_services')}</h1>
                     <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-                        Colestia is more than just a crowdfunding platform. We offer a comprehensive ecosystem
-                        designed to empower filmmakers and protect investors.
+                        {t('desc_our_services')}
                     </p>
                 </motion.div>
 
@@ -84,10 +47,10 @@ const Services = () => {
                                         {service.icon}
                                     </div>
                                     <h3 className="text-xl font-bold text-white mb-3">
-                                        {language === 'th' ? service.titleTh : service.title}
+                                        {t(service.titleKey)}
                                     </h3>
                                     <p className="text-gray-400 leading-relaxed text-sm">
-                                        {language === 'th' ? service.descTh : service.desc}
+                                        {t(service.descKey)}
                                     </p>
                                 </div>
                             </Spotlight>

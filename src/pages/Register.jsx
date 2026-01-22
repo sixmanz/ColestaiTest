@@ -5,8 +5,10 @@ import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight } from 'lucide-react';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../firebase';
 import Spotlight from '../components/Spotlight';
+import { useLanguage } from '../context/LanguageContext';
 
 const Register = () => {
+    const { t } = useLanguage();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         fullName: '',
@@ -31,15 +33,15 @@ const Register = () => {
         setError('');
 
         if (formData.password !== formData.confirmPassword) {
-            setError('Password does not match');
+            setError(t('msg_password_match_error'));
             return;
         }
         if (formData.password.length < 6) {
-            setError('Password must be at least 6 characters');
+            setError(t('msg_password_length_error'));
             return;
         }
         if (!agreedToTerms) {
-            setError('Please agree to Terms and Conditions');
+            setError(t('msg_agree_terms_error'));
             return;
         }
 
@@ -55,7 +57,7 @@ const Register = () => {
                 displayName: formData.fullName
             });
 
-            alert('Registration Successful! Please Login.');
+            alert(t('msg_registration_success'));
             navigate('/login');
         } catch (err) {
             switch (err.code) {
@@ -94,15 +96,15 @@ const Register = () => {
 
                 <div className="relative z-10 text-center px-12 max-w-xl">
                     <h1 className="text-5xl font-display font-bold text-white mb-6 leading-tight">
-                        Start Your Journey.
+                        {t('auth_start_journey')}
                     </h1>
                     <p className="text-lg text-gray-400 leading-relaxed mb-8">
-                        "Every great story begins with a single step. Join us to be part of the next masterpiece."
+                        {t('auth_start_quote')}
                     </p>
 
                     {/* Feature List */}
                     <div className="space-y-4 text-left inline-block">
-                        {['Exclusive Access to Projects', 'Real-time Portfolio Tracking', 'Community Rewards', 'Direct Filmmaker Interaction'].map((item, i) => (
+                        {[t('auth_feature_1'), t('auth_feature_2'), t('auth_feature_3'), t('auth_feature_4')].map((item, i) => (
                             <div key={i} className="flex items-center gap-3">
                                 <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
                                     <ArrowRight size={12} className="text-colestia-gold" />
@@ -129,8 +131,8 @@ const Register = () => {
                     </div>
 
                     <div className="mb-8">
-                        <h2 className="text-3xl font-display font-bold text-white mb-2">Create Account</h2>
-                        <p className="text-gray-400">Join the revolution of decentralized film financing.</p>
+                        <h2 className="text-3xl font-display font-bold text-white mb-2">{t('auth_create_account')}</h2>
+                        <p className="text-gray-400">{t('auth_join_revolution')}</p>
                     </div>
 
                     {error && (
@@ -146,7 +148,7 @@ const Register = () => {
                                 <input
                                     type="text"
                                     name="fullName"
-                                    placeholder="Full Name"
+                                    placeholder={t('auth_fullname_placeholder')}
                                     value={formData.fullName}
                                     onChange={handleChange}
                                     className="w-full bg-transparent text-white pl-12 pr-4 py-4 rounded-xl outline-none placeholder:text-gray-600"
@@ -161,7 +163,7 @@ const Register = () => {
                                 <input
                                     type="email"
                                     name="email"
-                                    placeholder="Email Address"
+                                    placeholder={t('auth_email_placeholder')}
                                     value={formData.email}
                                     onChange={handleChange}
                                     className="w-full bg-transparent text-white pl-12 pr-4 py-4 rounded-xl outline-none placeholder:text-gray-600"
@@ -176,7 +178,7 @@ const Register = () => {
                                 <input
                                     type="tel"
                                     name="phone"
-                                    placeholder="Phone Number"
+                                    placeholder={t('auth_phone_placeholder')}
                                     value={formData.phone}
                                     onChange={handleChange}
                                     className="w-full bg-transparent text-white pl-12 pr-4 py-4 rounded-xl outline-none placeholder:text-gray-600"
@@ -192,7 +194,7 @@ const Register = () => {
                                     <input
                                         type={showPassword ? 'text' : 'password'}
                                         name="password"
-                                        placeholder="Password"
+                                        placeholder={t('auth_password_placeholder')}
                                         value={formData.password}
                                         onChange={handleChange}
                                         className="w-full bg-transparent text-white pl-12 pr-10 py-4 rounded-xl outline-none placeholder:text-gray-600"
@@ -209,7 +211,7 @@ const Register = () => {
                                     <input
                                         type={showConfirmPassword ? 'text' : 'password'}
                                         name="confirmPassword"
-                                        placeholder="Confirm"
+                                        placeholder={t('auth_confirm_placeholder')}
                                         value={formData.confirmPassword}
                                         onChange={handleChange}
                                         className="w-full bg-transparent text-white pl-12 pr-10 py-4 rounded-xl outline-none placeholder:text-gray-600"
@@ -231,7 +233,7 @@ const Register = () => {
                                 className="mt-1 w-5 h-5 rounded border-gray-600 bg-white/5 text-colestia-purple focus:ring-colestia-purple focus:ring-offset-0"
                             />
                             <label htmlFor="terms" className="text-sm text-gray-400">
-                                I agree to the <Link to="/terms" className="text-white hover:text-colestia-purple underline decoration-white/30">Terms of Service</Link> and <Link to="/privacy" className="text-white hover:text-colestia-purple underline decoration-white/30">Privacy Policy</Link>
+                                {t('auth_agree_terms')} <Link to="/terms" className="text-white hover:text-colestia-purple underline decoration-white/30">Terms of Service</Link> {t('and')} <Link to="/privacy" className="text-white hover:text-colestia-purple underline decoration-white/30">Privacy Policy</Link>
                             </label>
                         </div>
 
@@ -244,16 +246,16 @@ const Register = () => {
                                 <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                             ) : (
                                 <>
-                                    Create Account <ArrowRight size={20} />
+                                    {t('auth_create_account')} <ArrowRight size={20} />
                                 </>
                             )}
                         </button>
                     </form>
 
                     <p className="mt-8 text-center text-gray-500">
-                        Already have an account?{' '}
+                        {t('auth_already_have_account')}{' '}
                         <Link to="/login" className="text-white font-semibold hover:text-colestia-gold transition-colors">
-                            Sign In
+                            {t('auth_sign_in')}
                         </Link>
                     </p>
                 </div>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
-import { LayoutDashboard, Film, LogOut, Home, User, Users, Newspaper, BookOpen, UserCircle, FileText, Globe, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Film, LogOut, Home, User, Users, Newspaper, BookOpen, UserCircle, FileText, Globe, Menu, X, Receipt } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from '../assets/logo.png';
 
@@ -21,7 +21,8 @@ const AdminLayout = () => {
     const navItems = [
         { path: '/admin', icon: LayoutDashboard, labelKey: 'admin_dashboard' },
         { path: '/admin/projects', icon: Film, labelKey: 'admin_projects' },
-        { path: '/admin/articles', icon: FileText, labelKey: 'admin_articles' },
+        { path: '/admin/transactions', icon: Receipt, labelKey: 'admin_transactions' },
+
         { path: '/admin/directors', icon: User, labelKey: 'admin_directors' },
         { path: '/admin/team', icon: Users, labelKey: 'admin_team' },
         { path: '/admin/users', icon: UserCircle, labelKey: 'admin_users' },
@@ -54,7 +55,7 @@ const AdminLayout = () => {
                 `}
             >
                 <div className="p-6 flex justify-between items-center md:justify-center">
-                    <img src={logo} alt="Colestia Admin" className="h-12 md:h-16 w-auto" />
+                    <img src={logo} alt="Colestia Admin" className="h-24 md:h-32 w-auto" />
                     <button
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="md:hidden p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"

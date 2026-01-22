@@ -1,0 +1,19 @@
+{
+    "project_id": "prj-101",
+    "token_name": "SHADOW-IP",
+    "token_type": "investment",
+    "token_standard": "ERC-20",
+    "use_cases": [
+        "Revenue participation",
+        "Governance voting on creative decisions"
+    ],
+    "lifecycle": [
+        "issuance",
+        "holding"
+    ],
+    "non_financial_benefits": [
+        "Exclusive behind-the-scenes content",
+        "Private premiere invitation"
+    ],
+    "restriction_notes": "Tokens are not tradable on secondary markets via Colestia."
+}

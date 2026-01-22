@@ -48,7 +48,7 @@ const Contact = () => {
             });
         } catch (error) {
             console.error('Error submitting contact:', error);
-            alert(t('contact_error') || 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+            alert(t('contact_error'));
         } finally {
             setIsSubmitting(false);
         }
@@ -67,13 +67,13 @@ const Contact = () => {
                         <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mb-8">
                             <CheckCircle size={48} className="text-white" />
                         </div>
-                        <h1 className="text-4xl font-bold text-white mb-4">{t('contact_success_title') || 'ส่งข้อความสำเร็จ!'}</h1>
-                        <p className="text-xl text-gray-400 mb-8">{t('contact_success_message') || 'ทีมงานจะติดต่อกลับภายใน 24-48 ชั่วโมง'}</p>
+                        <h1 className="text-4xl font-bold text-white mb-4">{t('contact_success_title')}</h1>
+                        <p className="text-xl text-gray-400 mb-8">{t('contact_success_message')}</p>
                         <button
                             onClick={() => setIsSubmitted(false)}
                             className="px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl font-semibold hover:opacity-90 transition-all"
                         >
-                            {t('contact_send_another') || 'ส่งข้อความอีกครั้ง'}
+                            {t('contact_send_another')}
                         </button>
                     </motion.div>
                 </div>
@@ -93,8 +93,8 @@ const Contact = () => {
                     <div className="inline-flex items-center justify-center p-4 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-purple-500/30 backdrop-blur-sm mb-6">
                         <Film className="text-purple-400" size={40} />
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">{t('contact_title') || 'ติดต่อเรา'}</h1>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">{t('contact_subtitle') || 'สนใจนำภาพยนตร์มาลงทุน หรือต้องการร่วมงานกับเรา? ส่งรายละเอียดให้เราได้เลย'}</p>
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">{t('contact_title')}</h1>
+                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">{t('contact_subtitle')}</p>
                 </motion.div>
 
                 <div className="grid lg:grid-cols-3 gap-8">
@@ -110,7 +110,7 @@ const Contact = () => {
                                 <div className="p-3 bg-purple-500/20 rounded-xl w-fit mb-4">
                                     <Mail className="text-purple-400" size={24} />
                                 </div>
-                                <h3 className="text-white font-semibold mb-2">{t('contact_email_label') || 'อีเมล'}</h3>
+                                <h3 className="text-white font-semibold mb-2">{t('contact_email_label')}</h3>
                                 <p className="text-gray-400">contact@colestia.com</p>
                             </div>
                         </Spotlight>
@@ -120,7 +120,7 @@ const Contact = () => {
                                 <div className="p-3 bg-blue-500/20 rounded-xl w-fit mb-4">
                                     <Phone className="text-blue-400" size={24} />
                                 </div>
-                                <h3 className="text-white font-semibold mb-2">{t('contact_phone_label') || 'โทรศัพท์'}</h3>
+                                <h3 className="text-white font-semibold mb-2">{t('contact_phone_label')}</h3>
                                 <p className="text-gray-400">+66 2 123 4567</p>
                             </div>
                         </Spotlight>
@@ -130,7 +130,7 @@ const Contact = () => {
                                 <div className="p-3 bg-emerald-500/20 rounded-xl w-fit mb-4">
                                     <MapPin className="text-emerald-400" size={24} />
                                 </div>
-                                <h3 className="text-white font-semibold mb-2">{t('contact_address_label') || 'ที่อยู่'}</h3>
+                                <h3 className="text-white font-semibold mb-2">{t('contact_address_label')}</h3>
                                 <p className="text-gray-400 text-sm">Colestia Studios, Bangkok, Thailand</p>
                             </div>
                         </Spotlight>
@@ -147,13 +147,13 @@ const Contact = () => {
                             <div className="bg-[#111] p-8 rounded-3xl border border-white/10">
                                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                                     <Film className="text-purple-400" size={24} />
-                                    {t('contact_form_title') || 'ส่งข้อเสนอโปรเจกต์'}
+                                    {t('contact_form_title')}
                                 </h2>
 
                                 <form onSubmit={handleSubmit} className="space-y-5">
                                     <div className="grid md:grid-cols-2 gap-5">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_name') || 'ชื่อ-นามสกุล'} *</label>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_name')} *</label>
                                             <input
                                                 type="text"
                                                 name="name"
@@ -165,7 +165,7 @@ const Contact = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_email') || 'อีเมล'} *</label>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_email')} *</label>
                                             <input
                                                 type="email"
                                                 name="email"
@@ -180,7 +180,7 @@ const Contact = () => {
 
                                     <div className="grid md:grid-cols-2 gap-5">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_phone') || 'เบอร์โทรศัพท์'}</label>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_phone')}</label>
                                             <input
                                                 type="tel"
                                                 name="phone"
@@ -191,7 +191,7 @@ const Contact = () => {
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_project_title') || 'ชื่อโปรเจกต์'}</label>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_project_title')}</label>
                                             <input
                                                 type="text"
                                                 name="projectTitle"
@@ -205,40 +205,40 @@ const Contact = () => {
 
                                     <div className="grid md:grid-cols-2 gap-5">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_project_type') || 'ประเภทโปรเจกต์'}</label>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_project_type')}</label>
                                             <select
                                                 name="projectType"
                                                 value={formData.projectType}
                                                 onChange={handleInputChange}
                                                 className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
                                             >
-                                                <option value="feature_film">{t('contact_type_feature') || 'ภาพยนตร์โรง'}</option>
-                                                <option value="series">{t('contact_type_series') || 'ซีรีส์'}</option>
-                                                <option value="documentary">{t('contact_type_doc') || 'สารคดี'}</option>
-                                                <option value="short_film">{t('contact_type_short') || 'ภาพยนตร์สั้น'}</option>
-                                                <option value="other">{t('contact_type_other') || 'อื่นๆ'}</option>
+                                                <option value="feature_film">{t('contact_type_feature')}</option>
+                                                <option value="series">{t('contact_type_series')}</option>
+                                                <option value="documentary">{t('contact_type_doc')}</option>
+                                                <option value="short_film">{t('contact_type_short')}</option>
+                                                <option value="other">{t('contact_type_other')}</option>
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_budget') || 'งบประมาณโดยประมาณ'}</label>
+                                            <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_budget')}</label>
                                             <select
                                                 name="budget"
                                                 value={formData.budget}
                                                 onChange={handleInputChange}
                                                 className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
                                             >
-                                                <option value="">{t('contact_budget_select') || 'เลือกช่วงงบประมาณ'}</option>
-                                                <option value="under_1m">{t('contact_budget_1') || 'ต่ำกว่า 1 ล้านบาท'}</option>
-                                                <option value="1m_5m">{t('contact_budget_2') || '1 - 5 ล้านบาท'}</option>
-                                                <option value="5m_10m">{t('contact_budget_3') || '5 - 10 ล้านบาท'}</option>
-                                                <option value="10m_50m">{t('contact_budget_4') || '10 - 50 ล้านบาท'}</option>
-                                                <option value="over_50m">{t('contact_budget_5') || 'มากกว่า 50 ล้านบาท'}</option>
+                                                <option value="">{t('contact_budget_select')}</option>
+                                                <option value="under_1m">{t('contact_budget_1')}</option>
+                                                <option value="1m_5m">{t('contact_budget_2')}</option>
+                                                <option value="5m_10m">{t('contact_budget_3')}</option>
+                                                <option value="10m_50m">{t('contact_budget_4')}</option>
+                                                <option value="over_50m">{t('contact_budget_5')}</option>
                                             </select>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_message') || 'ข้อความ / รายละเอียดโปรเจกต์'} *</label>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">{t('contact_message')} *</label>
                                         <textarea
                                             name="message"
                                             value={formData.message}
@@ -248,7 +248,7 @@ const Contact = () => {
                                             placeholder="บอกเราเกี่ยวกับโปรเจกต์ของคุณ เช่น เนื้อเรื่องย่อ ทีมงาน สถานะปัจจุบัน..."
                                             className="w-full px-4 py-3 bg-black/50 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all resize-none"
                                         />
-                                        <p className="text-xs text-gray-500 mt-1">{t('contact_message_hint') || 'แนะนำให้ระบุรายละเอียดโปรเจกต์ให้มากที่สุด'}</p>
+                                        <p className="text-xs text-gray-500 mt-1">{t('contact_message_hint')}</p>
                                     </div>
 
                                     <motion.button
@@ -261,18 +261,18 @@ const Contact = () => {
                                         {isSubmitting ? (
                                             <>
                                                 <Loader className="animate-spin" size={20} />
-                                                {t('contact_sending') || 'กำลังส่ง...'}
+                                                {t('contact_sending')}
                                             </>
                                         ) : (
                                             <>
                                                 <Send size={20} />
-                                                {t('contact_submit') || 'ส่งข้อเสนอ'}
+                                                {t('contact_submit')}
                                             </>
                                         )}
                                     </motion.button>
 
                                     <p className="text-xs text-gray-500 text-center">
-                                        {t('contact_privacy') || 'ข้อมูลของคุณจะถูกเก็บเป็นความลับและใช้ติดต่อกลับเท่านั้น'}
+                                        {t('contact_privacy')}
                                     </p>
                                 </form>
                             </div>

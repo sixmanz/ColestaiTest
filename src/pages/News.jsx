@@ -6,7 +6,7 @@ import { Calendar, User, ArrowRight } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 
 const News = () => {
-    const { language } = useLanguage();
+    const { t, language } = useLanguage();
 
     const articles = [
         {
@@ -64,9 +64,9 @@ const News = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-12 text-center"
                 >
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">News & Updates</h1>
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">{t('news_title')}</h1>
                     <p className="text-gray-400 max-w-2xl mx-auto">
-                        Latest stories, announcements, and insights from the Colestia team.
+                        {t('news_subtitle')}
                     </p>
                 </motion.div>
 
@@ -103,7 +103,7 @@ const News = () => {
                                             {language === 'th' ? article.excerptTh : article.excerpt}
                                         </p>
                                         <button className="flex items-center gap-2 text-sm font-semibold text-white hover:text-colestia-purple transition-colors">
-                                            Read Article <ArrowRight size={16} />
+                                            {t('btn_read_article')} <ArrowRight size={16} />
                                         </button>
                                     </div>
                                 </div>

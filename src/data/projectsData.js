@@ -21,6 +21,15 @@ export const projects = [
         onSale: true,
         isNew: false,
         status: 'active',
+        productionStage: 'Post-Production',
+        country: 'USA',
+        language: 'English',
+        targetAudience: 'Sci-Fi Fans, Action Lovers',
+        gallery: [
+            'https://images.unsplash.com/photo-1534809027769-b00d750a6bac?q=80&w=400',
+            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400',
+            'https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=400'
+        ],
         rewards: [
             {
                 tier: 'special',
@@ -88,6 +97,15 @@ export const projects = [
         onSale: true,
         isNew: false,
         status: 'active',
+        productionStage: 'Filming',
+        country: 'Thailand',
+        language: 'Thai',
+        targetAudience: 'Couples, Romance Fans',
+        gallery: [
+            'https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?q=80&w=400',
+            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=400',
+            'https://images.unsplash.com/photo-1519046904884-53103b34b271?q=80&w=400'
+        ],
         rewards: [
             {
                 tier: 'special',
@@ -144,6 +162,15 @@ export const projects = [
         onSale: true,
         isNew: false,
         status: 'active',
+        productionStage: 'Pre-Production',
+        country: 'Thailand',
+        language: 'Thai',
+        targetAudience: 'Horror Fans, Thriller Seekers',
+        gallery: [
+            'https://images.unsplash.com/photo-1509248961158-e54f6934749c?q=80&w=400',
+            'https://images.unsplash.com/photo-1505635552518-3448ff116af3?q=80&w=400',
+            'https://images.unsplash.com/photo-1515536765-9b2a70c4b333?q=80&w=400'
+        ],
         rewards: [
             {
                 tier: 'special',

@@ -3,8 +3,10 @@ import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimest
 import { db } from '../../firebase';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Edit2, Trash2, X, Save, Search, Loader, FileText, Eye, EyeOff } from 'lucide-react';
+import { useLanguage } from '../../context/LanguageContext';
 
 const AdminArticles = () => {
+    const { t } = useLanguage();
     const [articles, setArticles] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -57,20 +59,20 @@ const AdminArticles = () => {
         try {
             if (editingArticle) {
                 await updateDoc(doc(db, 'articles', editingArticle.id), { ...formData, updatedAt: serverTimestamp() });
-                alert('Article updated!');
+                alert(t('msg_article_updated'));
             } else {
                 await addDoc(articlesCollectionRef, { ...formData, createdAt: serverTimestamp() });
-                alert('Article created!');
+                alert(t('msg_article_created'));
             }
             setIsModalOpen(false);
         } catch (error) {
             console.error("Error saving article:", error);
-            alert('Error saving article');
+            alert(t('msg_article_save_error'));
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this article?')) {
+        if (window.confirm(t('msg_article_delete_confirm'))) {
             await deleteDoc(doc(db, 'articles', id));
         }
     };
@@ -87,21 +89,21 @@ const AdminArticles = () => {
     });
 
     const tabs = [
-        { id: 'all', label: 'All' },
-        { id: 'news', label: 'News' },
-        { id: 'learning_hub', label: 'Learning Hub' }
+        { id: 'all', label: t('admin_tab_all') },
+        { id: 'news', label: t('admin_tab_news') },
+        { id: 'learning_hub', label: t('admin_tab_learning_hub') }
     ];
 
     return (
         <div className="space-y-6">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Content Management</h2>
+                <h2 className="text-3xl font-bold text-gray-900 dark:text-white">{t('admin_content_management')}</h2>
                 <button
                     onClick={() => openModal()}
                     className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-xl hover:bg-purple-700 transition-colors"
                 >
                     <Plus size={20} />
-                    Add Article
+                    {t('admin_add_article')}
                 </button>
             </div>
 
@@ -112,8 +114,8 @@ const AdminArticles = () => {
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id)}
                         className={`px-4 py-2 font-medium transition-colors ${activeTab === tab.id
-                                ? 'text-purple-600 border-b-2 border-purple-600'
-                                : 'text-gray-500 hover:text-gray-700'
+                            ? 'text-purple-600 border-b-2 border-purple-600'
+                            : 'text-gray-500 hover:text-gray-700'
                             }`}
                     >
                         {tab.label}
@@ -126,7 +128,7 @@ const AdminArticles = () => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
                 <input
                     type="text"
-                    placeholder="Search articles..."
+                    placeholder={t('admin_search_articles')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
@@ -160,11 +162,11 @@ const AdminArticles = () => {
                                 <div className="flex items-center gap-2 mb-2">
                                     <span className={`text-xs px-2 py-1 rounded-full ${article.category === 'news' ? 'bg-blue-100 text-blue-700' : 'bg-green-100 text-green-700'
                                         }`}>
-                                        {article.category === 'learning_hub' ? 'Learning Hub' : 'News'}
+                                        {article.category === 'learning_hub' ? t('admin_tab_learning_hub') : t('admin_tab_news')}
                                     </span>
                                     <span className={`text-xs px-2 py-1 rounded-full ${article.status === 'published' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                                         }`}>
-                                        {article.status || 'draft'}
+                                        {article.status === 'published' ? t('admin_status_published') : t('admin_status_draft')}
                                     </span>
                                 </div>
                                 <h3 className="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">{article.title}</h3>
@@ -196,7 +198,7 @@ const AdminArticles = () => {
             )}
 
             {filteredArticles.length === 0 && !isLoading && (
-                <div className="text-center py-12 text-gray-500">No articles found</div>
+                <div className="text-center py-12 text-gray-500">{t('admin_no_articles')}</div>
             )}
 
             {/* Modal */}
@@ -218,7 +220,7 @@ const AdminArticles = () => {
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    {editingArticle ? 'Edit Article' : 'New Article'}
+                                    {editingArticle ? t('admin_modal_edit_article') : t('admin_modal_new_article')}
                                 </h3>
                                 <button onClick={() => setIsModalOpen(false)} className="text-gray-500 hover:text-gray-700">
                                     <X size={24} />
@@ -226,7 +228,7 @@ const AdminArticles = () => {
                             </div>
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Title</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_title')}</label>
                                     <input
                                         type="text"
                                         name="title"
@@ -238,32 +240,32 @@ const AdminArticles = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_category')}</label>
                                         <select
                                             name="category"
                                             value={formData.category}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                         >
-                                            <option value="news">News</option>
-                                            <option value="learning_hub">Learning Hub</option>
+                                            <option value="news">{t('admin_tab_news')}</option>
+                                            <option value="learning_hub">{t('admin_tab_learning_hub')}</option>
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_header_status')}</label>
                                         <select
                                             name="status"
                                             value={formData.status}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                         >
-                                            <option value="draft">Draft</option>
-                                            <option value="published">Published</option>
+                                            <option value="draft">{t('admin_status_draft')}</option>
+                                            <option value="published">{t('admin_status_published')}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Image URL</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_image_url')}</label>
                                     <input
                                         type="url"
                                         name="image"
@@ -273,7 +275,7 @@ const AdminArticles = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Summary</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_summary')}</label>
                                     <input
                                         type="text"
                                         name="summary"
@@ -283,7 +285,7 @@ const AdminArticles = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Content</label>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_form_content')}</label>
                                     <textarea
                                         name="content"
                                         value={formData.content}
@@ -298,7 +300,7 @@ const AdminArticles = () => {
                                     className="w-full py-3 bg-purple-600 text-white rounded-xl font-semibold hover:bg-purple-700 transition-colors flex items-center justify-center gap-2"
                                 >
                                     <Save size={20} />
-                                    {editingArticle ? 'Update Article' : 'Create Article'}
+                                    {editingArticle ? t('admin_btn_update_article') : t('admin_btn_create_article')}
                                 </button>
                             </form>
                         </motion.div>

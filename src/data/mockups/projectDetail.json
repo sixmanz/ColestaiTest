@@ -1,0 +1,23 @@
+{
+    "project_id": "prj-101",
+    "project_name": "Shadow of Tomorrow",
+    "project_type": "film",
+    "status": "active",
+    "synopsis": "A sci-fi thriller exploring humanity's choices in a near-future dystopia.",
+    "genre": [
+        "sci-fi",
+        "thriller"
+    ],
+    "target_audience": "Young adults, sci-fi enthusiasts",
+    "production_stage": "post-production",
+    "country": "Thailand",
+    "language": "English",
+    "media_assets": {
+        "poster": "https://cdn.colestia.io/projects/shadow/poster.jpg",
+        "trailer": "https://cdn.colestia.io/projects/shadow/trailer.mp4",
+        "gallery": [
+            "https://cdn.colestia.io/projects/shadow/still1.jpg",
+            "https://cdn.colestia.io/projects/shadow/still2.jpg"
+        ]
+    }
+}

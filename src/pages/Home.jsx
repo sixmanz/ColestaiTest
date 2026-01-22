@@ -255,7 +255,7 @@ const Home = () => {
                     >
                         <div>
                             <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-2">
-                                {t('section_popular')} <span className="text-colestia-purple">Projects</span>
+                                {t('section_popular')} <span className="text-colestia-purple">{t('nav_projects')}</span>
                             </h2>
                             <p className="text-gray-400 text-sm md:text-base max-w-xl">
                                 {t('products_subtitle')}
@@ -314,7 +314,7 @@ const Home = () => {
                                             </div>
 
                                             <div className="flex justify-between text-xs font-medium text-white/80">
-                                                <span>{project.percentage}% Funded</span>
+                                                <span>{project.percentage}% {t('admin_projects_funded')}</span>
                                                 <span className="text-colestia-magenta">{project.currency || '฿'}{project.currentFunding.toLocaleString()}</span>
                                             </div>
                                         </div>

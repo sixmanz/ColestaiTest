@@ -94,15 +94,13 @@ const Education = () => {
                 >
                     <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-colestia-purple/20 border border-colestia-purple/30 text-colestia-purple text-sm font-medium mb-4">
                         <BookOpen size={16} />
-                        <span>Learning Hub</span>
+                        <span>{t('label_learning_hub')}</span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-                        {language === 'th' ? "แหล่งเรียนรู้สำหรับนักสร้างสรรค์" : "Education & Resources"}
+                        {t('page_education_title')}
                     </h1>
                     <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-                        {language === 'th'
-                            ? "รวมบทความและคู่มือเกี่ยวกับอุตสาหกรรมภาพยนตร์ การลงทุน และเทคโนโลยี"
-                            : "Curated guides and insights on film industry, investment, and technology."}
+                        {t('page_education_subtitle')}
                     </p>
                 </motion.div>
 
@@ -122,7 +120,7 @@ const Education = () => {
                                 : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white border border-white/10'
                                 }`}
                         >
-                            {cat}
+                            {t(`cat_${cat.toLowerCase()}`)}
                         </button>
                     ))}
                 </motion.div>
@@ -155,7 +153,7 @@ const Education = () => {
                                             {article.category === 'Production' && <Film size={12} className="text-amber-400" />}
                                             {article.category === 'Technology' && <Cpu size={12} className="text-blue-400" />}
                                             {article.category === 'Legal' && <ShieldAlert size={12} className="text-red-400" />}
-                                            {article.category}
+                                            {t(`cat_${article.category.toLowerCase()}`)}
                                         </div>
                                     </div>
 
@@ -164,7 +162,7 @@ const Education = () => {
                                         <div className="flex items-center gap-2 text-xs text-gray-500 mb-3">
                                             <span>{article.readTime}</span>
                                             <span>•</span>
-                                            <span>{language === 'th' ? "บทความ" : "Article"}</span>
+                                            <span>{t('label_article')}</span>
                                         </div>
 
                                         <h3 className="text-xl font-bold text-white mb-3 leading-tight group-hover:text-colestia-purple transition-colors">
@@ -176,7 +174,7 @@ const Education = () => {
                                         </p>
 
                                         <div className="flex items-center gap-2 text-sm font-semibold text-white group-hover:px-2 transition-all duration-300">
-                                            {language === 'th' ? "อ่านต่อ" : "Read More"}
+                                            {t('btn_read_more')}
                                             <ArrowRight size={16} className="text-colestia-purple" />
                                         </div>
                                     </div>
@@ -203,9 +201,7 @@ const Education = () => {
                                     {t('edu_risk_title')}
                                 </h3>
                                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                                    {language === 'th'
-                                        ? "การลงทุนในสินทรัพย์ดิจิทัลและภาพยนตร์มีความเสี่ยงสูง อาจสูญเสียเงินลงทุนทั้งจำนวน โปรดศึกษาข้อมูลให้ครบถ้วนก่อนตัดสินใจลงทุน"
-                                        : "Investing in digital assets and films involves high risks. You may lose the entire investment amount. Please study the information carefully before investing."}
+                                    {t('edu_risk_desc')}
                                 </p>
                             </div>
                         </div>

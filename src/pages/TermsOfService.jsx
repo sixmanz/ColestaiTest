@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import InteractiveGrid from '../components/InteractiveGrid';
+import { useLanguage } from '../context/LanguageContext';
 
 const TermsOfService = () => {
+    const { t } = useLanguage();
     return (
         <div className="pt-28 pb-20 min-h-screen bg-black relative">
             <InteractiveGrid />
@@ -12,8 +14,8 @@ const TermsOfService = () => {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-12"
                 >
-                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">Terms of Service</h1>
-                    <p className="text-gray-400">Last updated: January 20, 2026</p>
+                    <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">{t('terms_title')}</h1>
+                    <p className="text-gray-400">{t('terms_last_updated')}</p>
                 </motion.div>
 
                 <motion.div
@@ -23,47 +25,44 @@ const TermsOfService = () => {
                     className="prose prose-invert prose-lg max-w-none text-gray-300"
                 >
                     <section className="mb-8">
-                        <h2 className="text-2xl font-bold text-white mb-4">1. Agreement to Terms</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">{t('terms_1_title')}</h2>
                         <p>
-                            By accessing our website, you agree to be bound by these Terms of Service and to comply with all applicable laws and regulations.
-                            If you do not agree with these terms, you are prohibited from using or accessing this site or using any other services provided by Colestia.
+                            {t('terms_1_content')}
                         </p>
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-bold text-white mb-4">2. Intellectual Property Rights</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">{t('terms_2_title')}</h2>
                         <p>
-                            Other than the content you own, under these Terms, Colestia and/or its licensors own all the intellectual property rights and materials contained in this Website.
-                            You are granted limited license only for purposes of viewing the material contained on this Website.
+                            {t('terms_2_content')}
                         </p>
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-bold text-white mb-4">3. Restrictions</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">{t('terms_3_title')}</h2>
                         <p>
-                            You are specifically restricted from all of the following:
+                            {t('terms_3_content_intro')}
                         </p>
                         <ul className="list-disc pl-6 space-y-2 mt-4">
-                            <li>Publishing any Website material in any other media;</li>
-                            <li>Selling, sublicensing and/or otherwise commercializing any Website material;</li>
-                            <li>Publicly performing and/or showing any Website material;</li>
-                            <li>Using this Website in any way that is or may be damaging to this Website;</li>
-                            <li>Using this Website in any way that impacts user access to this Website;</li>
+                            <li>{t('terms_3_list_1')}</li>
+                            <li>{t('terms_3_list_2')}</li>
+                            <li>{t('terms_3_list_3')}</li>
+                            <li>{t('terms_3_list_4')}</li>
+                            <li>{t('terms_3_list_5')}</li>
                         </ul>
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-bold text-white mb-4">4. Limitation of Liability</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">{t('terms_4_title')}</h2>
                         <p>
-                            In no event shall Colestia, nor any of its officers, directors and employees, be held liable for anything arising out of or in any way connected with your use of this Website whether such liability is under contract.
-                            Colestia, including its officers, directors and employees shall not be held liable for any indirect, consequential or special liability arising out of or in any way related to your use of this Website.
+                            {t('terms_4_content')}
                         </p>
                     </section>
 
                     <section className="mb-8">
-                        <h2 className="text-2xl font-bold text-white mb-4">5. Governing Law & Jurisdiction</h2>
+                        <h2 className="text-2xl font-bold text-white mb-4">{t('terms_5_title')}</h2>
                         <p>
-                            These Terms will be governed by and interpreted in accordance with the laws of the Kingdom of Thailand, and you submit to the non-exclusive jurisdiction of the state and federal courts located in Thailand for the resolution of any disputes.
+                            {t('terms_5_content')}
                         </p>
                     </section>
                 </motion.div>

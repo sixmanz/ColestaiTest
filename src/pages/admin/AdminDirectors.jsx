@@ -37,16 +37,16 @@ const AdminDirectors = () => {
         try {
             if (editingDirector) {
                 await updateDoc(doc(db, 'directors', editingDirector.id), formData);
-                alert('Director updated successfully!');
+                alert(t('msg_director_updated_success'));
             } else {
                 await addDoc(collection(db, 'directors'), formData);
-                alert('Director added successfully!');
+                alert(t('msg_director_added_success'));
             }
             setIsModalOpen(false);
             window.location.reload(); // Simple reload to refresh data
         } catch (error) {
             console.error("Error saving director: ", error);
-            alert('Error saving director');
+            alert(t('msg_director_save_error'));
         }
     };
 
@@ -151,7 +151,7 @@ const AdminDirectors = () => {
                         >
                             <div className="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800 z-10">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    {editingDirector ? 'Edit Director' : 'Add New Director'}
+                                    {editingDirector ? t('admin_modal_edit_director') : t('admin_modal_add_director')}
                                 </h3>
                                 <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors">
                                     <X size={20} />
@@ -161,7 +161,7 @@ const AdminDirectors = () => {
                             <form onSubmit={handleSubmit} className="p-6 space-y-6">
                                 <div className="grid grid-cols-2 gap-6">
                                     <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_full_name')}</label>
                                         <input
                                             type="text"
                                             name="name"
@@ -171,10 +171,10 @@ const AdminDirectors = () => {
                                             placeholder="e.g. Christopher Nolan"
                                             required
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ชื่อ-นามสกุล (ไม่เกิน 50 ตัวอักษร)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_full_name')}</p>
                                     </div>
                                     <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Role</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_role')}</label>
                                         <input
                                             type="text"
                                             name="role"
@@ -184,64 +184,64 @@ const AdminDirectors = () => {
                                             placeholder="e.g. Director / Producer"
                                             required
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ตำแหน่ง (เช่น Director, Producer, Screenwriter)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_hint_role_en')}</p>
                                     </div>
                                     <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Profile Image URL</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_image_url')}</label>
                                         <input
                                             type="text"
                                             name="img"
                                             value={formData.img}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
-                                            placeholder="https://example.com/profile.jpg"
+                                            placeholder={t('admin_hint_image_url')}
                                             required
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">📸 ขนาดแนะนำ: 400 x 400 px (สี่เหลี่ยม) | รูปแบบ: JPG, PNG | ขนาดไฟล์: ไม่เกิน 1MB</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_image')}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Works (Thai)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_works_th')}</label>
                                         <textarea
                                             name="works"
                                             value={formData.works}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-24"
-                                            placeholder="เช่น องค์บาก, ต้มยำกุ้ง, ช็อคโกแลต"
+                                            placeholder={t('admin_hint_works_th')}
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ผลงานที่ผ่านมา (คั่นด้วย comma)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_works_th')}</p>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Works (English)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_works_en')}</label>
                                         <textarea
                                             name="worksEn"
                                             value={formData.worksEn}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-24"
-                                            placeholder="e.g. Ong-Bak, Tom Yum Goong, Chocolate"
+                                            placeholder={t('admin_hint_works_en')}
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">Previous works (comma separated)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_works_en')}</p>
                                     </div>
                                     <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Biography (Thai)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_bio_th')}</label>
                                         <textarea
                                             name="bio"
                                             value={formData.bio}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-32"
-                                            placeholder="ประวัติและผลงานเด่น..."
+                                            placeholder={t('admin_hint_bio_th')}
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">ประวัติย่อภาษาไทย (แนะนำ 100-300 ตัวอักษร)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_bio_th')}</p>
                                     </div>
                                     <div className="col-span-2">
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Biography (English)</label>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{t('admin_label_bio_en')}</label>
                                         <textarea
                                             name="bioEn"
                                             value={formData.bioEn}
                                             onChange={handleInputChange}
                                             className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 focus:ring-2 focus:ring-purple-500 outline-none transition-all h-32"
-                                            placeholder="Biography and notable achievements..."
+                                            placeholder={t('admin_hint_bio_en')}
                                         />
-                                        <p className="text-xs text-gray-400 mt-1">Short biography in English (recommended 100-300 characters)</p>
+                                        <p className="text-xs text-gray-400 mt-1">{t('admin_help_bio_en')}</p>
                                     </div>
                                 </div>
 
@@ -251,14 +251,14 @@ const AdminDirectors = () => {
                                         onClick={() => setIsModalOpen(false)}
                                         className="px-6 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors font-medium"
                                     >
-                                        Cancel
+                                        {t('admin_btn_cancel')}
                                     </button>
                                     <button
                                         type="submit"
                                         className="px-6 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-200 dark:shadow-purple-900/20 transition-all font-medium flex items-center gap-2"
                                     >
                                         <Save size={18} />
-                                        <span>{editingDirector ? 'Update Director' : 'Create Director'}</span>
+                                        <span>{editingDirector ? t('admin_btn_update_director') : t('admin_btn_create_director')}</span>
                                     </button>
                                 </div>
                             </form>
