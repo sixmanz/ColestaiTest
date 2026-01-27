@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from 'framer-motion';
 import VideoBackground from '../components/VideoBackground';
 import Button from '../components/Button';
-import { ArrowRight, ArrowLeft, Globe, Shield, Zap, ChevronLeft, ChevronRight, X, Clapperboard, Lightbulb, Gift, Copyright } from 'lucide-react';
+import { ArrowRight, ArrowLeft, Globe, Shield, Zap, ChevronLeft, ChevronRight, X, Clapperboard, Lightbulb, Gift, Copyright, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useDirectors } from '../hooks/useDirectors';
 import { useLanguage } from '../context/LanguageContext';
@@ -24,7 +24,7 @@ import InteractiveGrid from '../components/InteractiveGrid';
 import { ChevronDown } from 'lucide-react';
 
 // BentoCard Component - Polished Minimal Design
-const BentoCard = ({ title, description, className = "" }) => {
+const BentoCard = ({ title, description, icon: Icon, className = "" }) => {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -43,6 +43,13 @@ const BentoCard = ({ title, description, className = "" }) => {
                 ${className}
             `}
         >
+            {/* Icon */}
+            {Icon && (
+                <div className="mb-6 p-4 bg-colestia-purple/10 rounded-2xl text-colestia-purple group-hover:scale-110 group-hover:bg-colestia-purple/20 transition-all duration-500">
+                    <Icon size={28} />
+                </div>
+            )}
+
             {/* Title */}
             <h3 className="text-lg md:text-xl font-semibold text-white mb-4 leading-snug md:h-[3.5rem] flex items-center justify-center">
                 {title}
@@ -64,7 +71,65 @@ const Home = () => {
     const directorsScrollRef = useRef(null);
     const moviesScrollRef = useRef(null);
     const [selectedDirector, setSelectedDirector] = useState(null);
+    const [activeRewardCategory, setActiveRewardCategory] = useState('all');
     const { directors } = useDirectors();
+
+    const redeemableRewards = [
+        {
+            id: 1,
+            title: "Movie Premiere Ticket: The Last Light",
+            provider: "Major Cineplex",
+            category: "tickets",
+            price: 599,
+            type: "ticket",
+            image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop"
+        },
+        {
+            id: 2,
+            title: "Private Fan Meeting: Cast of Midnight City",
+            provider: "Colestia Studios",
+            category: "meet",
+            price: 1299,
+            type: "meeting",
+            image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2070&auto=format&fit=crop"
+        },
+        {
+            id: 3,
+            title: "Limited Edition Collector's Poster",
+            provider: "Creative Arts",
+            category: "merch",
+            price: 350,
+            type: "collectible",
+            image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1925&auto=format&fit=crop"
+        },
+        {
+            id: 4,
+            title: "Behind the Scenes Access Pass",
+            provider: "Film Production Partners",
+            category: "experiences",
+            price: 850,
+            type: "pass",
+            image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2070&auto=format&fit=crop"
+        },
+        {
+            id: 5,
+            title: "Digital Art Asset: Hero Prop 3D",
+            provider: "Decentralized Media",
+            category: "merch",
+            price: 450,
+            type: "digital",
+            image: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1974&auto=format&fit=crop"
+        },
+        {
+            id: 6,
+            title: "Exclusive Director's Cut Access",
+            provider: "Independent Film House",
+            category: "tickets",
+            price: 299,
+            type: "access",
+            image: "https://images.unsplash.com/photo-1542204113-e93526286199?q=80&w=1974&auto=format&fit=crop"
+        }
+    ];
 
     const scrollContainer = (ref, direction) => {
         if (ref.current) {
@@ -115,9 +180,9 @@ const Home = () => {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-6 md:px-0">
-                            <Link to="/products" className="w-full sm:w-auto">
+                            <Link to="/get-started" className="w-full sm:w-auto">
                                 <Button variant="primary" className="w-full sm:w-auto py-3 md:py-4 text-sm md:text-base">
-                                    {t('hero_explore')} <ArrowRight size={18} />
+                                    {t('btn_invest')} <ArrowRight size={18} />
                                 </Button>
                             </Link>
                             <Link to="/education" className="w-full sm:w-auto">
@@ -258,7 +323,15 @@ const Home = () => {
                     >
                         <div>
                             <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-2">
-                                {t('section_popular')} <span className="text-colestia-purple">{t('nav_projects')}</span>
+                                {language === 'th' ? (
+                                    <>
+                                        <span className="text-colestia-purple">{t('nav_projects')}</span> {t('section_popular')}
+                                    </>
+                                ) : (
+                                    <>
+                                        {t('section_popular')} <span className="text-colestia-purple">{t('nav_projects')}</span>
+                                    </>
+                                )}
                             </h2>
                             <p className="text-gray-400 text-sm md:text-base max-w-xl">
                                 {t('products_subtitle')}
@@ -367,6 +440,8 @@ const Home = () => {
                 </div>
             </section>
 
+
+
             {/* 4. Feature Highlights Section */}
             <section className="py-16 md:py-24 bg-colestia-bg text-white">
                 <div className="container mx-auto px-4 md:px-6">
@@ -393,8 +468,8 @@ const Home = () => {
                             className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8 group cursor-default"
                         >
                             <Clapperboard size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-400" strokeWidth={1.5} />
-                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-start justify-center">{t('feature_1_title')}</h3>
-                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-20 flex items-center justify-center">{t('feature_1_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto md:min-h-[5rem]">
                                 {t('feature_1_desc')}
                             </p>
                         </motion.div>
@@ -409,8 +484,8 @@ const Home = () => {
                             className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8 group cursor-default"
                         >
                             <Lightbulb size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-400" strokeWidth={1.5} />
-                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-start justify-center">{t('feature_2_title')}</h3>
-                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-20 flex items-center justify-center">{t('feature_2_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto md:min-h-[5rem]">
                                 {t('feature_2_desc')}
                             </p>
                         </motion.div>
@@ -425,8 +500,8 @@ const Home = () => {
                             className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8 group cursor-default"
                         >
                             <Gift size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-400" strokeWidth={1.5} />
-                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-start justify-center">{t('feature_3_title')}</h3>
-                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-20 flex items-center justify-center">{t('feature_3_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto md:min-h-[5rem]">
                                 {t('feature_3_desc')}
                             </p>
                         </motion.div>
@@ -441,8 +516,8 @@ const Home = () => {
                             className="flex flex-col items-center text-center px-4 py-4 md:px-6 md:py-8 group cursor-default"
                         >
                             <Copyright size={48} className="text-white mb-4 md:mb-6 md:w-16 md:h-16 transition-all duration-300 group-hover:scale-110 group-hover:text-purple-400" strokeWidth={1.5} />
-                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-auto md:h-12 flex items-start justify-center">{t('feature_4_title')}</h3>
-                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto">
+                            <h3 className="text-base md:text-lg font-bold mb-2 md:mb-4 h-20 flex items-center justify-center">{t('feature_4_title')}</h3>
+                            <p className="text-gray-400 text-xs md:text-sm font-light leading-relaxed max-w-[250px] mx-auto md:min-h-[5rem]">
                                 {t('feature_4_desc')}
                             </p>
                         </motion.div>
@@ -468,12 +543,12 @@ const Home = () => {
                     </motion.div>
                 </div>
 
-                {/* Carousel Container - Full Width */}
-                <div className="relative w-full">
+                {/* Carousel Container - Centered with equal spacing */}
+                <div className="relative max-w-7xl mx-auto px-4 md:px-12 group/carousel">
                     {/* Left Arrow */}
                     <button
                         onClick={() => scrollDirectors('left')}
-                        className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 z-10 bg-colestia-purple/20 hover:bg-colestia-purple/40 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg hidden md:block"
+                        className="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 z-10 bg-colestia-purple/20 hover:bg-colestia-purple/40 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg opacity-0 group-hover/carousel:opacity-100 hidden md:block"
                         aria-label="Scroll left"
                     >
                         <ChevronLeft size={24} />
@@ -482,7 +557,7 @@ const Home = () => {
                     {/* Scrollable Directors Container */}
                     <div
                         ref={directorsScrollRef}
-                        className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory w-full px-4 md:px-8"
+                        className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth snap-x snap-mandatory w-fit mx-auto max-w-full py-8"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
                         {directors.map((director, index) => (
@@ -492,7 +567,7 @@ const Home = () => {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group flex-shrink-0 w-[240px] md:w-[350px] perspective-1000 snap-center py-4"
+                                className="group flex-shrink-0 w-[200px] md:w-[260px] perspective-1000 snap-center"
                             >
                                 <motion.div
                                     whileHover={{ scale: 1.02 }}
@@ -503,7 +578,7 @@ const Home = () => {
                                         <div className="relative bg-gradient-to-b from-[#1e3a5f] to-[#0f172a] rounded-2xl overflow-hidden border border-white/10 group-hover:border-colestia-purple/40 transition-all duration-500 group-hover:shadow-[0_20px_60px_rgba(147,51,234,0.3)] h-full">
                                             <div className="flex flex-col h-full">
                                                 {/* Photo Section */}
-                                                <div className="relative w-full h-[320px] md:h-[450px] flex-shrink-0 overflow-hidden">
+                                                <div className="relative w-full h-[280px] md:h-[340px] flex-shrink-0 overflow-hidden">
                                                     <img
                                                         src={director.img}
                                                         alt={director.name}
@@ -516,11 +591,11 @@ const Home = () => {
                                                 </div>
 
                                                 {/* Info Section */}
-                                                <div className="flex-1 p-4 md:p-6 flex flex-col relative z-20 bg-transparent">
-                                                    <h3 className="text-xl md:text-2xl font-display font-bold text-white mb-1">
+                                                <div className="flex-1 p-4 md:p-5 flex flex-col relative z-20 bg-transparent">
+                                                    <h3 className="text-lg md:text-xl font-display font-bold text-white mb-1">
                                                         {director.name}
                                                     </h3>
-                                                    <p className="text-blue-200 text-xs md:text-sm font-medium mb-4">{director.role}</p>
+                                                    <p className="text-blue-200 text-[10px] md:text-xs font-medium mb-4">{director.role}</p>
 
                                                     {/* View More Button */}
                                                     <button
@@ -528,7 +603,7 @@ const Home = () => {
                                                             e.stopPropagation();
                                                             setSelectedDirector(director);
                                                         }}
-                                                        className="mt-auto w-full py-2.5 md:py-3 bg-[#5b21b6] hover:bg-[#4c1d95] text-white rounded-xl transition-all duration-300 text-xs md:text-sm font-bold shadow-lg hover:shadow-xl hover:scale-[1.02]"
+                                                        className="mt-auto w-full py-2 md:py-2.5 bg-[#5b21b6] hover:bg-[#4c1d95] text-white rounded-xl transition-all duration-300 text-[10px] md:text-xs font-bold shadow-lg hover:shadow-xl hover:scale-[1.02]"
                                                     >
                                                         {t('see_more')}
                                                     </button>
@@ -544,7 +619,7 @@ const Home = () => {
                     {/* Right Arrow */}
                     <button
                         onClick={() => scrollDirectors('right')}
-                        className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 z-10 bg-colestia-purple/20 hover:bg-colestia-purple/40 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg hidden md:block"
+                        className="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 z-10 bg-colestia-purple/20 hover:bg-colestia-purple/40 backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 hover:scale-110 shadow-lg opacity-0 group-hover/carousel:opacity-100 hidden md:block"
                         aria-label="Scroll right"
                     >
                         <ChevronRight size={24} />
@@ -559,6 +634,133 @@ const Home = () => {
                     </p>
                 </div>
             </section >
+
+            {/* 5. Redeemable Movie Rewards Section */}
+            <section className="py-24 md:py-36 bg-[#050505] relative overflow-hidden">
+                {/* Background Glows */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-colestia-purple/5 blur-[120px] rounded-full pointer-events-none" />
+                <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-500/5 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+
+                <div className="container mx-auto px-4 md:px-6 relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <span className="inline-block py-1.5 px-4 rounded-full bg-gradient-to-r from-[#FFD700] to-[#FDB931] text-black text-xs font-bold tracking-widest uppercase mb-6 shadow-[0_0_20px_rgba(255,215,0,0.3)]">
+                            {t('reward_spend_flips')}
+                        </span>
+                        <h2 className="text-4xl md:text-7xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-b from-white via-gray-100 to-gray-500 mb-6 tracking-tight drop-shadow-sm">
+                            {t('reward_redeem_title')}
+                        </h2>
+                        <p className="text-gray-400 text-base md:text-xl max-w-2xl mx-auto px-4 leading-relaxed font-light">
+                            {t('reward_redeem_desc')}
+                        </p>
+                    </motion.div>
+
+                    {/* Category Filter Tabs - Premium Segmented Control */}
+                    <div className="flex justify-center mb-16">
+                        <div className="inline-flex flex-wrap justify-center gap-1.5 p-1.5 bg-white/5 backdrop-blur-2xl border border-white/10 rounded-2xl md:rounded-full shadow-2xl relative overflow-hidden group">
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 translate-x-[-200%] group-hover:animate-shine" />
+                            {[
+                                { id: 'all', label: t('cat_all') },
+                                { id: 'tickets', label: t('reward_category_tickets') },
+                                { id: 'meet', label: t('reward_category_meet') },
+                                { id: 'merch', label: t('reward_category_merch') }
+                            ].map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setActiveRewardCategory(cat.id)}
+                                    className={`
+                                        relative px-6 py-2.5 md:px-8 md:py-3 rounded-xl md:rounded-full text-sm md:text-base font-bold transition-all duration-300
+                                        ${activeRewardCategory === cat.id
+                                            ? 'text-white shadow-lg'
+                                            : 'text-gray-400 hover:text-white hover:bg-white/5'
+                                        }
+                                    `}
+                                >
+                                    {activeRewardCategory === cat.id && (
+                                        <motion.div
+                                            layoutId="activeRewardTab"
+                                            className="absolute inset-0 bg-gradient-to-r from-colestia-purple to-[#4c1d95] rounded-xl md:rounded-full -z-10 shadow-[0_0_15px_rgba(147,51,234,0.5)]"
+                                            transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                        />
+                                    )}
+                                    {cat.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Rewards Grid */}
+                    <motion.div
+                        layout
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto"
+                    >
+                        <AnimatePresence mode="popLayout">
+                            {redeemableRewards
+                                .filter(reward => activeRewardCategory === 'all' || reward.category === activeRewardCategory)
+                                .map((reward) => (
+                                    <motion.div
+                                        key={reward.id}
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        transition={{ duration: 0.5, ease: "easeOut" }}
+                                        className="group relative flex flex-col bg-gradient-to-br from-white/[0.08] to-transparent border border-white/5 rounded-3xl overflow-hidden hover:border-amber-500/30 transition-all duration-500 hover:shadow-[0_10px_40px_rgba(255,215,0,0.1)] cursor-pointer backdrop-blur-sm"
+                                    >
+                                        {/* Main Ticket Body */}
+                                        <div className="p-4 md:p-5 pb-2 relative">
+                                            {/* Image */}
+                                            <div className="relative h-44 rounded-2xl overflow-hidden mb-4 shadow-lg border border-white/5 group-hover:border-amber-500/20 transition-colors">
+                                                <img
+                                                    src={reward.image}
+                                                    alt={reward.title}
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+                                                />
+                                                <div className="absolute top-2 right-2 px-2.5 py-1 bg-black/80 backdrop-blur-md rounded-lg text-[9px] font-bold text-amber-400 uppercase tracking-widest border border-amber-500/20 shadow-lg">
+                                                    {t(`reward_category_${reward.category}`)}
+                                                </div>
+                                            </div>
+
+                                            {/* Details */}
+                                            <h3 className="text-lg font-display font-bold text-white mb-1 group-hover:text-amber-400 transition-colors line-clamp-1 leading-tight tracking-wide">
+                                                {reward.title}
+                                            </h3>
+                                            <p className="text-gray-500 text-xs font-medium mb-2 flex items-center gap-2">
+                                                {t('reward_by')} <span className="text-gray-300">{reward.provider}</span>
+                                            </p>
+                                        </div>
+
+                                        {/* Ticket Perforation & Notches */}
+                                        <div className="relative w-full h-6 flex items-center justify-center my-1">
+                                            <div className="absolute left-0 -ml-3 w-6 h-6 rounded-full bg-[#050505] z-10 shadow-[inset_-2px_0_5px_rgba(255,255,255,0.05)]" />
+                                            <div className="w-[85%] border-t-2 border-dashed border-white/10 group-hover:border-amber-500/20 transition-colors" />
+                                            <div className="absolute right-0 -mr-3 w-6 h-6 rounded-full bg-[#050505] z-10 shadow-[inset_2px_0_5px_rgba(255,255,255,0.05)]" />
+                                        </div>
+
+                                        {/* Ticket Stub (Price & Buy) */}
+                                        <div className="p-4 md:p-5 pt-2 flex items-center justify-between">
+                                            <div className="flex flex-col">
+                                                <span className="text-[10px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">{t('reward_unit')}</span>
+                                                <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FFD700] to-[#FDB931] tracking-tight drop-shadow-sm">{reward.price}</span>
+                                            </div>
+                                            <div className="h-10 px-5 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-gray-300 group-hover:bg-[#FFD700] group-hover:text-black group-hover:border-[#FFD700] transition-all duration-300 shadow-lg group-hover:shadow-[0_0_15px_rgba(255,215,0,0.4)]">
+                                                {reward.type}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                        </AnimatePresence>
+                    </motion.div>
+                </div>
+
+                {/* Background decorative elements */}
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-colestia-purple/10 blur-[150px] -z-10 rounded-full" />
+                <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-colestia-magenta/10 blur-[150px] -z-10 rounded-full" />
+            </section>
 
             {/* Newsletter Subscription Section */}
             <section className="py-16 md:py-20 bg-gradient-to-b from-colestia-bg to-colestia-bg">
@@ -673,7 +875,6 @@ const Home = () => {
                 )
             }
         </div >
-
     );
 };
 

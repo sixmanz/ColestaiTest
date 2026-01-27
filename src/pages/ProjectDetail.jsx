@@ -3,37 +3,52 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../components/Button';
 import ExternalLinkModal from '../components/ExternalLinkModal';
-import { ArrowLeft, Play, AlertCircle, ExternalLink, X, Loader, Clock, Users, Target, ShieldCheck, ChevronRight, Share2, Heart, Award, Volume2, VolumeX, MapPin, Globe, Image as ImageIcon } from 'lucide-react';
+import { ArrowLeft, Play, AlertCircle, ExternalLink, X, Loader, Clock, Users, Target, ShieldCheck, ChevronRight, Share2, Heart, Award, Volume2, VolumeX, MapPin, Globe, Image as ImageIcon, Lightbulb } from 'lucide-react';
 import heroVideo from '../assets/hero.mp4';
 import InteractiveGrid from '../components/InteractiveGrid';
+import HowToModal from '../components/HowToModal';
 import { useLanguage } from '../context/LanguageContext';
 import { useProjects } from '../hooks/useProjects';
+import { useViewCount } from '../hooks/useViewCount';
 
 // New Card Components
-import TokenInfoPanel from '../components/cards/TokenInfoPanel';
-import FinancialBreakdown from '../components/cards/FinancialBreakdown';
-import ComplianceDisclaimer from '../components/cards/ComplianceDisclaimer';
-import CreatorProfileCard from '../components/cards/CreatorProfileCard';
-import ReadinessPanel from '../components/cards/ReadinessPanel';
 
 const ProjectDetail = () => {
     const { id } = useParams();
     const { t, language } = useLanguage();
     const { getProjectById, isLoading } = useProjects();
+    const { incrementView } = useViewCount();
     const project = getProjectById(id);
+
+    useEffect(() => {
+        if (project) {
+            incrementView(project.id);
+        }
+    }, [id, project]);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [trailerOpen, setTrailerOpen] = useState(false);
     const [activeTab, setActiveTab] = useState('story');
     const [isMuted, setIsMuted] = useState(true);
+    const [isHowToOpen, setIsHowToOpen] = useState(false);
     const videoRef = useRef(null);
 
-    // Ensure video plays
+    // Ensure hero video plays
     useEffect(() => {
         if (videoRef.current) {
             videoRef.current.play().catch(e => console.log("Auto-play prevented:", e));
         }
     }, [videoRef]);
+
+
+    // Calculate Days Left
+    const daysLeft = React.useMemo(() => {
+        if (!project || !project.endDate) return 0;
+        const end = new Date(project.endDate);
+        const now = new Date();
+        const diff = end - now;
+        return Math.ceil(diff / (1000 * 60 * 60 * 24));
+    }, [project]);
 
     if (isLoading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader className="animate-spin text-white" /></div>;
     if (!project) return <div className="pt-32 text-center text-white">{t('msg_project_not_found')}</div>;
@@ -47,16 +62,6 @@ const ProjectDetail = () => {
     const formatCurrency = (val) => `฿${(val / 1000000).toFixed(1)}M`;
     const formatNumber = (val) => val ? val.toLocaleString() : '0';
 
-    // Calculate Days Left
-    const daysLeft = React.useMemo(() => {
-        if (!project.endDate) return 0;
-        const end = new Date(project.endDate);
-        const now = new Date();
-        const diffTime = end - now;
-        if (diffTime < 0) return 0;
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    }, [project.endDate]);
-
     const videoSrc = project.trailerUrl || heroVideo;
 
     return (
@@ -64,7 +69,7 @@ const ProjectDetail = () => {
             <InteractiveGrid />
 
             {/* Navbar Placeholder */}
-            <div className="fixed top-0 left-0 w-full p-6 z-50 pointer-events-none">
+            <div className="fixed top-24 left-0 w-full px-6 z-40 pointer-events-none">
                 <div className="container mx-auto pointer-events-auto flex justify-between items-center">
                     <Link to="/products" className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/30 shadow-lg">
                         <ArrowLeft size={18} /> {t('btn_back')}
@@ -83,6 +88,7 @@ const ProjectDetail = () => {
                     loop
                     muted={isMuted}
                     playsInline
+                    poster={project.poster}
                 />
 
                 {/* Overlays */}
@@ -178,9 +184,38 @@ const ProjectDetail = () => {
                                         </div>
                                     </div>
 
-                                    <Button className="w-full py-3 md:py-4 text-base md:text-lg font-bold shadow-lg shadow-colestia-purple/20">
-                                        {t('btn_invest')} <ChevronRight size={20} className="ml-2" />
-                                    </Button>
+                                    <Link to="/get-started">
+                                        <Button
+                                            className="w-full py-3 md:py-4 text-base md:text-lg font-bold shadow-lg shadow-colestia-purple/20"
+                                        >
+                                            {t('btn_invest')} <ChevronRight size={20} className="ml-2" />
+                                        </Button>
+                                    </Link>
+
+                                    {/* How To Button moved to Hero sidebar - strictly under Invest Now */}
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 10 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: true }}
+                                        className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 mt-6"
+                                    >
+                                        <div className="flex items-center gap-4 mb-4">
+                                            <div className="w-10 h-10 rounded-full bg-colestia-purple/20 flex items-center justify-center text-colestia-purple">
+                                                <Lightbulb size={20} />
+                                            </div>
+                                            <h4 className="font-bold text-white text-sm">{t('how_to_title')}</h4>
+                                        </div>
+                                        <p className="text-gray-400 text-[11px] leading-relaxed mb-4">
+                                            {language === 'th' ? "เรียนรู้วิธีการร่วมเป็นส่วนหนึ่งกับ Colestia และขั้นตอนการแลกรับรางวัล" : "Learn how to be part of Colestia and the steps to redeem your rewards."}
+                                        </p>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full text-xs py-2 border-colestia-purple/30 hover:bg-colestia-purple/10"
+                                            onClick={() => setIsHowToOpen(true)}
+                                        >
+                                            {t('hero_how_to')}
+                                        </Button>
+                                    </motion.div>
                                 </div>
                             </motion.div>
                         </div>
@@ -260,17 +295,7 @@ const ProjectDetail = () => {
                                         </section>
                                     )}
 
-                                    {/* Financial Breakdown Section */}
-                                    <FinancialBreakdown financialData={{
-                                        funding_purpose: 'Post-production and global marketing',
-                                        cost_structure: [
-                                            { category: 'post-production', percentage: 45 },
-                                            { category: 'marketing', percentage: 35 },
-                                            { category: 'operations', percentage: 20 }
-                                        ],
-                                        revenue_sources: ['box_office', 'streaming_platforms', 'international_licensing'],
-                                        risk_factors: ['market_acceptance', 'distribution_delay', 'regulatory_changes']
-                                    }} />
+                                    {/* Financial Breakdown Section Removed */}
                                 </motion.div>
                             )}
 
@@ -295,11 +320,7 @@ const ProjectDetail = () => {
                                                 </div>
                                             </div>
                                             <div className="md:w-48 flex flex-col justify-center border-l border-white/5 md:pl-6 pl-0 pt-4 md:pt-0 z-10">
-                                                <p className="text-2xl font-mono font-bold text-white mb-3">฿{reward.price.toLocaleString()}</p>
-                                                <button className={`w-full py-3 rounded-xl text-sm font-bold transition-all transform hover:scale-105 ${reward.tier === 'special' ? 'bg-amber-500 text-black hover:bg-amber-400 shadow-lg shadow-amber-500/20' : 'bg-white text-black hover:bg-gray-200'
-                                                    }`}>
-                                                    {t('btn_select_reward')}
-                                                </button>
+                                                <p className="text-2xl font-mono font-bold text-white">฿{reward.price.toLocaleString()}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -327,6 +348,7 @@ const ProjectDetail = () => {
 
                     {/* RIGHT COLUMN: Sidebar (4 cols) */}
                     <div className="lg:col-span-4 space-y-6">
+
                         {/* Project Info Box */}
                         <div className="bg-[#0A0A0A] rounded-2xl p-6 border border-white/10">
 
@@ -383,49 +405,7 @@ const ProjectDetail = () => {
                             </div>
                         </div>
 
-                        {/* Token Information Panel */}
-                        <TokenInfoPanel tokenData={{
-                            token_name: `${displayTitle?.toUpperCase()?.replace(/\s+/g, '-')?.slice(0, 10) || 'PROJECT'}-IP`,
-                            token_type: 'investment',
-                            token_standard: 'ERC-20',
-                            use_cases: ['Revenue participation', 'Governance voting on creative decisions'],
-                            lifecycle: ['issuance', 'holding'],
-                            non_financial_benefits: ['Exclusive behind-the-scenes content', 'Private premiere invitation', 'Credit in film'],
-                            restriction_notes: 'Tokens are not tradable on secondary markets via Colestia.'
-                        }} />
-
-                        {/* Creator Profile Card */}
-                        <CreatorProfileCard creator={{
-                            creator_name: project.studio || 'Studio Name',
-                            role: 'studio',
-                            experience_level: 'professional',
-                            past_projects: ['Previous Project 1', 'Previous Project 2']
-                        }} />
-
-                        {/* Readiness Assessment */}
-                        <ReadinessPanel readinessData={{
-                            risk_score: 78,
-                            legal_ready: true,
-                            script_status: 'final',
-                            budget_ready: true,
-                            rights_clearance: true,
-                            last_updated: new Date().toISOString()
-                        }} />
-
-                        {/* Compliance Disclaimer */}
-                        <ComplianceDisclaimer complianceData={{
-                            is_token_sale: false,
-                            platform_role: 'informative_only',
-                            regulator: 'SEC Thailand',
-                            jurisdiction: 'Thailand',
-                            jurisdiction: 'Thailand',
-                            disclaimer_text: t('disclaimer_detail'),
-                            last_legal_review: '2025-12-20T00:00:00Z',
-                            last_legal_review: '2025-12-20T00:00:00Z',
-                            policy_version: 'v1.1'
-                        }} />
                     </div>
-
                 </div>
             </div>
 
@@ -453,6 +433,11 @@ const ProjectDetail = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            <HowToModal
+                isOpen={isHowToOpen}
+                onClose={() => setIsHowToOpen(false)}
+            />
         </div>
     );
 };

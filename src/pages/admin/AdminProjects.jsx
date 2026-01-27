@@ -10,8 +10,13 @@ import { useLanguage } from '../../context/LanguageContext';
 
 const AdminProjects = () => {
     const { t } = useLanguage();
-    const [projects, setProjects] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [projects, setProjects] = useState(() => {
+        return [...initialProjects, ...comingSoonMovies].map((p, index) => ({
+            ...p,
+            id: p.id?.toString() || `project-${index}`
+        }));
+    });
+    const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
@@ -20,16 +25,6 @@ const AdminProjects = () => {
         poster: '', goalFunding: '', currentFunding: 0, percentage: 0,
         startDate: '', endDate: '', director: '', status: 'active'
     });
-
-    useEffect(() => {
-        // Use static data directly (mockup mode)
-        const allProjects = [...initialProjects, ...comingSoonMovies].map((p, index) => ({
-            ...p,
-            id: p.id?.toString() || `project-${index}`
-        }));
-        setProjects(allProjects);
-        setIsLoading(false);
-    }, []);
 
     // Filter projects based on search query
     const filteredBySearch = projects.filter(project => {

@@ -1,20 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
+
 import {
     TrendingUp, Users, Film, Database, Eye, DollarSign, UserCheck,
     ArrowUpRight, ArrowDownRight, Clock, Star, Zap, Bell, Settings,
     Calendar, Target, Award, Activity, PieChart, BarChart3
 } from 'lucide-react';
 import { useDashboardStats } from '../../hooks/useDashboardStats';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
-import { projects as initialProjects, comingSoonMovies } from '../../data/projectsData';
-import { directors as initialDirectors } from '../../data/creatorsData';
-import { teamMembers as initialTeam } from '../../data/teamData';
+import { projects as initialProjects } from '../../data/projectsData';
 import { useLanguage } from '../../context/LanguageContext';
+import { useViewCount } from '../../hooks/useViewCount';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, LineChart, Line, Area, AreaChart } from 'recharts';
 
-// Mock data for charts
+const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <p className="font-semibold text-gray-900 dark:text-white mb-1">{label}</p>
+                {payload.map((entry, index) => (
+                    <p key={index} style={{ color: entry.color }} className="text-sm">
+                        {entry.name}: {entry.value.toLocaleString()}
+                    </p>
+                ))}
+            </div>
+        );
+    }
+    return null;
+};
+
+
 const visitorsData = [
     { month: 'Jul', visitors: 1250 },
     { month: 'Aug', visitors: 1890 },
@@ -45,12 +59,7 @@ const revenueData = [
     { month: 'Jan', revenue: 890000, expenses: 280000 },
 ];
 
-const topProjects = [
-    { name: 'Space Wars Eternal', investors: 156, funding: '฿12.5M', progress: 85, status: 'active' },
-    { name: 'Bangkok Ghost Stories', investors: 89, funding: '฿8.2M', progress: 62, status: 'active' },
-    { name: 'The Last Kingdom', investors: 67, funding: '฿5.8M', progress: 45, status: 'active' },
-    { name: 'Cyber Samurai', investors: 45, funding: '฿3.2M', progress: 28, status: 'coming' },
-];
+
 
 const recentActivities = [
     { type: 'investment', user: 'John D.', action: 'invested ฿50,000 in Space Wars Eternal', time: '5 min ago', icon: DollarSign, color: 'green' },
@@ -62,22 +71,15 @@ const recentActivities = [
 const AdminDashboard = () => {
     const { stats, isLoading } = useDashboardStats();
     const { t } = useLanguage();
+    const { views } = useViewCount();
 
-    const CustomTooltip = ({ active, payload, label }) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-                    <p className="font-semibold text-gray-900 dark:text-white mb-1">{label}</p>
-                    {payload.map((entry, index) => (
-                        <p key={index} style={{ color: entry.color }} className="text-sm">
-                            {entry.name}: {entry.value.toLocaleString()}
-                        </p>
-                    ))}
-                </div>
-            );
-        }
-        return null;
-    };
+    // Merge static data with dynamic view counts
+    const projectsWithViews = initialProjects.map(p => ({
+        ...p,
+        realViews: views[p.id] || p.views || 0
+    }));
+
+
 
     return (
         <div className="space-y-6">
@@ -280,86 +282,123 @@ const AdminDashboard = () => {
                 </motion.div>
             </div>
 
-            {/* Bottom Row - Projects & Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                {/* Top Projects */}
+            {/* Bottom Row - Projects & Methods */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Top Funded Projects */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}
-                    className="lg:col-span-3 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-colestia-purple/10 dark:bg-colestia-purple/20 rounded-xl flex items-center justify-center">
-                                <Star className="text-colestia-purple dark:text-colestia-gold" size={20} />
+                                <Award className="text-colestia-purple dark:text-colestia-gold" size={20} />
                             </div>
-                            <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_top_projects')}</h3>
+                            <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_top_projects')} ({t('admin_type_funding')})</h3>
                         </div>
                         <button className="text-colestia-purple text-sm font-medium hover:underline">{t('admin_dash_view_all')}</button>
                     </div>
                     <div className="space-y-4">
-                        {topProjects.map((project, index) => (
-                            <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-                                <div className="w-10 h-10 bg-gradient-to-br from-colestia-purple to-colestia-gold rounded-xl flex items-center justify-center text-white font-bold">
-                                    {index + 1}
-                                </div>
-                                <div className="flex-1">
-                                    <h4 className="font-semibold text-gray-900 dark:text-white">{project.name}</h4>
-                                    <p className="text-sm text-gray-500">{project.investors} {t('admin_dash_people').toLowerCase()} • {project.funding}</p>
-                                </div>
-                                <div className="hidden sm:block w-32">
-                                    <div className="flex items-center justify-between text-sm mb-1">
-                                        <span className="text-gray-500">{t('admin_dash_progress')}</span>
-                                        <span className="font-medium text-gray-900 dark:text-white">{project.progress}%</span>
+                        {initialProjects
+                            .sort((a, b) => (b.currentFunding || 0) - (a.currentFunding || 0))
+                            .slice(0, 4)
+                            .map((project, index) => (
+                                <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <div className="w-10 h-10 bg-gradient-to-br from-colestia-purple to-colestia-gold rounded-xl flex items-center justify-center text-white font-bold shrink-0">
+                                        {index + 1}
                                     </div>
-                                    <div className="h-2 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full transition-all"
-                                            style={{ width: `${project.progress}%` }}
-                                        />
+                                    <div className="flex-1 min-w-0">
+                                        <h4 className="font-semibold text-gray-900 dark:text-white truncate">{project.titleEn}</h4>
+                                        <p className="text-sm text-gray-500">{project.investors || 0} investors • {(project.currentFunding || 0).toLocaleString()} THB</p>
+                                    </div>
+                                    <div className="hidden sm:block w-24 shrink-0">
+                                        <div className="flex items-center justify-between text-sm mb-1">
+                                            <span className="text-gray-500 text-xs">Funded</span>
+                                            <span className="font-medium text-gray-900 dark:text-white text-xs">{project.percentage}%</span>
+                                        </div>
+                                        <div className="h-1.5 bg-gray-200 dark:bg-gray-600 rounded-full overflow-hidden">
+                                            <div
+                                                className="h-full bg-gradient-to-r from-colestia-purple to-colestia-blue rounded-full transition-all"
+                                                style={{ width: `${project.percentage}%` }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </motion.div>
 
-                {/* Recent Activity */}
+                {/* Most Viewed Projects (Interests) */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.9 }}
-                    className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                    className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
                     <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
-                                <Activity className="text-blue-600 dark:text-blue-400" size={20} />
+                                <Eye className="text-blue-600 dark:text-blue-400" size={20} />
                             </div>
-                            <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_recent_activity')}</h3>
+                            <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_most_viewed')}</h3>
                         </div>
                     </div>
                     <div className="space-y-4">
-                        {recentActivities.map((activity, index) => {
-                            const Icon = activity.icon;
-                            const colorClasses = {
-                                green: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
-                                blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
-                                purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
-                                amber: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
-                            };
-                            return (
-                                <div key={index} className="flex items-start gap-3">
-                                    <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${colorClasses[activity.color]}`}>
-                                        <Icon size={16} />
+                        {projectsWithViews
+                            .sort((a, b) => b.realViews - a.realViews)
+                            .slice(0, 4)
+                            .map((project, index) => (
+                                <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                                    <div className="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-600 font-bold shrink-0">
+                                        <Eye size={18} />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm text-gray-900 dark:text-white">
-                                            <span className="font-medium">{activity.user}</span> {activity.action}
-                                        </p>
-                                        <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
-                                            <Clock size={12} /> {activity.time}
-                                        </p>
+                                        <h4 className="font-semibold text-gray-900 dark:text-white truncate">{project.titleEn}</h4>
+                                        <p className="text-sm text-gray-500">{project.realViews.toLocaleString()} {t('admin_views_unit')}</p>
+                                    </div>
+                                    <div className="text-right shrink-0">
+                                        <span className="inline-flex items-center gap-1 text-sm font-medium text-green-500 bg-green-500/10 px-2.5 py-1 rounded-lg">
+                                            <ArrowUpRight size={14} /> {t('admin_popular_badge')}
+                                        </span>
                                     </div>
                                 </div>
-                            );
-                        })}
+                            ))}
                     </div>
                 </motion.div>
             </div>
+
+            {/* Recent Activity (Full Width) */}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.0 }}
+                className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center">
+                            <Activity className="text-blue-600 dark:text-blue-400" size={20} />
+                        </div>
+                        <h3 className="font-bold text-gray-900 dark:text-white">{t('admin_dash_recent_activity')}</h3>
+                    </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {recentActivities.map((activity, index) => {
+                        const Icon = activity.icon;
+                        const colorClasses = {
+                            green: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+                            blue: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+                            purple: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+                            amber: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+                        };
+                        return (
+                            <div key={index} className="flex items-start gap-3 p-3 rounded-lg border border-gray-100 dark:border-gray-700/50">
+                                <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${colorClasses[activity.color]}`}>
+                                    <Icon size={16} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm text-gray-900 dark:text-white line-clamp-2">
+                                        <span className="font-medium">{activity.user}</span> {activity.action}
+                                    </p>
+                                    <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
+                                        <Clock size={12} /> {activity.time}
+                                    </p>
+                                </div>
+                            </div>
+                        );
+                    })}
+                </div>
+            </motion.div>
         </div>
     );
 };

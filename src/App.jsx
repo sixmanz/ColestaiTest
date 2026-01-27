@@ -33,6 +33,7 @@ import Services from './pages/Services';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import ForgotPassword from './pages/ForgotPassword';
+import GetStarted from './pages/GetStarted';
 
 // Placeholder content for simple pages
 const PlaceholderPage = ({ title }) => (
@@ -108,6 +109,7 @@ const App = () => {
               <Route path="/terms" element={<PageTransition><TermsOfService /></PageTransition>} />
               <Route path="/register" element={<PageTransition><Register /></PageTransition>} />
               <Route path="/forgot-password" element={<PageTransition><ForgotPassword /></PageTransition>} />
+              <Route path="/get-started" element={<PageTransition><GetStarted /></PageTransition>} />
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>

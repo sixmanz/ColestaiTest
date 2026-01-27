@@ -357,7 +357,7 @@ const Products = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="sticky top-28 z-40 mb-12 backdrop-blur-xl bg-black/60 border-y border-white/10 py-4 -mx-6 px-6 md:mx-0 md:px-6 md:rounded-2xl md:border"
+                    className="sticky top-20 z-40 mb-12 backdrop-blur-xl bg-black/60 border-y border-white/10 py-4 -mx-6 px-6 md:mx-0 md:px-6 md:rounded-2xl md:border"
                 >
                     <div className="flex items-center justify-between gap-4 overflow-x-auto scrollbar-hide">
                         {/* Left: Filter Label */}
